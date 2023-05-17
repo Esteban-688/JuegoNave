@@ -109,13 +109,16 @@ public class PantallaJuego implements Screen {
 		          ball.update();
 		      }
 		      //colisiones entre asteroides y sus rebotes  
-		      for (int i=0;i<balls1.size();i++) {
+		      for (int i = 0; i < balls1.size();i++) {
 		    	Ball2 ball1 = balls1.get(i);   
-		        for (int j=0;j<balls2.size();j++) {
+		        for (int j = 0 ; j < balls2.size();j++) {
 		          Ball2 ball2 = balls2.get(j); 
-		          if (i<j) {
+		          if (i < j) {
 		        	  ball1.checkCollision(ball2);
-		     
+		        	  if (ball2.isDestroyed()) {
+		        		 balls1.remove(j);
+		        		 balls2.remove(j);
+		        	  }
 		          }
 		        }
 		      } 

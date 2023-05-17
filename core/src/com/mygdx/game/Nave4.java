@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vidas = 3;
+    private int vidas = 5;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -23,6 +23,7 @@ public class Nave4 {
     private boolean herido = false;
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
+    private float rotacion = 0;
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
     	sonidoHerido = soundChoque;
@@ -30,10 +31,120 @@ public class Nave4 {
     	this.txBala = txBala;
     	spr = new Sprite(tx);
     	spr.setPosition(x, y);
+    	
+    	spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
+    	
     	//spr.setOriginCenter();
     	spr.setBounds(x, y, 45, 45);
+    	
+    	spr.setRotation(rotacion);
 
     }
+    
+    
+    //funcion duplicada para probar rotacion
+    public void draw(SpriteBatch batch, PantallaJuego juego) {
+        float x = spr.getX();
+        float y = spr.getY();
+
+        if (!herido) {
+            // Que se mueva con teclado
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                xVel -= 0.5f * MathUtils.sinDeg(rotacion);
+                yVel += 0.5f * MathUtils.cosDeg(rotacion);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                xVel += 0.5f * MathUtils.sinDeg(rotacion);
+                yVel -= 0.5f * MathUtils.cosDeg(rotacion);
+            }
+
+            // Que rote con teclado
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                rotacion += 4f; // Incrementa la rotación en sentido antihorario
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                rotacion -= 4f; // Incrementa la rotación en sentido horario
+            }
+
+            // Calcular los componentes horizontal y vertical de la velocidad
+            float xVelComponente = MathUtils.cosDeg(rotacion);
+            float yVelComponente = MathUtils.sinDeg(rotacion);
+
+            // Disminuir gradualmente la velocidad de desplazamiento
+            float reduccionVelocidad = 0.95f; // Factor de reducción (ajustar según necesidad)
+            xVel *= reduccionVelocidad;
+            yVel *= reduccionVelocidad;
+
+            // Actualizar la posición de la nave en función de los componentes de velocidad
+            x += xVel; //* xVelComponente;
+            y += yVel; //* yVelComponente;
+
+            // Mantener la nave dentro de los bordes de la ventana
+            if (x < 0)
+                x = 0;
+            if (x + spr.getWidth() > Gdx.graphics.getWidth())
+                x = Gdx.graphics.getWidth() - spr.getWidth();
+            if (y < 0)
+                y = 0;
+            if (y + spr.getHeight() > Gdx.graphics.getHeight())
+                y = Gdx.graphics.getHeight() - spr.getHeight();
+
+            spr.setPosition(x, y);
+            spr.setRotation(rotacion); // Establecer la rotación de la nave
+            spr.draw(batch);
+        } else {
+            spr.setX(spr.getX() + MathUtils.random(-2, 2));
+            spr.draw(batch);
+            spr.setX(x);
+            tiempoHerido--;
+            if (tiempoHerido <= 0) herido = false;
+        }
+
+     // Disparo
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            float balaVelocidad = 40; // Velocidad de la bala
+            float balaDireccionX = -MathUtils.sinDeg(rotacion); // Componente X de la dirección de la bala (invertido)
+            float balaDireccionY = MathUtils.cosDeg(rotacion); // Componente Y de la dirección de la bala
+
+            // Calcular la posición inicial de la bala en el centro de la nave
+            float balaInicialX = spr.getX() + spr.getWidth() / 2 - 5;
+            float balaInicialY = spr.getY() + spr.getHeight() / 2 - 5;
+
+            Bullet bala = new Bullet(
+                balaInicialX,
+                balaInicialY,
+                balaDireccionX * balaVelocidad,
+                balaDireccionY * balaVelocidad,
+                txBala
+            );
+            bala.setVelocity(balaDireccionX * balaVelocidad, balaDireccionY * balaVelocidad);
+
+            // Girar la textura de la bala según la rotación de la nave
+            bala.getSprite().setRotation(rotacion);
+
+            juego.agregarBala(bala);
+            soundBala.play();
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+    
+
+    /*
     public void draw(SpriteBatch batch, PantallaJuego juego){
         float x =  spr.getX();
         float y =  spr.getY();
@@ -43,10 +154,19 @@ public class Nave4 {
 	        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) xVel++;
         	if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) yVel--;     
 	        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) yVel++;
-        	
-	     /*   if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) spr.setRotation(++rotacion);
-	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) spr.setRotation(--rotacion);
 	        
+	        //if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+	        //    rotacion += 2f; // Incrementa la rotación en sentido antihorario
+	        //}
+	        //if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+	        //    rotacion -= 2f; // Incrementa la rotación en sentido horario
+	        //}
+	        
+	        //spr.setRotation(rotacion);
+        	
+	       // if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) spr.setRotation(++rotacion);
+	       // if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) spr.setRotation(--rotacion);
+	        /*
 	        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 	        	xVel -=Math.sin(Math.toRadians(rotacion));
 	        	yVel +=Math.cos(Math.toRadians(rotacion));
@@ -56,7 +176,7 @@ public class Nave4 {
 	        	xVel +=Math.sin(Math.toRadians(rotacion));
 	        	yVel -=Math.cos(Math.toRadians(rotacion));
 	        	     
-	        }*/
+	        }
 	        
 	        // que se mantenga dentro de los bordes de la ventana
 	        if (x+xVel < 0 || x+xVel+spr.getWidth() > Gdx.graphics.getWidth())
@@ -82,7 +202,7 @@ public class Nave4 {
         }
        
     }
-      
+      */
     public boolean checkCollision(Ball2 b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
         	// rebote

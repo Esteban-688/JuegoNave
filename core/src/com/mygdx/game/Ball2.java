@@ -13,6 +13,7 @@ public class Ball2 {
     private int xSpeed;
     private int ySpeed;
     private Sprite spr;
+    private int heart = 10;
 
     public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx) {
     	spr = new Sprite(tx);
@@ -31,6 +32,13 @@ public class Ball2 {
         this.setXSpeed(xSpeed);
         this.setySpeed(ySpeed);
     }
+    /**
+     *  se encarga de actualizar la posición del objeto
+     *  en función de su velocidad, y también se asegura
+     *  de que el objeto rebote dentro de los límites de
+     *  la pantalla en caso de que esté a punto de salir por alguno de los bordes.
+     * 
+     */
     public void update() {
         x += getXSpeed();
         y += getySpeed();
@@ -48,7 +56,7 @@ public class Ball2 {
     public void draw(SpriteBatch batch) {
     	spr.draw(batch);
     }
-    
+    /*
     public void checkCollision(Ball2 b2) {
         if(spr.getBoundingRectangle().overlaps(b2.spr.getBoundingRectangle())){
         	// rebote
@@ -63,6 +71,35 @@ public class Ball2 {
             b2.setySpeed(- b2.getySpeed()); 
         }
     }
+    */
+    
+     public void checkCollision(Ball2 b2) {
+	    if (spr.getBoundingRectangle().overlaps(b2.spr.getBoundingRectangle())) {
+	        // Rebote y disminucion de heart
+	        if (getXSpeed() == 0) {
+	            setXSpeed(getXSpeed() + b2.getXSpeed() / 2);
+	        }
+	        if (b2.getXSpeed() == 0) {
+	            b2.setXSpeed(b2.getXSpeed() + getXSpeed() / 2);
+	        }
+	        setXSpeed(-getXSpeed());
+	        b2.setXSpeed(-b2.getXSpeed());
+	
+	        if (getySpeed() == 0) {
+	            setySpeed(getySpeed() + b2.getySpeed() / 2);
+	        }
+	        if (b2.getySpeed() == 0) {
+	            b2.setySpeed(b2.getySpeed() + getySpeed() / 2);
+	        }
+	        setySpeed(-getySpeed());
+	        b2.setySpeed(-b2.getySpeed());
+	
+	        // Disminuir heart
+	        heart--;
+	        b2.setHeart();
+	    }
+     }
+     
 	public int getXSpeed() {
 		return xSpeed;
 	}
@@ -75,6 +112,15 @@ public class Ball2 {
 	public void setySpeed(int ySpeed) {
 		this.ySpeed = ySpeed;
 	}
-	
+	public int getHeart() {
+	    return heart;
+	}
+	public void setHeart() {
+		heart --;
+	}
+	public boolean isDestroyed() {
+	   if (heart == 0)return true;
+	    return false;
+	}
     
 }
