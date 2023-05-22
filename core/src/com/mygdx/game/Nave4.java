@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vidas = 5;
+    private int vidas = 3;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -49,26 +49,58 @@ public class Nave4 {
 
         if (!herido) {
             // Que se mueva con teclado
+        	
+        	//mover adelante
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 xVel -= 0.5f * MathUtils.sinDeg(rotacion);
                 yVel += 0.5f * MathUtils.cosDeg(rotacion);
+                //turbo
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
+                    xVel -= 0.5f * MathUtils.sinDeg(rotacion);
+                    yVel += 0.5f * MathUtils.cosDeg(rotacion);
+                }
             }
+            else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                xVel -= 0.5f * MathUtils.sinDeg(rotacion);
+                yVel += 0.5f * MathUtils.cosDeg(rotacion);
+                
+                //turbo
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    xVel -= 0.5f * MathUtils.sinDeg(rotacion);
+                    yVel += 0.5f * MathUtils.cosDeg(rotacion);
+                }
+            }
+            
+    
+            
+            //mover atras
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                xVel += 0.5f * MathUtils.sinDeg(rotacion);
+                yVel -= 0.5f * MathUtils.cosDeg(rotacion);
+            }
+            
+            else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 xVel += 0.5f * MathUtils.sinDeg(rotacion);
                 yVel -= 0.5f * MathUtils.cosDeg(rotacion);
             }
 
             // Que rote con teclado
+            
+            //sentido antihorario
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 rotacion += 4f; // Incrementa la rotación en sentido antihorario
             }
+            else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                rotacion += 4f; // Incrementa la rotación en sentido antihorario
+            }
+                //sentido horario
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 rotacion -= 4f; // Incrementa la rotación en sentido horario
             }
-
-            // Calcular los componentes horizontal y vertical de la velocidad
-            float xVelComponente = MathUtils.cosDeg(rotacion);
-            float yVelComponente = MathUtils.sinDeg(rotacion);
+            
+            else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                rotacion -= 4f; // Incrementa la rotación en sentido horario
+            }
 
             // Disminuir gradualmente la velocidad de desplazamiento
             float reduccionVelocidad = 0.95f; // Factor de reducción (ajustar según necesidad)
@@ -76,8 +108,8 @@ public class Nave4 {
             yVel *= reduccionVelocidad;
 
             // Actualizar la posición de la nave en función de los componentes de velocidad
-            x += xVel; //* xVelComponente;
-            y += yVel; //* yVelComponente;
+            x += xVel; //
+            y += yVel; //
 
             // Mantener la nave dentro de los bordes de la ventana
             if (x < 0)

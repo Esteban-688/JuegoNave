@@ -150,7 +150,7 @@ public class PantallaJuego implements Screen {
   			dispose();
   		  }
 	      batch.end();
-	      //nivel completado
+	      /*nivel completado
 	      if (balls1.size()==0) {
 			Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score, 
 					velXAsteroides+3, velYAsteroides+3, cantAsteroides+10);
@@ -158,7 +158,7 @@ public class PantallaJuego implements Screen {
 			game.setScreen(ss);
 			dispose();
 		  }
-	    	 
+	    	*/ 
 	}
     
     public boolean agregarBala(Bullet bb) {
