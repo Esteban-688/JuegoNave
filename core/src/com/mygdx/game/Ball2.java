@@ -15,10 +15,10 @@ public class Ball2 {
     private Sprite spr;
     private int heart = 10;
 
-    public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx) {
+    public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx, int bordeX, int bordeY) {
     	spr = new Sprite(tx);
     	this.x = x; 
- 	
+    	/*
         //validar que borde de esfera no quede fuera
     	if (x-size < 0) this.x = x+size;
     	if (x+size > Gdx.graphics.getWidth())this.x = x-size;
@@ -29,6 +29,8 @@ public class Ball2 {
     	if (y+size > Gdx.graphics.getHeight())this.y = y-size;
     	
         spr.setPosition(x, y);
+        */
+    	bordeBall(x,y,size, bordeX,bordeY);
         this.setXSpeed(xSpeed);
         this.setySpeed(ySpeed);
     }
@@ -99,7 +101,19 @@ public class Ball2 {
 	        b2.setHeart();
 	    }
      }
-     
+     private void bordeBall(int x, int y, int size, int xBorde, int yBorde) {
+    	//validar que borde de esfera no quede fuera
+     	if (x-size < 0) this.x = x+size;
+     	if (x+size > xBorde)this.x = x-size;
+          
+         this.y = y;
+         //validar que borde de esfera no quede fuera
+     	if (y-size < 0) this.y = y+size;
+     	if (y+size > yBorde)this.y = y-size;
+     	
+         spr.setPosition(x, y);
+    	 
+     }
 	public int getXSpeed() {
 		return xSpeed;
 	}

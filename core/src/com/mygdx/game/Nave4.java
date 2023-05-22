@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vidas = 3;
+    private int vidas = 13;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -23,7 +23,7 @@ public class Nave4 {
     private boolean herido = false;
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
-    private float rotacion = 0;
+    private float rotacion = -90;
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
     	sonidoHerido = soundChoque;
@@ -103,7 +103,7 @@ public class Nave4 {
             }
 
             // Disminuir gradualmente la velocidad de desplazamiento
-            float reduccionVelocidad = 0.95f; // Factor de reducción (ajustar según necesidad)
+            float reduccionVelocidad = 0.95f; // Factor de reducción
             xVel *= reduccionVelocidad;
             yVel *= reduccionVelocidad;
 
@@ -111,6 +111,7 @@ public class Nave4 {
             x += xVel; //
             y += yVel; //
 
+         /*
             // Mantener la nave dentro de los bordes de la ventana
             if (x < 0)
                 x = 0;
@@ -120,7 +121,7 @@ public class Nave4 {
                 y = 0;
             if (y + spr.getHeight() > Gdx.graphics.getHeight())
                 y = Gdx.graphics.getHeight() - spr.getHeight();
-
+         */
             spr.setPosition(x, y);
             spr.setRotation(rotacion); // Establecer la rotación de la nave
             spr.draw(batch);
@@ -158,24 +159,8 @@ public class Nave4 {
             soundBala.play();
         }
 
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
     
-
     /*
     public void draw(SpriteBatch batch, PantallaJuego juego){
         float x =  spr.getX();
@@ -235,6 +220,7 @@ public class Nave4 {
        
     }
       */
+    
     public boolean checkCollision(Ball2 b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
         	// rebote
@@ -270,10 +256,27 @@ public class Nave4 {
     public boolean estaHerido() {
  	   return herido;
     }
-    
+    public void bordeNave(int xBorde, int yBorde) {
+    	float x = spr.getX();
+        float y = spr.getY();
+    	 // Mantener la nave dentro de los bordes del mapa
+        if (x < -75)
+            x = -75;
+        if (x + spr.getWidth() > (xBorde+80))
+            x = (xBorde+80) - spr.getWidth();
+        
+        if (y < 115)
+            y = 115;
+        if (y + spr.getHeight() > (yBorde-105))
+            y = (yBorde-105) - spr.getHeight();
+        spr.setPosition(x, y);
+    	
+    }
     public int getVidas() {return vidas;}
-    //public boolean isDestruida() {return destruida;}
+    public boolean isDestruida() {return destruida;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
 	public void setVidas(int vidas2) {vidas = vidas2;}
+	public int getNaveWidth() {return (int) spr.getWidth();}
+	public int getNaveHeight() {return (int) spr.getHeight();}
 }

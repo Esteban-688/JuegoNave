@@ -22,7 +22,8 @@ public class PantallaMenu implements Screen {
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
-
+		
+		 
 		camera.update();
 		game.getBatch().setProjectionMatrix(camera.combined);
 

@@ -25,6 +25,8 @@ public class PantallaJuego implements Screen {
 	private int velXAsteroides; 
 	private int velYAsteroides; 
 	private int cantAsteroides;
+	private int ancho = 2000;
+	private int alto = 1200;
 	
 	private Nave4 nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
@@ -54,7 +56,7 @@ public class PantallaJuego implements Screen {
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
-	    nave = new Nave4(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
+	    nave = new Nave4((ancho-(ancho/2)), (alto-(alto/2)),new Texture(Gdx.files.internal("MainShip3.png")),
 	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
 	    				new Texture(Gdx.files.internal("Rocket2.png")), 
 	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
@@ -65,12 +67,54 @@ public class PantallaJuego implements Screen {
 	        Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
 	  	            50+r.nextInt((int)Gdx.graphics.getHeight()-50),
 	  	            20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4), 
-	  	            new Texture(Gdx.files.internal("aGreyMedium4.png")));	   
+	  	            new Texture(Gdx.files.internal("aGreyMedium4.png")),
+	  	            ancho,alto);	   
 	  	    balls1.add(bb);
 	  	    balls2.add(bb);
+	  	    
 	  	}
+	    //posicionar inicial
+	    //camera.position.x = nave.getX();
+		//camera.position.y = nave.getY();
+		//camera.update();
+	    nave.bordeNave(ancho, alto);
+	   
 	}
-    
+	
+	public void dibujaEncabezado() {
+		CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
+		 int xVida, yVida,xScore,yScore,xHigh,yHigh; 
+		game.getFont().getData().setScale(2f);
+		
+		// x
+		xVida = ((int)camera.position.x-370);
+		xScore = ((int)camera.position.x+240);
+		xHigh = (int)camera.position.x;
+			
+		//Y
+
+		yVida = ((int)camera.position.y)-280;
+		yScore = ((int)camera.position.y)-280;
+		yHigh =	((int)camera.position.y)-280;	
+		
+		
+		//colocar en pantalla vidas y ronda
+		game.getFont().draw(batch, str,xVida,yVida);		
+		game.getFont().draw(batch, "Score:"+this.score, xScore,yScore);
+		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), xHigh,yHigh);
+		/*
+		if(nave.getX() > ancho-320 || nave.getY() > alto-400) {
+			game.getFont().draw(batch, str, (nave.getX()-370)-(ancho-nave.getX()), (nave.getY()-280)-(alto-nave.getY()));
+			game.getFont().draw(batch, "Score:"+this.score, (nave.getX()+240)-(ancho-nave.getX()), (nave.getY()-280)-(alto-nave.getY()));
+			game.getFont().draw(batch, "HighScore:"+game.getHighScore(), nave.getX()-(ancho-nave.getX()), (nave.getY()-280)-(alto-nave.getY()));
+		}else {
+			game.getFont().draw(batch, str, nave.getX()-370, nave.getY()-280);
+			game.getFont().draw(batch, "Score:"+this.score, nave.getX()+240, nave.getY()-280);
+			game.getFont().draw(batch, "HighScore:"+game.getHighScore(), nave.getX(), nave.getY()-280);
+		}
+		*/
+	}
+    /*
 	public void dibujaEncabezado() {
 		CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
 		game.getFont().getData().setScale(2f);		
@@ -78,11 +122,40 @@ public class PantallaJuego implements Screen {
 		game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
 		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
 	}
+	*/
+	private void actualizarCamara() {
+		
+		//valida derecha y izquierda
+		  if (nave.getX() > ancho-320 || nave.getX() < 320) {
+			 //no actualiza la camara
+		  }else {
+			  camera.position.x = nave.getX();
+		  }
+		  if(nave.getY() > alto-400 || nave.getY() < 400){
+			  //no actualiza
+		  }
+		  else {
+			  camera.position.y = nave.getY();
+		  }
+			camera.update();
+			batch.setProjectionMatrix(camera.combined);
+	}
+	
 	@Override
 	public void render(float delta) {
 		  Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-          batch.begin();
+		  
+		//actualizar movimiento de camara
+		  actualizarCamara();
+		  
+			
+			//valida que la nave no salga del limite del mapa
+			nave.bordeNave(ancho, alto);
+			
+			batch.begin();
+          
 		  dibujaEncabezado();
+		  
 	      if (!nave.estaHerido()) {
 		      // colisiones entre balas y asteroides y su destruccion  
 	    	  for (int i = 0; i < balas.size(); i++) {
@@ -159,6 +232,8 @@ public class PantallaJuego implements Screen {
 			dispose();
 		  }
 	    	*/ 
+	      
+	    
 	}
     
     public boolean agregarBala(Bullet bb) {
