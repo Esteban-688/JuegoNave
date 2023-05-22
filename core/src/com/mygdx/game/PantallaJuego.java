@@ -27,12 +27,13 @@ public class PantallaJuego implements Screen {
 	private int cantAsteroides;
 	private int ancho = 2000;
 	private int alto = 1200;
-	
+	private int anchoCamara = 800;
+	private int altoCamara = 640;
 	private Nave4 nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
-
+	
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
@@ -45,14 +46,18 @@ public class PantallaJuego implements Screen {
 		
 		batch = game.getBatch();
 		camera = new OrthographicCamera();	
-		camera.setToOrtho(false, 800, 640);
+		
+		camera.setToOrtho(false, anchoCamara, altoCamara);
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		explosionSound.setVolume(1,0.5f);
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
+		
+		//gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
+		
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("musicaFondo.mp3")); 
 		
 		gameMusic.setLooping(true);
-		gameMusic.setVolume(0.5f);
+		gameMusic.setVolume(10f);
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
@@ -102,17 +107,7 @@ public class PantallaJuego implements Screen {
 		game.getFont().draw(batch, str,xVida,yVida);		
 		game.getFont().draw(batch, "Score:"+this.score, xScore,yScore);
 		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), xHigh,yHigh);
-		/*
-		if(nave.getX() > ancho-320 || nave.getY() > alto-400) {
-			game.getFont().draw(batch, str, (nave.getX()-370)-(ancho-nave.getX()), (nave.getY()-280)-(alto-nave.getY()));
-			game.getFont().draw(batch, "Score:"+this.score, (nave.getX()+240)-(ancho-nave.getX()), (nave.getY()-280)-(alto-nave.getY()));
-			game.getFont().draw(batch, "HighScore:"+game.getHighScore(), nave.getX()-(ancho-nave.getX()), (nave.getY()-280)-(alto-nave.getY()));
-		}else {
-			game.getFont().draw(batch, str, nave.getX()-370, nave.getY()-280);
-			game.getFont().draw(batch, "Score:"+this.score, nave.getX()+240, nave.getY()-280);
-			game.getFont().draw(batch, "HighScore:"+game.getHighScore(), nave.getX(), nave.getY()-280);
-		}
-		*/
+		
 	}
     /*
 	public void dibujaEncabezado() {
@@ -160,7 +155,7 @@ public class PantallaJuego implements Screen {
 		      // colisiones entre balas y asteroides y su destruccion  
 	    	  for (int i = 0; i < balas.size(); i++) {
 		            Bullet b = balas.get(i);
-		            b.update();
+		            b.update((int)camera.position.x,(int)camera.position.y, anchoCamara, altoCamara);
 		            for (int j = 0; j < balls1.size(); j++) {    
 		              if (b.checkCollision(balls1.get(j))) {          
 		            	 explosionSound.play();
@@ -179,7 +174,7 @@ public class PantallaJuego implements Screen {
 		      }
 		      //actualizar movimiento de asteroides dentro del area
 		      for (Ball2 ball : balls1) {
-		          ball.update();
+		          ball.update(ancho, alto);
 		      }
 		      //colisiones entre asteroides y sus rebotes  
 		      for (int i = 0; i < balls1.size();i++) {

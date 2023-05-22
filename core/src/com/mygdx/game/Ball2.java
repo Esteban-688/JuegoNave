@@ -41,17 +41,28 @@ public class Ball2 {
      *  la pantalla en caso de que esté a punto de salir por alguno de los bordes.
      * 
      */
-    public void update() {
+    /*public void update() {
         x += getXSpeed();
         y += getySpeed();
-
+        
         if (x+getXSpeed() < 0 || x+getXSpeed()+spr.getWidth() > Gdx.graphics.getWidth())
         	setXSpeed(getXSpeed() * -1);
         if (y+getySpeed() < 0 || y+getySpeed()+spr.getHeight() > Gdx.graphics.getHeight())
         	setySpeed(getySpeed() * -1);
         spr.setPosition(x, y);
+    }*/
+    public void update(int anchoMapa, int altoMapa) {
+        x += getXSpeed();
+        y += getySpeed();
+        
+        if (x < 0 || x + spr.getWidth() > anchoMapa)
+            setXSpeed(getXSpeed() * -1);
+        if (y < 0 || y + spr.getHeight() > altoMapa)
+            setySpeed(getySpeed() * -1);
+        
+        spr.setPosition(x, y);
     }
-    
+
     public Rectangle getArea() {
     	return spr.getBoundingRectangle();
     }

@@ -19,13 +19,17 @@ public class Bullet {
         destroyed = false;
     }
 
-    public void update() {
+    public void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara) {
         spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
-        if (spr.getX() < 0 || spr.getX() + spr.getWidth() > Gdx.graphics.getWidth() ||
-            spr.getY() < 0 || spr.getY() + spr.getHeight() > Gdx.graphics.getHeight()) {
+
+        if (spr.getX() < ((anchoCamara / 2) - posicionXCamara) || // izquierda
+            spr.getX() > ((anchoCamara / 2) + posicionXCamara) || // derecha
+            spr.getY() > ((altoCamara / 2) + posicionYCamara) ||  // arriba
+            spr.getY() < ((altoCamara / 2) - posicionYCamara)) {   // abajo
             destroyed = true;
         }
     }
+
 
     public void draw(SpriteBatch batch) {
         spr.draw(batch);
