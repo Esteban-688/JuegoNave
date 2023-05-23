@@ -259,6 +259,8 @@ public class Nave4 {
     public void bordeNave(int xBorde, int yBorde) {
     	float x = spr.getX();
         float y = spr.getY();
+       // System.out.println("Antes de las restricciones: x = " + x + ", y = " + y);
+        
     	 // Mantener la nave dentro de los bordes del mapa
         if (x < -75)
             x = -75;
@@ -269,6 +271,8 @@ public class Nave4 {
             y = 115;
         if (y + spr.getHeight() > (yBorde-105))
             y = (yBorde-105) - spr.getHeight();
+       // System.out.println("Después de las restricciones: x = " + x + ", y = " + y);
+        
         spr.setPosition(x, y);
     	
     }

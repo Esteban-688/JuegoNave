@@ -25,10 +25,12 @@ public class PantallaJuego implements Screen {
 	private int velXAsteroides; 
 	private int velYAsteroides; 
 	private int cantAsteroides;
-	private int ancho = 2000;
+	private int ancho = 20000;
 	private int alto = 1200;
 	private int anchoCamara = 800;
 	private int altoCamara = 640;
+	private int porcentaje;
+	
 	private Nave4 nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
@@ -37,6 +39,7 @@ public class PantallaJuego implements Screen {
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+		
 		this.game = game;
 		this.ronda = ronda;
 		this.score = score;
@@ -61,7 +64,7 @@ public class PantallaJuego implements Screen {
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
-	    nave = new Nave4((ancho-(ancho/2)), (alto-(alto/2)),new Texture(Gdx.files.internal("MainShip3.png")),
+	    nave = new Nave4(((500+ancho)-ancho), (alto-(alto/2)),new Texture(Gdx.files.internal("MainShip3.png")),
 	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
 	    				new Texture(Gdx.files.internal("Rocket2.png")), 
 	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
@@ -86,28 +89,45 @@ public class PantallaJuego implements Screen {
 	   
 	}
 	
+	//accesorios
 	public void dibujaEncabezado() {
 		CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
-		 int xVida, yVida,xScore,yScore,xHigh,yHigh; 
+		 int xVida, yVida,xScore,yScore,xHigh,yHigh,xPorcentaje, yPorcentaje; 
 		game.getFont().getData().setScale(2f);
 		
 		// x
 		xVida = ((int)camera.position.x-370);
 		xScore = ((int)camera.position.x+240);
 		xHigh = (int)camera.position.x;
-			
+		xPorcentaje = ((int)camera.position.x)-40;	
 		//Y
 
 		yVida = ((int)camera.position.y)-280;
 		yScore = ((int)camera.position.y)-280;
 		yHigh =	((int)camera.position.y)-280;	
-		
+		yPorcentaje =((int)camera.position.y)+290;
 		
 		//colocar en pantalla vidas y ronda
 		game.getFont().draw(batch, str,xVida,yVida);		
 		game.getFont().draw(batch, "Score:"+this.score, xScore,yScore);
 		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), xHigh,yHigh);
+		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
+		// Barra de progreso
 		
+		int longitudBarra = 62;
+		int longitudRelleno = (int) (porcentaje / 100f * longitudBarra);
+		
+	    String barraProgreso = "";
+	    for (int i = 0; i < longitudBarra; i++) {
+	        if (i < longitudRelleno) {
+	            barraProgreso += "|"; // Asterisco para el relleno
+	        } else {
+	            barraProgreso += ""; // Guión para el espacio vacío
+	        }
+	    }
+
+	    // Dibujar la barra de progreso
+	    game.getFont().draw(batch, "[" + barraProgreso , xPorcentaje-150, yPorcentaje);
 	}
     /*
 	public void dibujaEncabezado() {
@@ -118,6 +138,8 @@ public class PantallaJuego implements Screen {
 		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
 	}
 	*/
+	
+	//camara moviendose
 	private void actualizarCamara() {
 		
 		//valida derecha y izquierda
@@ -133,7 +155,9 @@ public class PantallaJuego implements Screen {
 			  camera.position.y = nave.getY();
 		  }
 			camera.update();
+			porcentaje = (int) ((nave.getX() / (float) ancho) * 100);
 			batch.setProjectionMatrix(camera.combined);
+			System.out.println(": x = " + nave.getX() + ", y = " + nave.getY());
 	}
 	
 	@Override

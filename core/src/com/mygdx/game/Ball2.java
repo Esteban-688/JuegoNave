@@ -33,6 +33,7 @@ public class Ball2 {
     	bordeBall(x,y,size, bordeX,bordeY);
         this.setXSpeed(xSpeed);
         this.setySpeed(ySpeed);
+        
     }
     /**
      *  se encarga de actualizar la posición del objeto
@@ -55,9 +56,9 @@ public class Ball2 {
         x += getXSpeed();
         y += getySpeed();
         
-        if (x < 0 || x + spr.getWidth() > anchoMapa)
+        if (x < -100 || x + spr.getWidth() > (anchoMapa+100))
             setXSpeed(getXSpeed() * -1);
-        if (y < 0 || y + spr.getHeight() > altoMapa)
+        if (y < -100 || y + spr.getHeight() > (altoMapa-100))
             setySpeed(getySpeed() * -1);
         
         spr.setPosition(x, y);
