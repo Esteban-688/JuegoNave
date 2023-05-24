@@ -64,10 +64,16 @@ public class PantallaJuego implements Screen {
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
-	    nave = new Nave4(((500+ancho)-ancho), (alto-(alto/2)),new Texture(Gdx.files.internal("MainShip3.png")),
+	    nave = new Nave4(((500+ancho)-ancho),
+	    				(alto-(alto/2)),
+	    				//new Texture(Gdx.files.internal("MainShip3.png")),
+	    				new Texture(Gdx.files.internal("naveMala1.png")),
 	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
-	    				new Texture(Gdx.files.internal("Rocket2.png")), 
-	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
+	    				new Texture(Gdx.files.internal("Rocket2.png")), //bala normal
+	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),//sonido bala normal
+	    				new Texture(Gdx.files.internal("anilloEspecial.png")),//bala especial
+	    				Gdx.audio.newSound(Gdx.files.internal("soundBalaespecial.mp3"))//sonido bala especial
+	    				); 
         nave.setVidas(vidas);
         //crear asteroides
         Random r = new Random();
@@ -179,7 +185,7 @@ public class PantallaJuego implements Screen {
 		      // colisiones entre balas y asteroides y su destruccion  
 	    	  for (int i = 0; i < balas.size(); i++) {
 		            Bullet b = balas.get(i);
-		            b.update((int)camera.position.x,(int)camera.position.y, anchoCamara, altoCamara);
+		            b.update((int)camera.position.x,(int)camera.position.y, anchoCamara, altoCamara, nave.getX()+25, nave.getY()+15);
 		            for (int j = 0; j < balls1.size(); j++) {    
 		              if (b.checkCollision(balls1.get(j))) {          
 		            	 explosionSound.play();
