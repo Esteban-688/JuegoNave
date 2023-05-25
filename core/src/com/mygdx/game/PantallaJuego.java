@@ -31,6 +31,8 @@ public class PantallaJuego implements Screen {
 	private int altoCamara = 640;
 	private int porcentaje = 0;
 	private float tiempoTotal = 0.0f;
+	private boolean x = false;
+	private int barrera = 0;
 	private Nave4 nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
@@ -91,7 +93,7 @@ public class PantallaJuego implements Screen {
 	    //camera.position.x = nave.getX();
 		//camera.position.y = nave.getY();
 		//camera.update();
-	    nave.bordeNave(ancho, alto);
+	    //nave.bordeNave(0,ancho, alto);
 	   
 	}
 	
@@ -175,8 +177,25 @@ public class PantallaJuego implements Screen {
 		  
 			
 			//valida que la nave no salga del limite del mapa
-			nave.bordeNave(ancho, alto);
-			
+		  if(porcentaje <= 50) {
+			nave.bordeNave(0, ancho, alto);
+			System.out.println("xd");
+		  }
+		 
+		  //medio nivel
+	      if(porcentaje > 50) {
+	    	  
+	    	  
+	    	  if(x == false) {
+	    		  x = true;
+	    		  barrera = nave.getX();
+	    		  System.out.println("0000");
+	    		  
+	    	  }
+	    	  nave.bordeNave(barrera + 100 , ancho, alto);
+	    	  System.out.println(barrera);
+	    	  
+	      }
 			batch.begin();
           
 		  dibujaEncabezado();
@@ -249,17 +268,12 @@ public class PantallaJuego implements Screen {
   			dispose();
   		  }
 	      batch.end();
-	      /*nivel completado
+	      
+	      
+	      
+	      //nivel completado
 	       
-	      if (balls1.size()==0) {
-			Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score, 
-					velXAsteroides+3, velYAsteroides+3, cantAsteroides+10);
-			ss.resize(1200, 800);
-			game.setScreen(ss);
-			dispose();
-		  }
-	    	*/ 
-	      if(porcentaje >= 50) {
+	      if(porcentaje >= 100) {
 	    	  Screen ss = new PantallaMenu(game);
 	    	  ss.resize(1200, 800);
 	    	  game.setScreen(ss);

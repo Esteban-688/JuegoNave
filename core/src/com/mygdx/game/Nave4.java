@@ -284,22 +284,24 @@ public class Nave4 {
     public boolean estaHerido() {
  	   return herido;
     }
-    public void bordeNave(int xBorde, int yBorde) {
+    public void bordeNave(int xBordeIzq, int xBordeDer, int yBorde) {
+    	
     	float x = spr.getX();
         float y = spr.getY();
-       // System.out.println("Antes de las restricciones: x = " + x + ", y = " + y);
+       
         
     	 // Mantener la nave dentro de los bordes del mapa
-        if (x < -75)
-            x = -75;
-        if (x + spr.getWidth() > (xBorde+80))
-            x = (xBorde+80) - spr.getWidth();
+        if (x < xBordeIzq - 75)
+            x = xBordeIzq - 75;
+        
+        if (x + spr.getWidth() > (xBordeDer+80))
+            x = (xBordeDer+80) - spr.getWidth();
         
         if (y < 115)
             y = 115;
         if (y + spr.getHeight() > (yBorde-105))
             y = (yBorde-105) - spr.getHeight();
-       // System.out.println("Después de las restricciones: x = " + x + ", y = " + y);
+       
         
         spr.setPosition(x, y);
         
