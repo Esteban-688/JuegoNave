@@ -31,6 +31,7 @@ public class BalaNormal extends Bullet {
     }
 	
 	public void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara, int x, int y) {
+		
 		spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
 
         if (spr.getX() < ((anchoCamara / 2) - posicionXCamara) || // izquierda

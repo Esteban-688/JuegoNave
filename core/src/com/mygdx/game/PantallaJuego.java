@@ -29,8 +29,8 @@ public class PantallaJuego implements Screen {
 	private int alto = 1200;
 	private int anchoCamara = 800;
 	private int altoCamara = 640;
-	private int porcentaje;
-	
+	private int porcentaje = 0;
+	private float tiempoTotal = 0.0f;
 	private Nave4 nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
@@ -126,9 +126,9 @@ public class PantallaJuego implements Screen {
 	    String barraProgreso = "";
 	    for (int i = 0; i < longitudBarra; i++) {
 	        if (i < longitudRelleno) {
-	            barraProgreso += "|"; // Asterisco para el relleno
+	            barraProgreso += "|"; 
 	        } else {
-	            barraProgreso += ""; // Guión para el espacio vacío
+	            barraProgreso += ""; 
 	        }
 	    }
 
@@ -163,7 +163,7 @@ public class PantallaJuego implements Screen {
 			camera.update();
 			porcentaje = (int) ((nave.getX() / (float) ancho) * 100);
 			batch.setProjectionMatrix(camera.combined);
-			System.out.println(": x = " + nave.getX() + ", y = " + nave.getY());
+			//System.out.println(": x = " + nave.getX() + ", y = " + nave.getY());
 	}
 	
 	@Override
@@ -227,17 +227,18 @@ public class PantallaJuego implements Screen {
 	      }
 	      nave.draw(batch, this);
 	      //dibujar asteroides y manejar colision con nave
-	      for (int i = 0; i < balls1.size(); i++) {
-	    	    Ball2 b=balls1.get(i);
-	    	    b.draw(batch);
-		          //perdió vida o game over
-	              if (nave.checkCollision(b)) {
-		            //asteroide se destruye con el choque             
-	            	 balls1.remove(i);
-	            	 balls2.remove(i);
-	            	 i--;
-              }   	  
-  	        }
+	      
+		      for (int i = 0; i < balls1.size(); i++) {
+		    	    Ball2 b=balls1.get(i);
+		    	    b.draw(batch);
+			          //perdió vida o game over
+		              if (nave.checkCollision(b)) {
+			            //asteroide se destruye con el choque             
+		            	 balls1.remove(i);
+		            	 balls2.remove(i);
+		            	 i--;
+	              }   	  
+	  	        }
 	      
 	      if (nave.estaDestruido()) {
   			if (score > game.getHighScore())
@@ -249,6 +250,7 @@ public class PantallaJuego implements Screen {
   		  }
 	      batch.end();
 	      /*nivel completado
+	       
 	      if (balls1.size()==0) {
 			Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score, 
 					velXAsteroides+3, velYAsteroides+3, cantAsteroides+10);
@@ -257,6 +259,12 @@ public class PantallaJuego implements Screen {
 			dispose();
 		  }
 	    	*/ 
+	      if(porcentaje >= 50) {
+	    	  Screen ss = new PantallaMenu(game);
+	    	  ss.resize(1200, 800);
+	    	  game.setScreen(ss);
+	    	  dispose();
+	      }
 	      
 	    
 	}
