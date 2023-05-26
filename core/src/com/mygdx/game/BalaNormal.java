@@ -9,13 +9,17 @@ public class BalaNormal extends Bullet {
 	private float xSpeed;
     private float ySpeed;
     private Sprite spr;
+    private float tiempoVida = 5;
+    private float tiempoTranscurrido;
+    private boolean mia;//verifica si la bala es mia //true es mi bala, si es falso es enemiga
     
-	public BalaNormal(float x, float y, float xSpeed, float ySpeed, Texture tx) {
+	public BalaNormal(float x, float y, float xSpeed, float ySpeed, Texture tx, boolean balamia) {
 		//super(x,y,tx);
 		spr = new Sprite(tx);
         spr.setPosition(x, y);
 		this.xSpeed = xSpeed;
 		this.ySpeed = ySpeed;
+		mia=balamia;
 	}
 	
 	public void draw(SpriteBatch batch) {
@@ -29,7 +33,19 @@ public class BalaNormal extends Bullet {
         }
         return false;
     }
-	
+	public void up(float deltaTime) {
+        if (!destroyed) {
+            float deltaPositionX = xSpeed * deltaTime;
+            float deltaPositionY = ySpeed * deltaTime;
+            
+            spr.setPosition(spr.getX() + deltaPositionX, spr.getY() + deltaPositionY);
+    
+            tiempoTranscurrido += deltaTime;
+            if (tiempoTranscurrido >= tiempoVida) {
+                destroyed = true;
+            }
+        }
+    }
 	public void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara, int x, int y) {
 		
 		spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
@@ -49,4 +65,8 @@ public class BalaNormal extends Bullet {
 	public Sprite getSprite() {
         return spr;
     }
+	
+	public boolean getMia() {
+		return mia;
+	}
 }

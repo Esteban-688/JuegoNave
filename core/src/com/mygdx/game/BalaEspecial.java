@@ -59,5 +59,8 @@ public class BalaEspecial extends Bullet {
     public Circle getCircle() {
         return circle;
     }
+    public Sprite getSprite() {
+        return sprite;
+    }
 
 }

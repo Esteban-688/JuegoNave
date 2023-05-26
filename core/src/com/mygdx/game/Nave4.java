@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vidas = 13;
+    private int vidas = 3;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -171,7 +171,8 @@ public class Nave4 {
                 balaInicialY,
                 balaDireccionX * balaVelocidad,
                 balaDireccionY * balaVelocidad,
-                txBalaNormal
+                txBalaNormal,
+                true
             );
             
             bala.setVelocity(balaDireccionX * balaVelocidad, balaDireccionY * balaVelocidad);
@@ -188,66 +189,7 @@ public class Nave4 {
 		    
 		
     	
-         /*
-     // Disparo normal
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-        	
-        	disparoEspecial = false;
-        	
-            float balaVelocidad = 40; // Velocidad de la bala
-            float balaDireccionX = -MathUtils.sinDeg(rotacion); // Componente X de la dirección de la bala (invertido)
-            float balaDireccionY = MathUtils.cosDeg(rotacion); // Componente Y de la dirección de la bala
-
-            // Calcular la posición inicial de la bala en el centro de la nave
-            float balaInicialX = spr.getX() + spr.getWidth() / 2 - 5;
-            float balaInicialY = spr.getY() + spr.getHeight() / 2 - 5;
-
-            BalaNormal bala = new BalaNormal(
-                balaInicialX,
-                balaInicialY,
-                balaDireccionX * balaVelocidad,
-                balaDireccionY * balaVelocidad,
-                txBalaNormal
-            );
-            
-            bala.setVelocity(balaDireccionX * balaVelocidad, balaDireccionY * balaVelocidad);
-
-            // Girar la textura de la bala según la rotación de la nave
-            bala.getSprite().setRotation(rotacion);
-
-            juego.agregarBala(bala);
-            soundBala.play();
-        }
         
-        
-       // disparo especial
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-        	tiempoPulsacion += Gdx.graphics.getDeltaTime();
-
-        	if (!disparoEspecial && tiempoPulsacion >= duracionDisparo) {
-	            disparoEspecial = true;
-	            
-	            // Calcular la posición inicial de la bala en el centro de la nave
-	            float balaInicialX = spr.getX()+25;//  + spr.getWidth() / 2 - 5;
-	            float balaInicialY = spr.getY()+15;// + spr.getHeight() / 2- 5;
-	        	    
-	            BalaEspecial balaEspecial = new BalaEspecial(
-	                balaInicialX,
-	                balaInicialY,
-	                txBalaEspecial
-	            );
-	
-	            juego.agregarBala(balaEspecial);
-	            soundBalaEspecial.play();
-            
-        	} else {
-        		tiempoPulsacion = 0.0f;
-        	}
-        }
-       
-
-    }
-    */
     
     public boolean checkCollision(Ball2 b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
@@ -277,6 +219,28 @@ public class Nave4 {
         }
         return false;
     }
+    
+    public boolean checkCollision(Bullet balaa) {
+    	
+        if (balaa instanceof BalaNormal) {
+        	
+            BalaNormal bala = (BalaNormal) balaa;
+            if(!bala.getMia()) {
+	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+	                vidas--;
+	                herido = true;
+	                tiempoHerido = tiempoHeridoMax;
+	                sonidoHerido.play();
+	                if (vidas <= 0) {
+	                    destruida = true;
+	                }
+	                return true;
+	            }
+            }
+        }
+        return false;
+    }
+
     
     public boolean estaDestruido() {
        return !herido && destruida;
