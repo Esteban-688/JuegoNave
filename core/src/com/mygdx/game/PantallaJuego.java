@@ -32,10 +32,12 @@ public class PantallaJuego implements Screen {
 	private int porcentaje = 0;
 	private float tiempoTotal = 0.0f;
 	private float tiempoTotal1 = 0.0f;
-	private boolean x = false;
+	private boolean barreraBoolean = false;
 	private int barrera = 0;
 	private Nave4 nave;
-	private EnemyComun enemigoComun, enemigoComun1, enemigoComun2;
+	private int contadorDeEnemigos = 0;
+	private EnemyComun enemigoComun;
+	//private EnemyComun enemigoComun, enemigoComun1, enemigoComun2;
 	
 	private float velocidadEnemigo = 5;
 	
@@ -86,40 +88,7 @@ public class PantallaJuego implements Screen {
 	    				Gdx.audio.newSound(Gdx.files.internal("soundBalaespecial.mp3"))//sonido bala especial
 	    				); 
         nave.setVida(vida);
-        /*
-        //cargar enemigo comun
-        enemigoComun = new EnemyComun (ancho/2,//x
-        				alto/2,//y
-        				300,
-        				velocidadEnemigo,
-        				new Texture(Gdx.files.internal("MainShip3.png")),//textura
-        				nave,//nave
-        				new Texture(Gdx.files.internal("Rocket2.png")),//bala
-        				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),//sonido
-        				alto// amplitud
-        				);
         
-       
-        enemigoComun1 = new EnemyComun (ancho/2,//x
-				alto/2,//y
-				new Texture(Gdx.files.internal("MainShip3.png")),//textura
-				nave,//nave
-				new Texture(Gdx.files.internal("Rocket2.png")),//bala
-				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),//sonido
-				100.0f// amplitud
-				);
-       enemigoComun2 = new EnemyComun (ancho/2,//x
-				alto/2,//y
-				new Texture(Gdx.files.internal("MainShip3.png")),//textura
-				nave,//nave
-				new Texture(Gdx.files.internal("Rocket2.png")),//bala
-				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),//sonido
-				50.0f// amplitud
-				);
-        */
-       // enemigos.add(enemigoComun);
-        //enemigos.add(enemigoComun1);
-       // enemigos.add(enemigoComun2);
         				
         //crear asteroides
         Random r = new Random();
@@ -214,11 +183,15 @@ public class PantallaJuego implements Screen {
 			  //medio nivel
 		      if(porcentaje > 94) {
 		    	  
-		    	  if(x == false) {
-		    		  x = true;
+		    	  if(barreraBoolean == false) {
+		    		  barreraBoolean = true;
 		    		  barrera = nave.getX();
 		    	  }
-		    	  nave.bordeNave(barrera + 100 , ancho, alto);  
+		    	  nave.bordeNave(barrera + 100 , ancho, alto); 
+		    	  if(contadorDeEnemigos > 14) {
+		    		  //createBossFinal();
+		    		  //boss.atacar();
+		    	  }
 		      }
 	}
 
@@ -319,9 +292,9 @@ public class PantallaJuego implements Screen {
 	private void createEnemigo() {
 		tiempoTotal1 += Gdx.graphics.getDeltaTime();
 		
-		if(tiempoTotal1 > 1 && enemigos.size()< 10) {
+		if(tiempoTotal1 > 3 && enemigos.size()< 10 && contadorDeEnemigos <= 15) {
 			tiempoTotal1= 0.0f;
-			enemigoComun1 = new EnemyComun (ancho/2,//x
+			enemigoComun = new EnemyComun (ancho/2,//x
 					alto/2,//y
 					300,
 					velocidadEnemigo,
@@ -332,7 +305,8 @@ public class PantallaJuego implements Screen {
 					alto// amplitud
 					);
 			//añadir
-			enemigos.add(enemigoComun1);
+			enemigos.add(enemigoComun);
+			contadorDeEnemigos ++;
 		}
     }
 	
@@ -380,7 +354,7 @@ public class PantallaJuego implements Screen {
 	      
 	      //nivel completado
 	       
-	      if(porcentaje >= 100) {
+	      if(porcentaje >= 100 && enemigos.size() == 0) {
 	    	  Screen ss = new PantallaMenu(game);
 	    	  ss.resize(1200, 800);
 	    	  game.setScreen(ss);

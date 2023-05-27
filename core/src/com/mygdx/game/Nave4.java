@@ -225,7 +225,7 @@ public class Nave4 {
             if(!bala.getMia()) {
 	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
 	                vida-=300;
-	                herido = true;
+	                //herido = true;
 	                tiempoHerido = tiempoHeridoMax;
 	                sonidoHerido.play();
 	                if (vida <= 0) {
