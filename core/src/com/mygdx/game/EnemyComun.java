@@ -19,15 +19,19 @@ public class EnemyComun implements Enemigo {
     private float rotacion = 90;
     private float tiempo = 0.0f;
     private boolean moviendoArriba = true;
-    private float velocidadMovimiento = 0.2f; 
-    private float deltaY ;//= 200.0f; 
-    private float tiempoMovimiento = 0.0f;
+    private float distancia;
+    private float ySpeed;
+    private float yEnemigo;
+    private int alto;
     
-    public EnemyComun(int x, int y, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala, float delta) {
+    public EnemyComun(int x, int y, int xDistancia, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala, int altoY) {
         spr = new Sprite(tx);
         spr.setPosition(x, y);
         nave = nave1;
-        deltaY=delta;
+        alto= altoY;
+        
+        distancia = xDistancia;
+        this.ySpeed = ySpeed;
         
         this.soundBala = soundBala;
         txBalaNormal = txBala;
@@ -77,7 +81,7 @@ public class EnemyComun implements Enemigo {
     }
 
     public void moverse() {
-    	tiempoMovimiento += Gdx.graphics.getDeltaTime();
+    	/*tiempoMovimiento += Gdx.graphics.getDeltaTime();
     	
     	 float naveY = nave.getY(); // Obtener la posición Y de la nave
 	     float newY = moviendoArriba ? naveY + deltaY : naveY - deltaY;
@@ -92,8 +96,31 @@ public class EnemyComun implements Enemigo {
 	            newY = naveY - deltaY;
 	            moviendoArriba = true;
 	        }
+    	}*/
+       // spr.setPosition(nave.getX() + 300, newY);
+    	//float balaDireccionX = -MathUtils.sinDeg(rotacion); 
+        //float balaDireccionY = MathUtils.cosDeg(rotacion); 
+    	
+    
+    	
+    	if(spr.getY() >= alto) {
+    		yEnemigo = spr.getY() - ySpeed;
+    		moviendoArriba = true;
+    		
     	}
-        spr.setPosition(nave.getX() + 300, newY);
+    	else if(spr.getY() <= 75) {
+    		yEnemigo = spr.getY() + ySpeed;
+    		moviendoArriba = false;
+    	}
+    	else if(moviendoArriba) {
+    		yEnemigo = spr.getY() - ySpeed;
+    	}
+    	else if(!moviendoArriba) {
+    		yEnemigo = spr.getY() + ySpeed;
+    	}
+    	
+    	spr.setPosition(nave.getX() + distancia, yEnemigo);
+    	
     }
 
     public boolean checkCollision(Ball2 ball) {

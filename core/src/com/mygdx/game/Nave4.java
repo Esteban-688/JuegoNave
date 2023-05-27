@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vidas = 3;
+    private int vida = 3000;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -186,10 +186,7 @@ public class Nave4 {
 		
 			
 		}
-		    
-		
-    	
-        
+		   
     
     public boolean checkCollision(Ball2 b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
@@ -209,11 +206,11 @@ public class Nave4 {
                spr.setX(spr.getX()+Math.signum(xVel));
             }   */
         	//actualizar vidas y herir
-            vidas--;
+            vida-=100;
             herido = true;
   		    tiempoHerido=tiempoHeridoMax;
   		    sonidoHerido.play();
-            if (vidas<=0) 
+            if (vida<=0) 
           	    destruida = true; 
             return true;
         }
@@ -227,11 +224,11 @@ public class Nave4 {
             BalaNormal bala = (BalaNormal) balaa;
             if(!bala.getMia()) {
 	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-	                vidas--;
+	                vida-=300;
 	                herido = true;
 	                tiempoHerido = tiempoHeridoMax;
 	                sonidoHerido.play();
-	                if (vidas <= 0) {
+	                if (vida <= 0) {
 	                    destruida = true;
 	                }
 	                return true;
@@ -271,10 +268,10 @@ public class Nave4 {
         
     	
     }
-    public int getVidas() {return vidas;}
+    public int getVidas() {return vida;}
     public boolean isDestruida() {return destruida;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
-	public void setVidas(int vidas2) {vidas = vidas2;}
+	public void setVida(int vidas2) {vida = vidas2;}
 	
 }
