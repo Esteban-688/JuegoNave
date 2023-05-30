@@ -33,10 +33,11 @@ public class PantallaJuego implements Screen {
 	private float tiempoTotal = 0.0f;
 	private float tiempoTotal1 = 0.0f;
 	private boolean barreraBoolean = false;
-	private int barrera = 0;
+	private int barreraX = 0, barreraY = 0;
 	private Nave4 nave;
 	private int contadorDeEnemigos = 0;
 	private EnemyComun enemigoComun;
+	private boolean bossActivado = false;
 	//private EnemyComun enemigoComun, enemigoComun1, enemigoComun2;
 	
 	private float velocidadEnemigo = 5;
@@ -73,7 +74,7 @@ public class PantallaJuego implements Screen {
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("musicaFondo.mp3")); 
 		
 		gameMusic.setLooping(true);
-		gameMusic.setVolume(10f);
+		//gameMusic.setVolume(10);
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
@@ -159,11 +160,19 @@ public class PantallaJuego implements Screen {
 		//valida derecha y izquierda
 		  if (nave.getX() > ancho-320 || nave.getX() < 320) {
 			 //no actualiza la camara
-		  }else {
+		  }else if(bossActivado){//eje x
+			  
+		  }
+			  else {
 			  camera.position.x = nave.getX();
 		  }
+	
+	
 		  if(nave.getY() > alto-400 || nave.getY() < 400){
 			  //no actualiza
+		  }
+		  else if(bossActivado){//eje Y
+			  
 		  }
 		  else {
 			  camera.position.y = nave.getY();
@@ -176,7 +185,7 @@ public class PantallaJuego implements Screen {
 	
 	private void porcentajeDeBarera() {
 		 if(porcentaje <= 94) {
-				nave.bordeNave(0, ancho, alto);
+				nave.bordeNave(0, ancho, alto, 0);
 				
 			  }
 			 
@@ -184,11 +193,20 @@ public class PantallaJuego implements Screen {
 		      if(porcentaje > 94) {
 		    	  
 		    	  if(barreraBoolean == false) {
+		    		  
 		    		  barreraBoolean = true;
-		    		  barrera = nave.getX();
+		    		  barreraX = nave.getX();
+		    		  barreraY = nave.getY();
 		    	  }
-		    	  nave.bordeNave(barrera + 100 , ancho, alto); 
-		    	  if(contadorDeEnemigos > 14) {
+		    	  if(contadorDeEnemigos <= 14) {
+		    		  
+		    	  nave.bordeNave(barreraX + 100 , barreraX + 500, alto, 0); 
+		    	  
+		    	  }else  if(contadorDeEnemigos > 14) {
+		    		  
+		    		  bossActivado = true;
+		    		  nave.bordeNave(barreraX -400  , ancho , barreraY + 320 , barreraY -320 );
+		    		  
 		    		  //createBossFinal();
 		    		  //boss.atacar();
 		    	  }

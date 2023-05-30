@@ -37,6 +37,7 @@ public class EnemyComun implements Enemigo {
         txBalaNormal = txBala;
         spr.setRotation(rotacion);
     }
+    
     public void draw(SpriteBatch batch) {
     	// Dibujar el sprite del enemigo
         spr.draw(batch);
@@ -74,6 +75,7 @@ public class EnemyComun implements Enemigo {
             
             juego.agregarBala(bala);
             soundBala.play();
+            soundBala.setVolume(1, 0.5f);
             bala.draw(batch);
         }
 

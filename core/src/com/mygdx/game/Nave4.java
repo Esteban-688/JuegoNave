@@ -245,7 +245,8 @@ public class Nave4 {
     public boolean estaHerido() {
  	   return herido;
     }
-    public void bordeNave(int xBordeIzq, int xBordeDer, int yBorde) {
+    
+    public void bordeNave(int xBordeIzq, int xBordeDer, int yBordeUp, int yBordeDown) {
     	
     	float x = spr.getX();
         float y = spr.getY();
@@ -258,10 +259,11 @@ public class Nave4 {
         if (x + spr.getWidth() > (xBordeDer+80))
             x = (xBordeDer+80) - spr.getWidth();
         
-        if (y < 115)
-            y = 115;
-        if (y + spr.getHeight() > (yBorde-105))
-            y = (yBorde-105) - spr.getHeight();
+        if (y < yBordeDown + 115)
+            y = yBordeDown + 115;
+        
+        if (y + spr.getHeight() > (yBordeUp-105))
+            y = (yBordeUp-105) - spr.getHeight();
        
         
         spr.setPosition(x, y);
