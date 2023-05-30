@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vida = 3000;
+    private int vida = 30001;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
@@ -237,7 +237,21 @@ public class Nave4 {
         }
         return false;
     }
-
+    public boolean checkCollision(BossFinal boss) {
+    	
+    	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+    		 vida -=500;
+             herido = true;
+             tiempoHerido = tiempoHeridoMax;
+             sonidoHerido.play();
+             if (vida <= 0) {
+                 destruida = true;
+             }
+             return true;
+    	 }
+    	
+    	return false;
+    }
     
     public boolean estaDestruido() {
        return !herido && destruida;
@@ -274,7 +288,7 @@ public class Nave4 {
     public boolean isDestruida() {return destruida;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
-	public void setVida(int vidas2) {vida = vidas2;}
+	public void dañoVida(int vida2) {vida = vida-vida2;}
 	public void setPosition(float x, float y) {spr.setPosition(x, y);}
 	
 }

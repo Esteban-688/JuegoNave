@@ -36,7 +36,9 @@ public class PantallaJuego implements Screen {
 	private int barreraX = 0, barreraY = 0;
 	private Nave4 nave;
 	private int contadorDeEnemigos = 0;
+	private int contadorDeKill = 0;
 	private EnemyComun enemigoComun;
+	private BossFinal boss;
 	private boolean bossActivado = false;
 	private boolean bossMuerto = false;
 	//private EnemyComun enemigoComun, enemigoComun1, enemigoComun2;
@@ -52,7 +54,7 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
 	
 
-	public PantallaJuego(SpaceNavigation game, int ronda, int vida, int score,  
+	public PantallaJuego(SpaceNavigation game, int ronda, int score,  
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
 		
 		this.game = game;
@@ -89,9 +91,19 @@ public class PantallaJuego implements Screen {
 	    				new Texture(Gdx.files.internal("anilloEspecial.png")),//bala especial
 	    				Gdx.audio.newSound(Gdx.files.internal("soundBalaespecial.mp3"))//sonido bala especial
 	    				); 
-        nave.setVida(vida);
+       // nave.setVida(vida);
         
-        				
+        //crear y cargar boss
+        boss = new BossFinal(ancho-10,
+        		alto/2,
+        		10,
+        		10,
+        		new Texture(Gdx.files.internal("MiniBoss11.png")),
+        		nave,
+        		new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
+        		Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
+        		ancho,alto );
+        
         //crear asteroides
         Random r = new Random();
 	    for (int i = 0; i < cantAsteroides; i++) {
@@ -132,10 +144,11 @@ public class PantallaJuego implements Screen {
 		yPorcentaje =((int)camera.position.y)+290;
 		
 		//colocar en pantalla vidas y ronda
-		game.getFont().draw(batch, str,xVida,yVida);		
-		game.getFont().draw(batch, "Score:"+this.score, xScore,yScore);
-		game.getFont().draw(batch, "kill:"+contadorDeEnemigos, xHigh,yHigh);
+		game.getFont().draw(batch, str,xVida,yVida);
+		game.getFont().draw(batch, "kill: "+contadorDeKill, xHigh,yHigh);
 		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
+		
+		if(bossActivado)game.getFont().draw(batch, "Vida Jefe: "+boss.getVida(), xScore,yScore);
 		// Barra de progreso
 		
 		int longitudBarra = 62;
@@ -191,7 +204,7 @@ public class PantallaJuego implements Screen {
 				nave.bordeNave(0, ancho, alto, 0);
 				System.out.println("principio");
 				//medio nivel
-	    }else if(porcentaje > 90 && contadorDeEnemigos <= 15 && !bossActivado) {
+	    }else if(porcentaje > 90  && !bossActivado) {
 		    	  
 		    	  if(!barreraBoolean) {
 		    		  
@@ -202,14 +215,14 @@ public class PantallaJuego implements Screen {
 		    	  
 		    	  nave.bordeNave(barreraX + 100 , barreraX + 500, alto, 0);
 		    	  System.out.println("medio");
-		    	  if(contadorDeEnemigos == 15) bossActivado=true;
+		    	  if(contadorDeKill >= 3) bossActivado=true;
 		    
 		    	  
-		      }else  if(contadorDeEnemigos >= 15 && bossActivado) {
+		      }else  if(bossActivado) {
 		    		 
 					if(barreraBoolean) {
-					  nave.setPosition(camera.position.x ,camera.position.y);
-					  
+					  nave.setPosition(camera.position.x ,alto/2);
+					  camera.position.y = alto/2;
 		    		  barreraBoolean = false;
 		    		  barreraX = nave.getX();
 		    		  barreraY = nave.getY();
@@ -217,14 +230,17 @@ public class PantallaJuego implements Screen {
 		    		  //limpiar
 		    		  for(int x = 0; x < enemigos.size(); x++) {
 		    	  		  enemigos.get(x).destruirTodo();
+		    	  		  
 		    	  	  }
 		    		  
 		    		  
 		    	  }
 		    		  //bossActivado = true;
 		    		  nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
-		    		  
-		    		  //createBossFinal();
+		    		  boss.draw(batch);
+		    		  boss.moverse();
+		    		  boss.atacar(batch , this);
+		    		  //BossFinal();
 		    		  //boss.atacar();
 		    		  System.out.println("bossFinal");
 		    	  }
@@ -255,12 +271,20 @@ public class PantallaJuego implements Screen {
 		            	z.checkCollision(balas.get(i));
 		            	if(z.isDestruida()){
 		            		enemigos.remove(z);
-		            		System.out.println("hola");
+		            		contadorDeKill ++;
+		            		//System.out.println("hola");
 		            	}
 		            }
 		            
+		           //colision boss
+		            boss.checkCollision(balas.get(i));
+		            nave.checkCollision(boss);
+		            
 		            if(nave.checkCollision(balas.get(i))){
 		            	balas.remove(i);
+		            	if(bossActivado){
+		            		nave.dañoVida(1000);
+		            	}
 		            }
 		            
 		            b.update((int)camera.position.x,(int)camera.position.y, anchoCamara, altoCamara, nave.getX()+25, nave.getY()+15);
@@ -329,7 +353,7 @@ public class PantallaJuego implements Screen {
 	private void createEnemigo() {
 		tiempoTotal1 += Gdx.graphics.getDeltaTime();
 		
-		if(tiempoTotal1 > 1 && enemigos.size()< 3 && contadorDeEnemigos <= 15 && !bossActivado ) {
+		if(tiempoTotal1 > 1 && enemigos.size()< 3 && contadorDeEnemigos <= 100 && !bossActivado ) {
 			tiempoTotal1= 0.0f;
 			enemigoComun = new EnemyComun (ancho/2,//x
 					alto/2,//y
@@ -350,6 +374,7 @@ public class PantallaJuego implements Screen {
 	@Override
 	public void render(float delta) {
 		 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		 
 		// Actualizar movimiento de la cámara
 	    actualizarCamara();
 

@@ -1,11 +1,15 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 public class BossFinal implements Enemigo {
+	
+	private boolean destruida = false;
 	private int vida = 100000;
 	private Sprite spr;
 	private Nave4 nave;
@@ -14,13 +18,13 @@ public class BossFinal implements Enemigo {
     private float rotacion = 90;
     private float tiempo = 0.0f;
     private boolean moviendoArriba = true;
-    private float distancia;
+    private float xSpeed;
     private float ySpeed;
     private float yEnemigo;
     private int alto;
     private int ancho;
     
-	public BossFinal(int x, int y, int xDistancia, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala, int altoY, int anchoX) {
+	public BossFinal(int x, int y, int xSpeed, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala, int altoY, int anchoX) {
 		
 		spr = new Sprite(tx);
 		spr.setPosition(x, y);
@@ -29,11 +33,12 @@ public class BossFinal implements Enemigo {
 		alto= altoY;
         ancho = anchoX;
         
-        distancia = xDistancia;
+        this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         
         this.soundBala = soundBala;
         txBalaNormal = txBala;
+        spr.setSize(150,150);
         spr.setRotation(rotacion);
 	}
 	
@@ -45,12 +50,77 @@ public class BossFinal implements Enemigo {
 	
 	 
 	public void atacar(SpriteBatch batch, PantallaJuego juego) {
-		
+		tiempo += Gdx.graphics.getDeltaTime();
+        moverse();
+        if (tiempo >= 1) {
+            tiempo = 0.0f;
+            float balaVelocidad = 10; // Velocidad de la bala
+            float balaDireccionX = -MathUtils.sinDeg(rotacion); // Componente X de la dirección de la bala (invertido)
+            float balaDireccionY = MathUtils.cosDeg(rotacion); // Componente Y de la dirección de la bala 
+            
+            float balaInicialX = spr.getX();
+            float balaInicialY = spr.getY();
+            
+            BalaNormal bala = new BalaNormal(
+                    balaInicialX,
+                    balaInicialY,
+                    balaDireccionX * balaVelocidad,
+                    balaDireccionY * balaVelocidad,
+                    txBalaNormal,
+                    false
+                );
+            
+            bala.setVelocity(balaDireccionX * balaVelocidad, balaDireccionY * balaVelocidad);
+
+            // Girar la textura de la bala según la rotación de la nave
+            bala.getSprite().setRotation(rotacion);
+
+           // juego.agregarBala(bala);
+            //soundBala.play();
+            
+            bala.up(Gdx.graphics.getDeltaTime());
+            
+            juego.agregarBala(bala);
+            soundBala.play();
+            soundBala.setVolume(1, 0.5f);
+            bala.draw(batch);
+        }
 	}
 	public void moverse() {
-		
+		spr.setPosition(nave.getX()+300, nave.getY());
 	}
+	public boolean checkCollision(Ball2 ball) {
+        
+        return true;
+    }
+    public boolean checkCollision(Bullet balaa) {
+        
+	if (balaa instanceof BalaNormal) {
+    	
+        BalaNormal bala = (BalaNormal) balaa;
+        if(bala.getMia()) {
+            if (bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+                vida-=50;
+                if (vida <= 0) {
+                    destruida = true;
+                }
+                return true;
+            }
+        }
+        else if(balaa.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+        	vida-=500;
+        	if (vida <= 0) {
+                destruida = true;
+            }
+        	return true;
+        }
+    }
+    return false;
+    }
 	
 	public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
+    public int getVida() {return vida;}
+    public Sprite getSprite() {return spr;}
+    public boolean isDestruida() {return destruida;}
 }
