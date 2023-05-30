@@ -129,7 +129,7 @@ public class EnemyComun implements Enemigo {
         
         return true;
     }
-public boolean checkCollision(Bullet balaa) {
+    public boolean checkCollision(Bullet balaa) {
         
 	if (balaa instanceof BalaNormal) {
     	
@@ -145,6 +145,10 @@ public boolean checkCollision(Bullet balaa) {
         }
     }
     return false;
+    }
+    
+    public void destruirTodo() {
+    	destruida = true;
     }
 
     public int getX() {

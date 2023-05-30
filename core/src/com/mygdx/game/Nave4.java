@@ -275,5 +275,6 @@ public class Nave4 {
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
 	public void setVida(int vidas2) {vida = vidas2;}
+	public void setPosition(float x, float y) {spr.setPosition(x, y);}
 	
 }

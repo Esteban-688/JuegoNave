@@ -12,10 +12,10 @@ public class SpaceNavigation extends Game {
 	private String nombreJuego = "Space Navigation";
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private int highScore;	
+	//private int highScore;	
 
 	public void create() {
-		highScore = 0;
+		///highScore = 0;
 		batch = new SpriteBatch();
 		font = new BitmapFont(); // usa Arial font x defecto
 		font.getData().setScale(2f);
@@ -40,12 +40,12 @@ public class SpaceNavigation extends Game {
 		return font;
 	}
 
-	public int getHighScore() {
-		return highScore;
-	}
+	//public int getHighScore() {
+		//return highScore;
+	//}
 
 	public void setHighScore(int highScore) {
-		this.highScore = highScore;
+		//this.highScore = highScore;
 	}
 	
 	

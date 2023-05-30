@@ -25,7 +25,7 @@ public class PantallaJuego implements Screen {
 	private int velXAsteroides; 
 	private int velYAsteroides; 
 	private int cantAsteroides;
-	private int ancho = 20000;//eje x
+	private int ancho = 10000;//eje x
 	private int alto = 1200;//eje y
 	private int anchoCamara = 800;
 	private int altoCamara = 640;
@@ -38,6 +38,7 @@ public class PantallaJuego implements Screen {
 	private int contadorDeEnemigos = 0;
 	private EnemyComun enemigoComun;
 	private boolean bossActivado = false;
+	private boolean bossMuerto = false;
 	//private EnemyComun enemigoComun, enemigoComun1, enemigoComun2;
 	
 	private float velocidadEnemigo = 5;
@@ -133,7 +134,7 @@ public class PantallaJuego implements Screen {
 		//colocar en pantalla vidas y ronda
 		game.getFont().draw(batch, str,xVida,yVida);		
 		game.getFont().draw(batch, "Score:"+this.score, xScore,yScore);
-		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), xHigh,yHigh);
+		game.getFont().draw(batch, "kill:"+contadorDeEnemigos, xHigh,yHigh);
 		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
 		// Barra de progreso
 		
@@ -184,39 +185,56 @@ public class PantallaJuego implements Screen {
 	}
 	
 	private void porcentajeDeBarera() {
-		 if(porcentaje <= 94) {
+		 
+		//inicio
+		if(porcentaje <= 90 && !bossActivado) {
 				nave.bordeNave(0, ancho, alto, 0);
-				
-			  }
-			 
-			  //medio nivel
-		      if(porcentaje > 94) {
+				System.out.println("principio");
+				//medio nivel
+	    }else if(porcentaje > 90 && contadorDeEnemigos <= 15 && !bossActivado) {
 		    	  
-		    	  if(barreraBoolean == false) {
+		    	  if(!barreraBoolean) {
 		    		  
 		    		  barreraBoolean = true;
 		    		  barreraX = nave.getX();
-		    		  barreraY = nave.getY();
+		    		  //barreraY = nave.getY();
 		    	  }
-		    	  if(contadorDeEnemigos <= 14) {
-		    		  
-		    	  nave.bordeNave(barreraX + 100 , barreraX + 500, alto, 0); 
 		    	  
-		    	  }else  if(contadorDeEnemigos > 14) {
+		    	  nave.bordeNave(barreraX + 100 , barreraX + 500, alto, 0);
+		    	  System.out.println("medio");
+		    	  if(contadorDeEnemigos == 15) bossActivado=true;
+		    
+		    	  
+		      }else  if(contadorDeEnemigos >= 15 && bossActivado) {
+		    		 
+					if(barreraBoolean) {
+					  nave.setPosition(camera.position.x ,camera.position.y);
+					  
+		    		  barreraBoolean = false;
+		    		  barreraX = nave.getX();
+		    		  barreraY = nave.getY();
 		    		  
-		    		  bossActivado = true;
-		    		  nave.bordeNave(barreraX -400  , ancho , barreraY + 320 , barreraY -320 );
+		    		  //limpiar
+		    		  for(int x = 0; x < enemigos.size(); x++) {
+		    	  		  enemigos.get(x).destruirTodo();
+		    	  	  }
+		    		  
+		    		  
+		    	  }
+		    		  //bossActivado = true;
+		    		  nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
 		    		  
 		    		  //createBossFinal();
 		    		  //boss.atacar();
+		    		  System.out.println("bossFinal");
 		    	  }
 		      }
-	}
+	
 
 	private void gameOver() {
 		if (nave.estaDestruido()) {
-  			if (score > game.getHighScore())
-  				game.setHighScore(score);
+  			//if (score > game.getHighScore())
+  				//game.setHighScore(score);
 	    	Screen ss = new PantallaGameOver(game);
   			ss.resize(1200, 800);
   			game.setScreen(ss);
@@ -224,6 +242,7 @@ public class PantallaJuego implements Screen {
   		  }
 	}
 
+	//colisiones
 	private void noEstaHeridoLaNave() {
 		if (!nave.estaHerido()) {
 		      // colisiones entre balas y asteroides y su destruccion  
@@ -310,7 +329,7 @@ public class PantallaJuego implements Screen {
 	private void createEnemigo() {
 		tiempoTotal1 += Gdx.graphics.getDeltaTime();
 		
-		if(tiempoTotal1 > 3 && enemigos.size()< 10 && contadorDeEnemigos <= 15) {
+		if(tiempoTotal1 > 1 && enemigos.size()< 3 && contadorDeEnemigos <= 15 && !bossActivado ) {
 			tiempoTotal1= 0.0f;
 			enemigoComun = new EnemyComun (ancho/2,//x
 					alto/2,//y
@@ -372,7 +391,7 @@ public class PantallaJuego implements Screen {
 	      
 	      //nivel completado
 	       
-	      if(porcentaje >= 100 && enemigos.size() == 0) {
+	      if(porcentaje >= 100 && enemigos.size() == 0 && bossMuerto) {
 	    	  Screen ss = new PantallaMenu(game);
 	    	  ss.resize(1200, 800);
 	    	  game.setScreen(ss);
