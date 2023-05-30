@@ -45,6 +45,10 @@ public class PantallaJuego implements Screen {
 	
 	private float velocidadEnemigo = 5;
 	
+	
+	//private int yUp=0;
+	//private int yDown=0;
+	//private int xDer=0;
 	//private boolean vd = true;
 	
 	private EarthMap mapa;
@@ -94,15 +98,15 @@ public class PantallaJuego implements Screen {
        // nave.setVida(vida);
         
         //crear y cargar boss
+	    
         boss = new BossFinal(ancho-10,
         		alto/2,
-        		10,
-        		10,
+        		5,
+        		5,
         		new Texture(Gdx.files.internal("MiniBoss11.png")),
         		nave,
         		new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
-        		Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
-        		ancho,alto );
+        		Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         
         //crear asteroides
         Random r = new Random();
@@ -148,7 +152,7 @@ public class PantallaJuego implements Screen {
 		game.getFont().draw(batch, "kill: "+contadorDeKill, xHigh,yHigh);
 		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
 		
-		if(bossActivado)game.getFont().draw(batch, "Vida Jefe: "+boss.getVida(), xScore,yScore);
+		if(bossActivado)game.getFont().draw(batch, "Vida Jefe: "+boss.getVida(), xScore-100,yScore);
 		// Barra de progreso
 		
 		int longitudBarra = 62;
@@ -202,7 +206,7 @@ public class PantallaJuego implements Screen {
 		//inicio
 		if(porcentaje <= 90 && !bossActivado) {
 				nave.bordeNave(0, ancho, alto, 0);
-				System.out.println("principio");
+			//	System.out.println("principio");
 				//medio nivel
 	    }else if(porcentaje > 90  && !bossActivado) {
 		    	  
@@ -214,7 +218,7 @@ public class PantallaJuego implements Screen {
 		    	  }
 		    	  
 		    	  nave.bordeNave(barreraX + 100 , barreraX + 500, alto, 0);
-		    	  System.out.println("medio");
+		    	  //System.out.println("medio");
 		    	  if(contadorDeKill >= 3) bossActivado=true;
 		    
 		    	  
@@ -234,16 +238,27 @@ public class PantallaJuego implements Screen {
 		    	  	  }
 		    		  
 		    		  
-		    	  }
-		    		  //bossActivado = true;
+		    	  } //bossActivado = true;
 		    		  nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
-		    		  boss.draw(batch);
-		    		  boss.moverse();
-		    		  boss.atacar(batch , this);
-		    		  //BossFinal();
-		    		  //boss.atacar();
-		    		  System.out.println("bossFinal");
-		    	  }
+		    		  boss.setLimite(barreraY + 400 , barreraY -400, barreraX+280);
+		    		  if(!boss.isDestruida()) {
+		    			  boss.draw(batch);
+		    			  boss.moverse();
+			    		  boss.atacar(batch , this);
+		    		  }
+		    		  if(boss.isDestruida()) {
+		    			  Screen ss = new PantallaMenu(game);
+		    	    	  ss.resize(1200, 800);
+		    	    	  game.setScreen(ss);
+		    	    	  dispose();
+		    			  //bossActivado=false;
+		    		  }
+		    		 
+		    		  //System.out.println("bossFinal");
+		    	  }//else if(!bossActivado) {
+		    		 // nave.bordeNave(0, ancho, alto, 0);
+		    	  //}
+		    		 
 		      }
 	
 

@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class BossFinal implements Enemigo {
 	
 	private boolean destruida = false;
-	private int vida = 100000;
+	private int vida = 15000;
 	private Sprite spr;
 	private Nave4 nave;
 	private Texture txBalaNormal;
@@ -21,17 +21,17 @@ public class BossFinal implements Enemigo {
     private float xSpeed;
     private float ySpeed;
     private float yEnemigo;
-    private int alto;
-    private int ancho;
+    private int yUp;
+    private int yDown;
+    private int xDer;
     
-	public BossFinal(int x, int y, int xSpeed, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala, int altoY, int anchoX) {
+	public BossFinal(int x, int y, int xSpeed, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala) {
 		
 		spr = new Sprite(tx);
 		spr.setPosition(x, y);
 		nave = nave1;
 		
-		alto= altoY;
-        ancho = anchoX;
+		
         
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
@@ -86,8 +86,27 @@ public class BossFinal implements Enemigo {
             bala.draw(batch);
         }
 	}
+	
+	
 	public void moverse() {
-		spr.setPosition(nave.getX()+300, nave.getY());
+		if(spr.getY() >= yUp) {
+    		yEnemigo = spr.getY() - ySpeed;
+    		moviendoArriba = true;
+    		
+    	}
+    	else if(spr.getY() <= yDown) {
+    		yEnemigo = spr.getY() + ySpeed;
+    		moviendoArriba = false;
+    	}
+    	else if(moviendoArriba) {
+    		yEnemigo = spr.getY() - ySpeed;
+    	}
+    	else if(!moviendoArriba) {
+    		yEnemigo = spr.getY() + ySpeed;
+    	}
+    	
+    	spr.setPosition(xDer-100, yEnemigo);
+		//spr.setPosition(nave.getX()+300, nave.getY());
 	}
 	public boolean checkCollision(Ball2 ball) {
         
@@ -117,7 +136,11 @@ public class BossFinal implements Enemigo {
     }
     return false;
     }
-	
+	public void setLimite(int yup, int ydown, int  xder) {
+		 yUp = yup;
+		 yDown = ydown;
+		  xDer= xder;
+	}
 	public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public int getVida() {return vida;}
