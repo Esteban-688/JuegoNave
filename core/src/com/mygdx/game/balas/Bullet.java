@@ -1,9 +1,10 @@
-package com.mygdx.game;
+package com.mygdx.game.balas;
 
 
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Ball2;
 
 public abstract class Bullet {
 	

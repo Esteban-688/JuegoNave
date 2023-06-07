@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Enemigos.boss.BossFinal;
+import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
+import com.mygdx.game.balas.Bullet;
 
 
 public class PantallaJuego implements Screen {
@@ -368,7 +371,7 @@ public class PantallaJuego implements Screen {
 	private void createEnemigo() {
 		tiempoTotal1 += Gdx.graphics.getDeltaTime();
 		
-		if(tiempoTotal1 > 1 && enemigos.size()< 3 && contadorDeEnemigos <= 100 && !bossActivado ) {
+		if(tiempoTotal1 > 3 && enemigos.size()< 6 && contadorDeEnemigos <= 100 && !bossActivado ) {
 			tiempoTotal1= 0.0f;
 			enemigoComun = new EnemyComun (ancho/2,//x
 					alto/2,//y

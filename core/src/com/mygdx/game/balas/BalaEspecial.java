@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.balas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.Ball2;
 import com.badlogic.gdx.math.Intersector;
 
 public class BalaEspecial extends Bullet {

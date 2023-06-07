@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.game.Enemigos.boss.BossFinal;
+import com.mygdx.game.balas.BalaEspecial;
+import com.mygdx.game.balas.BalaNormal;
+import com.mygdx.game.balas.Bullet;
 
 
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vida = 30001;
+    private int vida = 30000;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;
