@@ -106,7 +106,7 @@ public class PantallaJuego implements Screen {
         		alto/2,
         		5,
         		5,
-        		new Texture(Gdx.files.internal("MiniBoss11.png")),
+        		new Texture(Gdx.files.internal("MiniBossMarciano.png")),
         		nave,
         		new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
         		Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
@@ -234,7 +234,7 @@ public class PantallaJuego implements Screen {
 		    		  barreraX = nave.getX();
 		    		  barreraY = nave.getY();
 		    		  
-		    		  //limpiar
+		    		  //limpiar enemigos
 		    		  for(int x = 0; x < enemigos.size(); x++) {
 		    	  		  enemigos.get(x).destruirTodo();
 		    	  		  
@@ -242,11 +242,13 @@ public class PantallaJuego implements Screen {
 		    		  
 		    		  
 		    	  } //bossActivado = true;
+					
 		    		  nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
 		    		  boss.setLimite(barreraY + 400 , barreraY -400, barreraX+280);
+		    		  
 		    		  if(!boss.isDestruida()) {
 		    			  boss.draw(batch);
-		    			  boss.moverse();
+		    			  //boss.moverse();
 			    		  boss.atacar(batch , this);
 		    		  }
 		    		  if(boss.isDestruida()) {

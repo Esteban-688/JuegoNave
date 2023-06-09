@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.balas.BalaNormal;
+
 
 
 public class BossAttack {
@@ -23,8 +25,11 @@ public class BossAttack {
         rotation = 90;
     }
 
-    public void update(float delta) {
-        time += delta;
+    public void draw(SpriteBatch batch) {
+        sprite.draw(batch);
+    }
+    public void atacar(float delta, PantallaJuego juego, SpriteBatch batch) {
+		time += delta;
         if (time >= 1) {
             time = 0;
 
@@ -35,18 +40,19 @@ public class BossAttack {
             float bulletInitialX = sprite.getX();
             float bulletInitialY = sprite.getY();
 
-            BalaNormal bullet = new BalaNormal(bulletInitialX, bulletInitialY, bulletDirectionX * bulletSpeed, bulletDirectionY * bulletSpeed, bulletTexture, false);
+            BalaNormal bala = new BalaNormal(bulletInitialX, bulletInitialY, bulletDirectionX * bulletSpeed, bulletDirectionY * bulletSpeed, bulletTexture, false);
            
-            bullet.getSprite().setRotation(rotation);
-
-            // Aquí puedes hacer algo con la bala, como agregarla a una lista de balas del juego
+            bala.getSprite().setRotation(rotation);
+            
+            bala.up(delta);
+            
+            juego.agregarBala(bala);
+            sound.play();
+            bala.draw(batch);
+            
         }
-    }
-
-    public void draw(SpriteBatch batch) {
-        sprite.draw(batch);
-    }
-
+		
+	}
     public void playSound() {
         sound.play();
     }
@@ -62,4 +68,8 @@ public class BossAttack {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+
+	
+
+	
 }

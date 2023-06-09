@@ -15,11 +15,15 @@ import com.mygdx.game.balas.Bullet;
 
 public class BossFinal implements Enemigo {
     private boolean destruida;
+    private float tiempo = Gdx.graphics.getDeltaTime();
     private int vida;
     private Sprite spr;
     private Nave4 nave;
     private BossMove movement;
-    private BossAttack attack;
+    private BossAttack ataque;
+    private int yUp;
+    private int yDown;
+    private int xDer;
 
     public BossFinal(int x, int y, int xSpeed, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala) {
         // Inicializa los atributos
@@ -31,21 +35,22 @@ public class BossFinal implements Enemigo {
 
         // Crea las instancias de las nuevas clases
         movement = new BossMove(spr, ySpeed, yUp, yDown);
-        attack = new BossAttack(spr, txBala, soundBala, rotacion, balaVelocidad, 1.0f);
+        ataque = new BossAttack(spr, txBala, soundBala);//  , balaVelocidad, 1.0f);
     }
 
     public void draw(SpriteBatch batch) {
-        // Dibuja el sprite del enemigo
         spr.draw(batch);
     }
 
     public void atacar(SpriteBatch batch, PantallaJuego juego) {
-        // Llama al método de ataque de la clase BossAttack
-        attack.attack(batch, juego);
+        ataque.atacar(tiempo, juego, batch);
+        //attack.draw(batch);
+        //moverse();
+        
     }
 
     public void moverse() {
-        // Llama al método de movimiento de la clase BossMovement
+        
         movement.move();
     }
 
@@ -70,13 +75,13 @@ public class BossFinal implements Enemigo {
                 return true;
             }
         }
-        else if(balaa.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+       /* else if(balaa.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
         	vida-=500;
         	if (vida <= 0) {
                 destruida = true;
             }
         	return true;
-        }
+        }*/
     }
     return false;
     }
