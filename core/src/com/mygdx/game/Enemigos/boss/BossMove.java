@@ -1,88 +1,86 @@
 package com.mygdx.game.Enemigos.boss;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-
+import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.game.Nave4;
 
 public class BossMove {
-	
-	    private Sprite sprite;
-	    private boolean movingUp;
-	    private float speed;
-	    private float upperLimit;
-	    private float lowerLimit;
-	    private float currentY;
+    private Sprite sprite;
+    private float speed;
+    private float xPosition;
+    private float yPosition;
+   /* private float minX;
+    private float maxX;
+    private float minY;
+    private float maxY;*/
+    private Nave4 nave;
 
-	    public BossMove(Sprite sprite, float speed, float upperLimit, float lowerLimit) {
-	        this.sprite = sprite;
-	        this.speed = speed;
-	        this.upperLimit = upperLimit;
-	        this.lowerLimit = lowerLimit;
-	        this.currentY = sprite.getY();
-	        this.movingUp = true;
-	    }
+    public BossMove(Sprite sprite, float speed, Nave4 nave) {
+        this.sprite = sprite;
+        this.speed = speed;
+       /* this.minX = minX;
+        this.maxX = maxX;
+        this.minY = minY;
+        this.maxY = maxY;*/
+        this.nave = nave;
+        //randomizePosition();
+    }
 
-	    public void move() {
-	        if (currentY >= upperLimit) {
-	            movingUp = true;
-	        } else if (currentY <= lowerLimit) {
-	            movingUp = false;
-	        }
+    public void move( float minX, float maxX, float maxY, float minY) {
+    	    // Obtener la posición actual del sprite
+    	    float currentX = sprite.getX();
+    	    float currentY = sprite.getY();
 
-	        if (movingUp) {
-	            currentY -= speed;
-	        } else {
-	            currentY += speed;
-	        }
+    	    // Calcular el desplazamiento horizontal
+    	    float deltaX = xPosition - currentX;
+    	    float movementX = Math.signum(deltaX) * speed;
 
-	        sprite.setPosition(sprite.getX(), currentY);
-	    }
+    	    // Calcular el desplazamiento vertical
+    	    float deltaY = yPosition - currentY;
+    	    float movementY = Math.signum(deltaY) * speed;
 
-	    public Sprite getSprite() {
-	        return sprite;
-	    }
+    	    // Verificar si el sprite se desplaza más allá de los límites horizontales
+    	    if (movementX > 0 && currentX + movementX > maxX) {
+    	        movementX = maxX - currentX;
+    	    } else if (movementX < 0 && currentX + movementX < minX) {
+    	        movementX = minX - currentX;
+    	    }
 
-	    public boolean isMovingUp() {
-	        return movingUp;
-	    }
+    	    // Verificar si el sprite se desplaza más allá de los límites verticales
+    	    if (movementY > 0 && currentY + movementY > maxY) {
+    	        movementY = maxY - currentY;
+    	    } else if (movementY < 0 && currentY + movementY < minY) {
+    	        movementY = minY - currentY;
+    	    }
 
-	    public float getSpeed() {
-	        return speed;
-	    }
+    	    // Actualizar la posición del sprite
+    	    sprite.setPosition(currentX + movementX, currentY + movementY);
 
-	    public float getUpperLimit() {
-	        return upperLimit;
-	    }
+    	    // Verificar si el sprite ha alcanzado la posición objetivo y generar una nueva posición aleatoria
+    	    if (Math.abs(deltaX) < speed && Math.abs(deltaY) < speed) {
+    	        randomizePosition(minX, maxX, minY, maxY);
+    	    }
+    	}
 
-	    public float getLowerLimit() {
-	        return lowerLimit;
-	    }
 
-	    public float getCurrentY() {
-	        return currentY;
-	    }
+    private void randomizePosition(float minX, float maxX, float minY, float maxY) {
+        xPosition = MathUtils.random(minX, maxX);
+        yPosition = MathUtils.random(minY, maxY);
+    }
 
-	    public void setSprite(Sprite sprite) {
-	        this.sprite = sprite;
-	    }
+    public Sprite getSprite() {
+        return sprite;
+    }
 
-	    public void setMovingUp(boolean movingUp) {
-	        this.movingUp = movingUp;
-	    }
+    public float getSpeed() {
+        return speed;
+    }
 
-	    public void setSpeed(float speed) {
-	        this.speed = speed;
-	    }
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
 
-	    public void setUpperLimit(float upperLimit) {
-	        this.upperLimit = upperLimit;
-	    }
-
-	    public void setLowerLimit(float lowerLimit) {
-	        this.lowerLimit = lowerLimit;
-	    }
-
-	    public void setCurrentY(float currentY) {
-	        this.currentY = currentY;
-	    }
-	}
-
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+}

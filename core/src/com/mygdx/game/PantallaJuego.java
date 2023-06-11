@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -19,7 +20,9 @@ import com.mygdx.game.balas.Bullet;
 public class PantallaJuego implements Screen {
 
 	private SpaceNavigation game;
-	private OrthographicCamera camera;	
+	private OrthographicCamera camera, originalCamera;	
+	private OrthographicCamera secondCamera;
+
 	private SpriteBatch batch;
 	private Sound explosionSound;
 	private Music gameMusic;
@@ -30,8 +33,8 @@ public class PantallaJuego implements Screen {
 	private int cantAsteroides;
 	private int ancho = 10000;//eje x
 	private int alto = 1200;//eje y
-	private int anchoCamara = 800;
-	private int altoCamara = 640;
+	private int anchoCamara;
+	private int altoCamara;
 	private int porcentaje = 0;
 	private float tiempoTotal = 0.0f;
 	private float tiempoTotal1 = 0.0f;
@@ -71,10 +74,20 @@ public class PantallaJuego implements Screen {
 		this.velYAsteroides = velYAsteroides;
 		this.cantAsteroides = cantAsteroides;
 		
-		batch = game.getBatch();
-		camera = new OrthographicCamera();	
+		anchoCamara = 800;
+		altoCamara = 640;
 		
+		batch = game.getBatch();
+		
+		//camaras
+		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, anchoCamara, altoCamara);
+		originalCamera = camera;
+		secondCamera = new OrthographicCamera();
+		secondCamera.setToOrtho(false, 1800, 1600);
+
+		
+		
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		explosionSound.setVolume(1,0.5f);
@@ -100,11 +113,10 @@ public class PantallaJuego implements Screen {
 	    				); 
        // nave.setVida(vida);
         
-        //crear y cargar boss
 	    
-        boss = new BossFinal(ancho-10,
+	  //crear y cargar boss
+	    boss = new BossFinal(barreraY + 300,
         		alto/2,
-        		5,
         		5,
         		new Texture(Gdx.files.internal("MiniBossMarciano.png")),
         		nave,
@@ -173,8 +185,7 @@ public class PantallaJuego implements Screen {
 	    // Dibujar la barra de progreso
 	    game.getFont().draw(batch, "[" + barraProgreso , xPorcentaje-150, yPorcentaje);
 	}
-  
-	
+ 
 	//camara moviendose
 	private void actualizarCamara() {
 		
@@ -182,7 +193,9 @@ public class PantallaJuego implements Screen {
 		  if (nave.getX() > ancho-320 || nave.getX() < 320) {
 			 //no actualiza la camara
 		  }else if(bossActivado){//eje x
-			  
+			  if(bossMuerto) {
+				  camera.position.x = nave.getX();
+			  }
 		  }
 			  else {
 			  camera.position.x = nave.getX();
@@ -193,7 +206,9 @@ public class PantallaJuego implements Screen {
 			  //no actualiza
 		  }
 		  else if(bossActivado){//eje Y
-			  
+			  if(bossMuerto) {
+				  camera.position.y = nave.getY();
+			  }
 		  }
 		  else {
 			  camera.position.y = nave.getY();
@@ -202,6 +217,10 @@ public class PantallaJuego implements Screen {
 			porcentaje = (int) ((nave.getX() / (float) ancho) * 100);
 			batch.setProjectionMatrix(camera.combined);
 			//System.out.println(": x = " + nave.getX() + ", y = " + nave.getY());
+			
+			
+			
+			
 	}
 	
 	private void porcentajeDeBarera() {
@@ -220,45 +239,61 @@ public class PantallaJuego implements Screen {
 		    		  //barreraY = nave.getY();
 		    	  }
 		    	  
-		    	  nave.bordeNave(barreraX + 100 , barreraX + 500, alto, 0);
+		    	  nave.bordeNave(barreraX + 290 , barreraX + 500, alto, 0);
 		    	  //System.out.println("medio");
 		    	  if(contadorDeKill >= 3) bossActivado=true;
 		    
 		    	  
 		      }else  if(bossActivado) {
+		    	  
+		    	  
+		    		 System.out.println(" barrera x "+barreraX +" barrera y"+ barreraY);
+		    		 System.out.println(" position x "+boss.getX() +" position y "+ boss.getY());
+		    		 System.out.println(" x "+nave.getX() +" y "+ nave.getY());
 		    		 
-					if(barreraBoolean) {
+		    		 
+					if(barreraBoolean) {//solo sucede una vez
 					  nave.setPosition(camera.position.x ,alto/2);
 					  camera.position.y = alto/2;
 		    		  barreraBoolean = false;
 		    		  barreraX = nave.getX();
 		    		  barreraY = nave.getY();
 		    		  
-		    		  //limpiar enemigos
-		    		  for(int x = 0; x < enemigos.size(); x++) {
-		    	  		  enemigos.get(x).destruirTodo();
-		    	  		  
-		    	  	  }
 		    		  
+		    		
+		    	        
+		    	        
+		    		  boss.setBarreraBoss(barreraX-380, barreraX+290, barreraY + 290 , barreraY -305);
 		    		  
-		    	  } //bossActivado = true;
+		    		  	//limpiar enemigos
+			    		  for(int x = 0; x < enemigos.size(); x++) {
+			    	  		  enemigos.get(x).destruirTodo();
+			    	  		  
+			    	  	  }
+		    		  } //bossActivado = true;
 					
-		    		  nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
-		    		  boss.setLimite(barreraY + 400 , barreraY -400, barreraX+280);
-		    		  
 		    		  if(!boss.isDestruida()) {
 		    			  boss.draw(batch);
-		    			  //boss.moverse();
+		    			  boss.moverse();
 			    		  boss.atacar(batch , this);
+			    		  nave.bordeNave(barreraX-380, barreraX+290, barreraY + 290 , barreraY -305);
+			    		 // nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
 		    		  }
-		    		  if(boss.isDestruida()) {
-		    			  Screen ss = new PantallaMenu(game);
-		    	    	  ss.resize(1200, 800);
+		    		  else {
+		    			 // Screen ss = new PantallaMenu(game, 800, 600);
+		    	    	  //ss.resize(1200, 800);
+		    	    	  //game.setScreen(ss);
+		    	    	  //dispose();
+		    			  nave.bordeNave(barreraX -280  , barreraX +880 , barreraY + 400 , barreraY -400);
+		    			  bossMuerto = true;
+		    		  }
+		    		   if(porcentaje >= 100  && bossMuerto) {
+		    	    	  Screen ss = new PantallaMenu(game, 800, 600);
+		    	    	 // ss.resize(1200, 800);
 		    	    	  game.setScreen(ss);
 		    	    	  dispose();
-		    			  //bossActivado=false;
+		    	      
 		    		  }
-		    		 
 		    		  //System.out.println("bossFinal");
 		    	  }//else if(!bossActivado) {
 		    		 // nave.bordeNave(0, ancho, alto, 0);
@@ -431,17 +466,21 @@ public class PantallaJuego implements Screen {
 		      
 	      //Cuando se acaben las vidas que hacer
 	      gameOver();
+	    //prueba
+			if (Gdx.input.isKeyPressed(Input.Keys.V)) {
+				 // Cambiar a la segunda cámara
+		        camera = secondCamera;
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.B)) {
+				// Cambiar a la primera cámara
+		        camera = originalCamera;
+			}
 	      
 	      batch.end();
 	      
-	      //nivel completado
+	      
 	       
-	      if(porcentaje >= 100 && enemigos.size() == 0 && bossMuerto) {
-	    	  Screen ss = new PantallaMenu(game);
-	    	  ss.resize(1200, 800);
-	    	  game.setScreen(ss);
-	    	  dispose();
-	      }
+	      
 	       
 	}
     

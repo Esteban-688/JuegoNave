@@ -21,11 +21,10 @@ public class BossFinal implements Enemigo {
     private Nave4 nave;
     private BossMove movement;
     private BossAttack ataque;
-    private int yUp;
-    private int yDown;
-    private int xDer;
+    private float xIzq, xDer, yUp, yDown;
+    
 
-    public BossFinal(int x, int y, int xSpeed, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala) {
+    public BossFinal(int x, int y, float speed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala) {
         // Inicializa los atributos
         destruida = false;
         vida = 15000;
@@ -34,8 +33,14 @@ public class BossFinal implements Enemigo {
         nave = nave1;
 
         // Crea las instancias de las nuevas clases
-        movement = new BossMove(spr, ySpeed, yUp, yDown);
+        movement = new BossMove(spr, speed, nave);
         ataque = new BossAttack(spr, txBala, soundBala);//  , balaVelocidad, 1.0f);
+        
+        //barrera del boss
+        xIzq = 0;
+        xDer = 0;
+        yUp = 0;
+        yDown = 0;
     }
 
     public void draw(SpriteBatch batch) {
@@ -43,18 +48,20 @@ public class BossFinal implements Enemigo {
     }
 
     public void atacar(SpriteBatch batch, PantallaJuego juego) {
-        ataque.atacar(tiempo, juego, batch);
-        //attack.draw(batch);
-        //moverse();
-        
+        ataque.atacar(tiempo, juego, batch); 
     }
 
     public void moverse() {
-        
-        movement.move();
+        movement.move(xIzq, xDer, yUp, yDown);
     }
 
-    
+    public boolean setBarreraBoss(float xizq, float xder, float yup, float ydown) {
+    	xIzq = xizq;
+        xDer = xder;
+        yUp = yup;
+        yDown = ydown;
+    	return true;
+    }
 
 
 	public boolean checkCollision(Ball2 ball) {
@@ -85,11 +92,6 @@ public class BossFinal implements Enemigo {
     }
     return false;
     }
-	public void setLimite(int yup, int ydown, int  xder) {
-		 yUp = yup;
-		 yDown = ydown;
-		  xDer= xder;
-	}
 	public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public int getVida() {return vida;}

@@ -21,7 +21,7 @@ public class PantallaGameOver implements Screen {
 
 	@Override
 	public void render(float delta) {
-		ScreenUtils.clear(0, 0, 0.2f, 1);
+		ScreenUtils.clear(0, 0, 0, 1);
 
 		camera.update();
 		game.getBatch().setProjectionMatrix(camera.combined);
@@ -34,7 +34,7 @@ public class PantallaGameOver implements Screen {
 
 		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
 			Screen ss = new PantallaJuego(game,1,0,1,1,15);
-			ss.resize(1200, 800);
+			//ss.resize(1200, 800);
 			game.setScreen(ss);
 			dispose();
 		}
