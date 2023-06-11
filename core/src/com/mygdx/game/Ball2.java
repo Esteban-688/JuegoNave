@@ -31,8 +31,8 @@ public class Ball2 {
         spr.setPosition(x, y);
         */
     	bordeBall(x,y,size, bordeX,bordeY);
-        this.setXSpeed(xSpeed);
-        this.setySpeed(ySpeed);
+       this.setXSpeed(xSpeed);
+       this.setySpeed(ySpeed);
         
     }
     /**

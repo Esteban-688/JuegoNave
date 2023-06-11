@@ -25,12 +25,8 @@ public class PantallaJuego implements Screen {
 
 	private SpriteBatch batch;
 	private Sound explosionSound;
-	private Music gameMusic;
-	private int score;
-	private int ronda;
-	private int velXAsteroides; 
-	private int velYAsteroides; 
-	private int cantAsteroides;
+	private Music gameMusic, battleMusic;
+	private int velXAsteroides, velYAsteroides, cantAsteroides;
 	private int ancho = 10000;//eje x
 	private int alto = 1200;//eje y
 	private int anchoCamara;
@@ -64,12 +60,11 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
 	
 
-	public PantallaJuego(SpaceNavigation game, int ronda, int score,  
-			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+	public PantallaJuego(SpaceNavigation game, int velXAsteroides, int velYAsteroides, int cantAsteroides) {
 		
 		this.game = game;
-		this.ronda = ronda;
-		this.score = score;
+		//this.ronda = ronda;
+		//this.score = score;
 		this.velXAsteroides = velXAsteroides;
 		this.velYAsteroides = velYAsteroides;
 		this.cantAsteroides = cantAsteroides;
@@ -93,11 +88,11 @@ public class PantallaJuego implements Screen {
 		explosionSound.setVolume(1,0.5f);
 		
 		//gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
-		
+		battleMusic = Gdx.audio.newMusic (Gdx.files.internal("Sound-battle.mp3"));
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("musicaFondo.mp3")); 
 		
 		gameMusic.setLooping(true);
-		//gameMusic.setVolume(10);
+		gameMusic.setVolume(0.6f);
 		gameMusic.play();
 		
 	    // cargar imagen de la nave, 64x64   
@@ -115,9 +110,9 @@ public class PantallaJuego implements Screen {
         
 	    
 	  //crear y cargar boss
-	    boss = new BossFinal(barreraY + 300,
+	    boss = new BossFinal(ancho,
         		alto/2,
-        		5,
+        		6,
         		new Texture(Gdx.files.internal("MiniBossMarciano.png")),
         		nave,
         		new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
@@ -146,28 +141,28 @@ public class PantallaJuego implements Screen {
 	
 	//accesorios
 	private void dibujaEncabezado() {
-		CharSequence str = "Vida: "+ nave.getVidas()+" Nivel: "+ronda;
-		 int xVida, yVida,xScore,yScore,xHigh,yHigh,xPorcentaje, yPorcentaje; 
+		CharSequence str = "Vida: "+ nave.getVidas()+" Nivel: "+ 1;
+		 int xVida, yVida,xVidaBoss,yVidaBoss,xKill,yKill,xPorcentaje, yPorcentaje; 
 		game.getFont().getData().setScale(2f);
 		
 		// x
 		xVida = ((int)camera.position.x-370);
-		xScore = ((int)camera.position.x+240);
-		xHigh = (int)camera.position.x;
+		xVidaBoss = ((int)camera.position.x+240);
+		xKill = (int)camera.position.x;
 		xPorcentaje = ((int)camera.position.x)-40;	
 		//Y
 
 		yVida = ((int)camera.position.y)-280;
-		yScore = ((int)camera.position.y)-280;
-		yHigh =	((int)camera.position.y)-280;	
+		yVidaBoss = ((int)camera.position.y)-280;
+		yKill =	((int)camera.position.y)-280;	
 		yPorcentaje =((int)camera.position.y)+290;
 		
 		//colocar en pantalla vidas y ronda
 		game.getFont().draw(batch, str,xVida,yVida);
-		game.getFont().draw(batch, "kill: "+contadorDeKill, xHigh,yHigh);
+		game.getFont().draw(batch, "kill: "+contadorDeKill, xKill,yKill);
 		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
 		
-		if(bossActivado)game.getFont().draw(batch, "Vida Jefe: "+boss.getVida(), xScore-100,yScore);
+		if(bossActivado && !bossMuerto)game.getFont().draw(batch, "Vida Jefe: "+boss.getVida(), xVidaBoss-100,yVidaBoss);
 		// Barra de progreso
 		
 		int longitudBarra = 62;
@@ -247,36 +242,38 @@ public class PantallaJuego implements Screen {
 		      }else  if(bossActivado) {
 		    	  
 		    	  
-		    		 System.out.println(" barrera x "+barreraX +" barrera y"+ barreraY);
-		    		 System.out.println(" position x "+boss.getX() +" position y "+ boss.getY());
+		    		
 		    		 System.out.println(" x "+nave.getX() +" y "+ nave.getY());
 		    		 
 		    		 
-					if(barreraBoolean) {//solo sucede una vez
-					  nave.setPosition(camera.position.x ,alto/2);
-					  camera.position.y = alto/2;
-		    		  barreraBoolean = false;
-		    		  barreraX = nave.getX();
-		    		  barreraY = nave.getY();
-		    		  
-		    		  
-		    		
-		    	        
-		    	        
-		    		  boss.setBarreraBoss(barreraX-380, barreraX+290, barreraY + 290 , barreraY -305);
-		    		  
-		    		  	//limpiar enemigos
-			    		  for(int x = 0; x < enemigos.size(); x++) {
-			    	  		  enemigos.get(x).destruirTodo();
-			    	  		  
-			    	  	  }
-		    		  } //bossActivado = true;
+						if(barreraBoolean) {//solo sucede una vez
+						  nave.setPosition(ancho-500 ,alto/2);
+						  camera.position.x = ancho-500;
+						  camera.position.y = alto/2;
+			    		  barreraBoolean = false;
+			    		  barreraX = ancho-500;
+			    		  barreraY = alto/2;
+			    	        
+			    		  //barrera boss
+			    		  boss.setBarreraBoss(barreraX - 380, barreraX + 250, barreraY -305 , barreraY + 390);
+			    		 
+			    		  gameMusic.pause();
+			    		  battleMusic.setLooping(true);
+			    		  battleMusic.setVolume(1.0f);
+			    		  battleMusic.play();
+			    		  
+			    		  	//limpiar enemigos
+				    		  for(int x = 0; x < enemigos.size(); x++) {
+				    	  		  enemigos.get(x).destruirTodo();
+				    	  		  
+				    	  	  }
+			    		  } //bossActivado = true;
 					
 		    		  if(!boss.isDestruida()) {
 		    			  boss.draw(batch);
 		    			  boss.moverse();
 			    		  boss.atacar(batch , this);
-			    		  nave.bordeNave(barreraX-380, barreraX+290, barreraY + 290 , barreraY -305);
+			    		  nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
 			    		 // nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
 		    		  }
 		    		  else {
@@ -284,8 +281,16 @@ public class PantallaJuego implements Screen {
 		    	    	  //ss.resize(1200, 800);
 		    	    	  //game.setScreen(ss);
 		    	    	  //dispose();
+		    			  if(!bossMuerto) {
+		    				  	battleMusic.stop();
+		    				  	gameMusic.setLooping(true);
+		    					gameMusic.setVolume(0.6f);
+		    					gameMusic.play();
+		    					bossMuerto = true;
+		    			  }
 		    			  nave.bordeNave(barreraX -280  , barreraX +880 , barreraY + 400 , barreraY -400);
-		    			  bossMuerto = true;
+		    			  
+		    			  
 		    		  }
 		    		   if(porcentaje >= 100  && bossMuerto) {
 		    	    	  Screen ss = new PantallaMenu(game, 800, 600);
@@ -351,7 +356,7 @@ public class PantallaJuego implements Screen {
 		            	 balls1.remove(j);
 		            	 balls2.remove(j);
 		            	 j--;
-		            	 score +=10;
+		            	 
 		              }   	  
 		  	        }
 		                
@@ -469,11 +474,16 @@ public class PantallaJuego implements Screen {
 	    //prueba
 			if (Gdx.input.isKeyPressed(Input.Keys.V)) {
 				 // Cambiar a la segunda cámara
+				
 		        camera = secondCamera;
+		        camera.position.x = nave.getX();
+		        camera.position.y = nave.getY();
 			}
 			if (Gdx.input.isKeyPressed(Input.Keys.B)) {
 				// Cambiar a la primera cámara
 		        camera = originalCamera;
+		        camera.position.x = nave.getX();
+		        camera.position.y = nave.getY();
 			}
 	      
 	      batch.end();
@@ -529,6 +539,7 @@ public class PantallaJuego implements Screen {
 		// TODO Auto-generated method stub
 		this.explosionSound.dispose();
 		this.gameMusic.dispose();
+		this.battleMusic.dispose();
 	}
    
 }

@@ -108,7 +108,7 @@ public class PantallaMenu implements Screen {
 
 	            //  "Jugar"
 	            if (playButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-	                Screen ss = new PantallaJuego(game, 1, 0, 1, 1, 20);
+	                Screen ss = new PantallaJuego(game, 1, 1, 20);
 	                game.setScreen(ss);
 	                dispose();
 	            }

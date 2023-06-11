@@ -21,7 +21,7 @@ public class BossFinal implements Enemigo {
     private Nave4 nave;
     private BossMove movement;
     private BossAttack ataque;
-    private float xIzq, xDer, yUp, yDown;
+    private int xIzq, xDer, yUp, yDown;
     
 
     public BossFinal(int x, int y, float speed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala) {
@@ -33,8 +33,8 @@ public class BossFinal implements Enemigo {
         nave = nave1;
 
         // Crea las instancias de las nuevas clases
-        movement = new BossMove(spr, speed, nave);
-        ataque = new BossAttack(spr, txBala, soundBala);//  , balaVelocidad, 1.0f);
+        movement = new BossMove(spr, speed, nave, x , y);
+        ataque = new BossAttack(spr, txBala, soundBala, nave);//  , balaVelocidad, 1.0f);
         
         //barrera del boss
         xIzq = 0;
@@ -52,14 +52,15 @@ public class BossFinal implements Enemigo {
     }
 
     public void moverse() {
-        movement.move(xIzq, xDer, yUp, yDown);
+        movement.move(xIzq, xDer, yDown, yUp, Gdx.graphics.getDeltaTime());
+       
     }
 
-    public boolean setBarreraBoss(float xizq, float xder, float yup, float ydown) {
-    	xIzq = xizq;
-        xDer = xder;
-        yUp = yup;
-        yDown = ydown;
+    public boolean setBarreraBoss(float xizq, float xder, float ydown, float yup) {
+    	xIzq = (int)xizq;
+        xDer = (int)xder;
+        yUp = (int)yup;
+        yDown = (int)ydown;
     	return true;
     }
 
