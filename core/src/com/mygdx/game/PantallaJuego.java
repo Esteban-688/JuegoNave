@@ -162,7 +162,7 @@ public class PantallaJuego implements Screen {
 		game.getFont().draw(batch, "kill: "+contadorDeKill, xKill,yKill);
 		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
 		
-		if(bossActivado && !bossMuerto)game.getFont().draw(batch, "Vida Jefe: "+boss.getVida(), xVidaBoss-100,yVidaBoss);
+		if(bossActivado && !bossMuerto)game.getFont().draw(batch, " Jefe: "+(int)boss.getVidaPorcentaje()+" %", xVidaBoss-100,yVidaBoss);
 		// Barra de progreso
 		
 		int longitudBarra = 62;
@@ -255,7 +255,7 @@ public class PantallaJuego implements Screen {
 			    		  barreraY = alto/2;
 			    	        
 			    		  //barrera boss
-			    		  boss.setBarreraBoss(barreraX - 380, barreraX + 250, barreraY -305 , barreraY + 390);
+			    		  boss.setBarreraBoss(barreraX - 380, barreraX + 250, barreraY -305 , barreraY + 350);
 			    		 
 			    		  gameMusic.pause();
 			    		  battleMusic.setLooping(true);
@@ -267,14 +267,15 @@ public class PantallaJuego implements Screen {
 				    	  		  enemigos.get(x).destruirTodo();
 				    	  		  
 				    	  	  }
-			    		  } //bossActivado = true;
+			    		  }
 					
 		    		  if(!boss.isDestruida()) {
 		    			  boss.draw(batch);
 		    			  boss.moverse();
 			    		  boss.atacar(batch , this);
+			    		 
 			    		  nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
-			    		 // nave.bordeNave(barreraX -280  , barreraX +280 , barreraY + 400 , barreraY -400);
+			    		
 		    		  }
 		    		  else {
 		    			 // Screen ss = new PantallaMenu(game, 800, 600);

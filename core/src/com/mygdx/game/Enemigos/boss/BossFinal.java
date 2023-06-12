@@ -25,12 +25,16 @@ public class BossFinal implements Enemigo {
     private BossMove movement;
     private BossAttack ataque;
     private int xIzq, xDer, yUp, yDown;
+    private int maxVida;
+    private float vidaPorcentaje;
     
 
     public BossFinal(int x, int y, float speed, Texture txOriginal, Texture txHerido, Nave4 nave1) {
         // Inicializa los atributos
         destruida = false;
         vida = 15000;
+        maxVida = vida;
+        vidaPorcentaje= 100f;
         spr = new Sprite(txOriginal);
         
         spr.setPosition(x, y);
@@ -81,8 +85,12 @@ public class BossFinal implements Enemigo {
         if(bala.getMia()) {
             if (bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
                 vida-=bala.getDaño();
+             // Actualizar la vida en porcentaje
+                vidaPorcentaje = (vida * 100f) / maxVida;
+                
                 if (vida <= 0) {
                     destruida = true;
+                    return false;
                 }else {
                 	//se reemplaza la tx
                 	 spr.setTexture(heridoTx);
@@ -96,11 +104,15 @@ public class BossFinal implements Enemigo {
                 }
                 return true;
             }
-       
-    }
+        }
         
-    return false;
+      return false;
     }
+    
+    public float getVidaPorcentaje() {
+        return vidaPorcentaje;
+    }
+    
 	public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public int getVida() {return vida;}

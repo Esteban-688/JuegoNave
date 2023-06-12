@@ -247,16 +247,17 @@ public class Nave4 {
     }
     public boolean checkCollision(BossFinal boss) {
     	
-    	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-    		 vida -=500;
+    	/* if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+    		 vida -= 500;
              //herido = true;
-             tiempoHerido = tiempoHeridoMax;
+            // tiempoHerido = tiempoHeridoMax;
              sonidoHerido.play();
+    	 
              if (vida <= 0) {
                  destruida = true;
              }
              return true;
-    	 }
+    	 }*/
     	
     	return false;
     }

@@ -13,13 +13,11 @@ public class BossMove {
     private float elapsedTime;
     private float maxTime;
 
-    public BossMove(Sprite sprite, float speed, Nave4 nave, int x , int y) {
-        this.sprite = sprite;
-        this.speed = speed;
-        this.nave = nave;
-        this.maxTime = 3.0f; // Tiempo máximo en segundos
-        //randomizePosition();
-        
+    public BossMove(Sprite sprite1, float speed1, Nave4 nave1, int x , int y) {
+        sprite = sprite1;
+        speed = speed1;
+        nave = nave1;
+        maxTime = 3.0f; // Tiempo máximo en segundos
         xPosition = x;
         yPosition = y;
     }
@@ -60,7 +58,7 @@ public class BossMove {
         // Actualizar la posición del sprite
         sprite.setPosition(currentX + movementX, currentY + movementY);
 
-        // Verificar si el sprite ha alcanzado la posición objetivo y generar una nueva posición aleatoria
+        // Verificar si el sprite ha alcanzado la posición objetivo y genera una nueva posición aleatoria
         if (Math.abs(deltaX) < speed && Math.abs(deltaY) < speed) {
             elapsedTime += deltaTime;
             if (elapsedTime >= maxTime) {
@@ -74,16 +72,11 @@ public class BossMove {
 
     private void randomizePosition(int minX, int maxX, int minY, int maxY) {
        
-    	 int margin = (int)sprite.getWidth(); // Margen igual al ancho del sprite
+    	 int margin = (int)sprite.getWidth();
     	    
     	 xPosition = MathUtils.random(minX + margin, maxX - margin);
-    	    yPosition = MathUtils.random(minY + margin, maxY - margin);   
-    	 
-    	 //xPosition = MathUtils.random(minX + margin, maxX - margin);
-    	    //yPosition = MathUtils.random(minY + margin, maxY - margin);
-    	    
-    	//xPosition = MathUtils.random(minX, maxX);
-       // yPosition = MathUtils.random(minY, maxY);
+         yPosition = MathUtils.random(minY + margin, maxY - margin);   
+    	
     }
     
     public Sprite getSprite() {
