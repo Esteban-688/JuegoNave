@@ -16,9 +16,14 @@ public class BalaEspecial extends Bullet {
     private Circle circle;
     private Sprite sprite;
     private float tiempoDeBala = 0.0f;
-
-    public BalaEspecial(float x, float y, Texture tx) {
-        circle = new Circle(x, y, sizeBala / 2);
+    private boolean mia;//verifica si la bala es mia //true es mi bala, si es falso es enemiga
+    
+    public BalaEspecial(int daño, float x, float y, Texture tx, boolean miaa) {
+       super(daño);
+       
+       mia=miaa;
+       
+    	circle = new Circle(x, y, sizeBala / 2);
         sprite = new Sprite(tx);
         sprite.setSize(sizeBala, sizeBala);
         }
@@ -56,6 +61,9 @@ public class BalaEspecial extends Bullet {
         
         
     }
+    public boolean getMia() {
+		return mia;
+	}
 
     public Circle getCircle() {
         return circle;

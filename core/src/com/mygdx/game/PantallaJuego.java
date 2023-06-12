@@ -114,9 +114,9 @@ public class PantallaJuego implements Screen {
         		alto/2,
         		6,
         		new Texture(Gdx.files.internal("MiniBossMarciano.png")),
-        		nave,
-        		new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
-        		Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+        		new Texture(Gdx.files.internal("MiniBossMarcianoHerido.png")),
+        		nave
+        		);
         
         //crear asteroides
         Random r = new Random();

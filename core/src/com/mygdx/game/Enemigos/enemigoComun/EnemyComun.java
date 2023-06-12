@@ -29,6 +29,7 @@ public class EnemyComun implements Enemigo {
     private float ySpeed;
     private float yEnemigo;
     private int alto;
+    private int daño;
     
     public EnemyComun(int x, int y, int xDistancia, float ySpeed, Texture tx, Nave4 nave1, Texture txBala, Sound soundBala, int altoY) {
         spr = new Sprite(tx);
@@ -38,6 +39,7 @@ public class EnemyComun implements Enemigo {
         
         distancia = xDistancia;
         this.ySpeed = ySpeed;
+        daño = 150;
         
         this.soundBala = soundBala;
         txBalaNormal = txBala;
@@ -61,6 +63,7 @@ public class EnemyComun implements Enemigo {
             float balaInicialY = spr.getY();
             
             BalaNormal bala = new BalaNormal(
+            		daño,
                     balaInicialX,
                     balaInicialY,
                     balaDireccionX * balaVelocidad,
@@ -135,20 +138,17 @@ public class EnemyComun implements Enemigo {
         
         return true;
     }
-    public boolean checkCollision(Bullet balaa) {
-        
-	if (balaa instanceof BalaNormal) {
+    public boolean checkCollision(Bullet bala) {
     	
-        BalaNormal bala = (BalaNormal) balaa;
         if(bala.getMia()) {
             if (bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-                vida-=50;
+                vida-=bala.getDaño();
                 if (vida <= 0) {
                     destruida = true;
                 }
                 return true;
             }
-        }
+        
     }
     return false;
     }

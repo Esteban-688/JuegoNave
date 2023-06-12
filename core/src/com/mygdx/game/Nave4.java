@@ -31,12 +31,14 @@ public class Nave4 {
     private float rotacion = -90;
     private boolean disparoEspecial = true;
     private float tiempo = 0.0f;
+    private int daño;
     
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
     	sonidoHerido = soundChoque;
     	this.soundBala = soundBala;
     	txBalaNormal = txBala;
+    	daño = 50;
     	
     	this.txBalaEspecial = txBalaEspecial;
     	this.soundBalaEspecial = soundBalaEspecial;
@@ -136,9 +138,11 @@ public class Nave4 {
 	            float balaInicialY = spr.getY()+15;// + spr.getHeight() / 2- 5;
 	        	    
 	            BalaEspecial balaEspecial = new BalaEspecial(
+	            		500,
 	                balaInicialX,
 	                balaInicialY,
-	                txBalaEspecial
+	                txBalaEspecial,
+	                true
 	            );
 	
 	            juego.agregarBala(balaEspecial);
@@ -170,7 +174,7 @@ public class Nave4 {
             float balaInicialX = spr.getX() + spr.getWidth() / 2 - 5;
             float balaInicialY = spr.getY() + spr.getHeight() / 2 - 5;
 
-            BalaNormal bala = new BalaNormal(
+            BalaNormal bala = new BalaNormal(daño,
                 balaInicialX,
                 balaInicialY,
                 balaDireccionX * balaVelocidad,
@@ -228,7 +232,7 @@ public class Nave4 {
             BalaNormal bala = (BalaNormal) balaa;
             if(!bala.getMia()) {
 	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-	                vida-=300;
+	                vida-=bala.getDaño();
 	                //herido = true;
 	                tiempoHerido = tiempoHeridoMax;
 	                sonidoHerido.play();
@@ -244,7 +248,7 @@ public class Nave4 {
     public boolean checkCollision(BossFinal boss) {
     	
     	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-    		// vida -=500;
+    		 vida -=500;
              //herido = true;
              tiempoHerido = tiempoHeridoMax;
              sonidoHerido.play();

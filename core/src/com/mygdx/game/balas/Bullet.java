@@ -8,12 +8,12 @@ import com.mygdx.game.Ball2;
 
 public abstract class Bullet {
 	
-    
+	protected int daño;
     protected boolean destroyed;
     
 
-    public Bullet() {
-        
+    public Bullet(int dañoAlObjeto) {
+        daño = dañoAlObjeto;
         destroyed = false;
     }
     public abstract void draw(SpriteBatch batch);
@@ -23,7 +23,11 @@ public abstract class Bullet {
     public abstract boolean checkCollision(Ball2 b2);
     
     public abstract Sprite getSprite();
+    public abstract boolean getMia();
     
+    public int getDaño() {
+    	return daño;
+    }
     
     public boolean isDestroyed() {
         return destroyed;

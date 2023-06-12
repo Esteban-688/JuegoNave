@@ -14,8 +14,10 @@ public class BalaNormal extends Bullet {
     private float tiempoTranscurrido;
     private boolean mia;//verifica si la bala es mia //true es mi bala, si es falso es enemiga
     
-	public BalaNormal(float x, float y, float xSpeed, float ySpeed, Texture tx, boolean balamia) {
-		//super(x,y,tx);
+	public BalaNormal(int daño, float x, float y, float xSpeed, float ySpeed, Texture tx, boolean balamia) {
+		
+		super(daño);
+		
 		spr = new Sprite(tx);
         spr.setPosition(x, y);
 		this.xSpeed = xSpeed;
@@ -58,7 +60,9 @@ public class BalaNormal extends Bullet {
             destroyed = true;
         }
 	}
+	
 	public void setVelocity(float xSpeed, float ySpeed) {
+	
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
     }
