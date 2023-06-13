@@ -23,7 +23,7 @@ public class AtaqueRecto implements BossEstrategy {
 	 public void atacar(BossAttack bossAttack, Nave4 nave, float delta, PantallaJuego juego, SpriteBatch batch) {
 		 
 		 	time += delta;
-	     	if (time >= 2) {
+	     	if (time >= 1) {
 	     		
 	            time = 0;
 
@@ -41,7 +41,7 @@ public class AtaqueRecto implements BossEstrategy {
 	            bulletDirectionY /= magnitude;
 
 	            // Establecer la velocidad de la bala
-	            float bulletSpeed = 10; // Velocidad de la bala
+	            float bulletSpeed = 12; // Velocidad de la bala
 	            float bulletSpeedX = bulletDirectionX * bulletSpeed;
 	            float bulletSpeedY = bulletDirectionY * bulletSpeed;
 

@@ -7,6 +7,6 @@ import com.mygdx.game.PantallaJuego;
 
 public class AtaqueRayo {
 	 public void atacar(BossAttack bossAttack, Nave4 nave, float delta, PantallaJuego juego, SpriteBatch batch) {
-	        // Lógica de ataque rayo
+	        // Lógica de ataque rayos
 	    }
 }

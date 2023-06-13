@@ -29,8 +29,8 @@ public class BossAttack {
         rotation = 90;
         
         //se define el ataque por defecto
-        ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
-       //ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
+        //ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
+       ataqueEstrategy = new AtaqueRecto(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
         									Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
     }
 

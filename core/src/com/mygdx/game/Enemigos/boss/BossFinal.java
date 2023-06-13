@@ -113,6 +113,10 @@ public class BossFinal implements Enemigo {
         return vidaPorcentaje;
     }
     
+    public void setAtaqueStrategy(BossEstrategy ataqueStrategy) {
+        ataque.setAtaqueStrategy(ataqueStrategy);
+    }
+    
 	public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public int getVida() {return vida;}

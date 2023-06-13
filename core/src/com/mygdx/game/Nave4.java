@@ -16,7 +16,7 @@ import com.mygdx.game.balas.Bullet;
 public class Nave4 {
 	
 	private boolean destruida = false;
-    private int vida = 30000;
+    private int vida = 50000;
     private float xVel = 0;
     private float yVel = 0;
     private Sprite spr;

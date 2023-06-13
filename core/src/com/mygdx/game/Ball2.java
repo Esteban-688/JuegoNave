@@ -70,6 +70,7 @@ public class Ball2 {
     public void draw(SpriteBatch batch) {
     	spr.draw(batch);
     }
+    
     /*
     public void checkCollision(Ball2 b2) {
         if(spr.getBoundingRectangle().overlaps(b2.spr.getBoundingRectangle())){

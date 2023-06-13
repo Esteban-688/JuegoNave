@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Enemigos.boss.AtaqueRecto;
+import com.mygdx.game.Enemigos.boss.AtaqueSpike;
+import com.mygdx.game.Enemigos.boss.BossEstrategy;
 import com.mygdx.game.Enemigos.boss.BossFinal;
 import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
 import com.mygdx.game.balas.Bullet;
@@ -22,12 +25,15 @@ public class PantallaJuego implements Screen {
 	private SpaceNavigation game;
 	private OrthographicCamera camera, originalCamera;	
 	private OrthographicCamera secondCamera;
+	private EarthMap earthMap;
+	
+	private BossEstrategy ataqueEstrategy;
 
 	private SpriteBatch batch;
 	private Sound explosionSound;
 	private Music gameMusic, battleMusic;
 	private int velXAsteroides, velYAsteroides, cantAsteroides;
-	private int ancho = 10000;//eje x
+	private int ancho = 20000;//eje x
 	private int alto = 1200;//eje y
 	private int anchoCamara;
 	private int altoCamara;
@@ -434,66 +440,63 @@ public class PantallaJuego implements Screen {
 	
 	@Override
 	public void render(float delta) {
-		 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		 
-		// Actualizar movimiento de la cámara
-	    actualizarCamara();
+	    Gdx.gl.glClearColor(0, 0, 0, 1);
+	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	    // Dibujar el fondo del espacio
-	    
+	  //  batch.setProjectionMatrix(camera.combined);
+
+	    // Actualizar movimiento de la cámara
+	    actualizarCamara();
 
 	    // Iniciar el dibujado de los elementos
 	    batch.begin();
-
-	    //mapa.render();//funcion que dibuja el fondo
+	    
+	    // Dibujar el mapa de la Tierra
+	    earthMap.update(porcentaje);
+	    earthMap.render(batch, camera);
 	    
 	    // Dibujar el encabezado
 	    dibujaEncabezado();
 	    
-		//valida que la nave no salga del limite del mapa 
+	    // Validar que la nave no salga del límite del mapa 
 	    porcentajeDeBarera();
-		  
-	    
-	    //si no esta herido comprueba colisiones de asteroides y balas, como su destruccion
+	      
+	    // Comprobar colisiones de asteroides y balas, y su destrucción si no está herido
 	    noEstaHeridoLaNave();
+	    
+	    // Dibujar balas
+	    for (Bullet bala : balas) {       
+	        bala.draw(batch);
+	    }
+	    
+	    // Dibujar y atacar enemigo común
+	    createEnemigo();
+	    enemigoComunDraw();
+	    
+	    // Dibujar nave
+	    nave.draw(batch, this);
+	    
+	    // Dibujar asteroides y manejar colisión con nave
+	    colisioNaveAsteroide();
 	      
-	      //dibujar balas
-	     for (Bullet bala : balas) {       
-	          bala.draw(batch);
-	      }
-	     
-	     //dibujar y atacar de enemigo comun
-	     	createEnemigo();
-	     	enemigoComunDraw();
-	    	 
-	      nave.draw(batch, this);
-	      //dibujar asteroides y manejar colision con nave
-	      colisioNaveAsteroide();
-		      
-	      //Cuando se acaben las vidas que hacer
-	      gameOver();
-	    //prueba
-			if (Gdx.input.isKeyPressed(Input.Keys.V)) {
-				 // Cambiar a la segunda cámara
-				
-		        camera = secondCamera;
-		        camera.position.x = nave.getX();
-		        camera.position.y = nave.getY();
-			}
-			if (Gdx.input.isKeyPressed(Input.Keys.B)) {
-				// Cambiar a la primera cámara
-		        camera = originalCamera;
-		        camera.position.x = nave.getX();
-		        camera.position.y = nave.getY();
-			}
-	      
-	      batch.end();
-	      
-	      
-	       
-	      
-	       
+	    // Verificar si se acabaron las vidas
+	    gameOver();
+	    
+	    // Prueba de ataque del jefe
+	    if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+	        ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
+	                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+	        boss.setAtaqueStrategy(ataqueEstrategy);
+	    }
+	    if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+	        ataqueEstrategy = new AtaqueRecto(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
+	                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+	        boss.setAtaqueStrategy(ataqueEstrategy);
+	    }
+
+	    batch.end();
 	}
+
     
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
@@ -506,8 +509,7 @@ public class PantallaJuego implements Screen {
 	}*/
 	public void show() {
         // Inicializar la instancia de EarthMap
-        mapa = new EarthMap();
-        mapa.create();
+		earthMap = new EarthMap();
         gameMusic.play();
     }
 
@@ -538,6 +540,7 @@ public class PantallaJuego implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		this.earthMap.dispose();
 		this.explosionSound.dispose();
 		this.gameMusic.dispose();
 		this.battleMusic.dispose();
