@@ -25,16 +25,18 @@ public class PantallaJuego implements Screen {
 	private SpaceNavigation game;
 	private OrthographicCamera camera, originalCamera;	
 	private OrthographicCamera secondCamera;
+	
 	private EarthMap earthMap;
 	
+	private int a= 3;
 	private BossEstrategy ataqueEstrategy;
 
 	private SpriteBatch batch;
 	private Sound explosionSound;
 	private Music gameMusic, battleMusic;
 	private int velXAsteroides, velYAsteroides, cantAsteroides;
-	private int ancho = 20000;//eje x
-	private int alto = 1200;//eje y
+	private int ancho;
+	private int alto;
 	private int anchoCamara;
 	private int altoCamara;
 	private int porcentaje = 0;
@@ -59,18 +61,19 @@ public class PantallaJuego implements Screen {
 	//private int xDer=0;
 	//private boolean vd = true;
 	
-	private EarthMap mapa;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
 	
 
-	public PantallaJuego(SpaceNavigation game, int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+	public PantallaJuego( SpaceNavigation game, int velXAsteroides, int velYAsteroides, int cantAsteroides, EarthMap map) {
+		
+		
+		ancho = 20000;
+		alto = 1200;
 		
 		this.game = game;
-		//this.ronda = ronda;
-		//this.score = score;
 		this.velXAsteroides = velXAsteroides;
 		this.velYAsteroides = velYAsteroides;
 		this.cantAsteroides = cantAsteroides;
@@ -87,7 +90,10 @@ public class PantallaJuego implements Screen {
 		secondCamera = new OrthographicCamera();
 		secondCamera.setToOrtho(false, 1800, 1600);
 
-		
+		//cargar mapa
+		earthMap = map;
+		earthMap.iniciar();
+		earthMap.createStars(ancho, alto);
 		
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
@@ -136,12 +142,7 @@ public class PantallaJuego implements Screen {
 	  	    balls2.add(bb);
 	  	    
 	  	}
-	    //EarthMap mapa = new EarthMap();
-	    //posicionar inicial
-	    //camera.position.x = nave.getX();
-		//camera.position.y = nave.getY();
-		//camera.update();
-	    //nave.bordeNave(0,ancho, alto);
+	   
 	   
 	}
 	
@@ -484,8 +485,10 @@ public class PantallaJuego implements Screen {
 	    
 	    // Prueba de ataque del jefe
 	    if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+	    	
 	        ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
-	                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+	                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
+	                6);
 	        boss.setAtaqueStrategy(ataqueEstrategy);
 	    }
 	    if (Gdx.input.isKeyPressed(Input.Keys.K)) {
@@ -508,8 +511,7 @@ public class PantallaJuego implements Screen {
 		gameMusic.play();
 	}*/
 	public void show() {
-        // Inicializar la instancia de EarthMap
-		earthMap = new EarthMap();
+		
         gameMusic.play();
     }
 

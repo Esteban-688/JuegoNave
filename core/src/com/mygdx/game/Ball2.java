@@ -67,6 +67,8 @@ public class Ball2 {
     public Rectangle getArea() {
     	return spr.getBoundingRectangle();
     }
+    
+    
     public void draw(SpriteBatch batch) {
     	spr.draw(batch);
     }

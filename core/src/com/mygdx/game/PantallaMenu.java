@@ -13,62 +13,36 @@ import com.badlogic.gdx.math.Vector3;
 
 
 public class PantallaMenu implements Screen {
-
-	/*private SpaceNavigation game;
-	private OrthographicCamera camera;
-
-	public PantallaMenu(SpaceNavigation game) {
-		this.game = game;
-        
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1200, 800);
-	}
-
-	@Override
-	public void render(float delta) {
-		ScreenUtils.clear(0, 0, 0.2f, 1);
-		
-		 
-		camera.update();
-		game.getBatch().setProjectionMatrix(camera.combined);
-
-		game.getBatch().begin();
-		game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 400);
-		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado o presiona cualquier tecla para comenzar ...", 100, 300);
-	
-		game.getBatch().end();
-
-		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-			Screen ss = new PantallaJuego(game,1,0,1,1,20);
-			ss.resize(1200, 800);
-			game.setScreen(ss);
-			dispose();
-		}
-	}
-	*/
 	
 	 	private SpaceNavigation game;
 	    private OrthographicCamera camera;
+	    
 	    private SpriteBatch batch;
 	    private Texture backgroundTexture;
+	    
+	    
 	    private Sprite playButtonSprite;
 	   // private Sprite levelsButtonSprite;
 	    private Sprite storeButtonSprite;
 	    private Vector3 touchPoint;
 	    private int screenWidth;
 	    private int screenHeight;
+	    
+	    private int ancho, alto;
 
 	    public PantallaMenu(SpaceNavigation game, int screenWidth, int screenHeight) {
 	        this.game = game;
 	        this.screenWidth = screenWidth;
 	        this.screenHeight = screenHeight;
-
+	        ancho = 20000;
+	        alto = 1200;
+	        
 	        camera = new OrthographicCamera();
 	        camera.setToOrtho(false, screenWidth, screenHeight);
 
 	        batch = new SpriteBatch();
 
-	        backgroundTexture = new Texture("fondoMenu.png");
+	        backgroundTexture = new Texture("inicio1.png");
 	        playButtonSprite = new Sprite(new Texture("botonPlay.png"));
 	        //levelsButtonSprite = new Sprite(new Texture("botonPlay.png"));
 	        storeButtonSprite = new Sprite(new Texture("store.png"));
@@ -77,7 +51,7 @@ public class PantallaMenu implements Screen {
 
 	        // boton play
 	        playButtonSprite.setSize(200, 150);
-	        playButtonSprite.setPosition(300,350);
+	        playButtonSprite.setPosition(60,300);
 	        
 	        //boton niveles
 	       // levelsButtonSprite.setSize(200, 150);
@@ -96,10 +70,16 @@ public class PantallaMenu implements Screen {
 	        batch.setProjectionMatrix(camera.combined);
 
 	        batch.begin();
+	        
+	        
 	        batch.draw(backgroundTexture, 0, 0);
+	        
+	        
 	        playButtonSprite.draw(batch);
 	      //  levelsButtonSprite.draw(batch);
 	        storeButtonSprite.draw(batch);
+	        
+	        
 	        batch.end();
 
 	        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
@@ -108,7 +88,7 @@ public class PantallaMenu implements Screen {
 
 	            //  "Jugar"
 	            if (playButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-	                Screen ss = new PantallaJuego(game, 1, 1, 20);
+	                Screen ss = new PantallaCarga(game);
 	                game.setScreen(ss);
 	                dispose();
 	            }

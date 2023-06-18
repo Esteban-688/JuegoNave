@@ -1,39 +1,66 @@
 package com.mygdx.game;
 
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-
-public class PantallaGameOver implements Screen {
-
+public class PantallaCarga implements Screen {
+	
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
-
-	public PantallaGameOver(SpaceNavigation game) {
+	
+	 private SpriteBatch batch;
+	 private Texture backgroundTexture;
+	
+	private EarthMap map;
+	private float time;
+	
+	public PantallaCarga(SpaceNavigation game) {
 		this.game = game;
+		
+        time = 0;
+        
+        map = new EarthMap();
+       
+        
         
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1200, 800);
-	}
+		camera.setToOrtho(false, 1920, 1200);
 
-	@Override
+        batch = new SpriteBatch();
+        
+        
+        backgroundTexture = new Texture("PantallaDeCarga.png");
+        
+	}
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
-
+		
 		camera.update();
-		game.getBatch().setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(camera.combined);
 
-		game.getBatch().begin();
-		game.getFont().draw(game.getBatch(), "Game Over !!! ", 120, 400,400,1,true);
-		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado para reiniciar ...", 100, 300);
-	
-		game.getBatch().end();
-
-		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-			Screen ss = new PantallaCarga(game);
+		time+= Gdx.graphics.getDeltaTime();
+		
+        batch.begin();
+        
+        batch.draw(backgroundTexture, 0, 0);
+        if(time >=1) {
+        	map.CargarMundo();
+        }
+        
+        
+        batch.end();
+       
+		
+		if (time >=5 ) {
+			time = 0;
+			 
+			 
+			Screen ss = new PantallaJuego(game,1,1,15, map);
 			//ss.resize(1200, 800);
 			game.setScreen(ss);
 			dispose();

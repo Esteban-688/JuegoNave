@@ -14,24 +14,29 @@ public class AtaqueSpike implements BossEstrategy{
 	 private int daño ;
 	 private Texture bulletTexture;
 	 private Sound sound;
-	 private int spikeCount;
+	 private int spikeCount, a;
 	 private float angleIncrement;
 	 
-	 public AtaqueSpike(Texture bullet, Sound sonido) {
+	 public AtaqueSpike(Texture bullet, Sound sonido, int spike) {
 		 
 		 bulletTexture = bullet;
 		 sound = sonido;
 		 
 		 daño = 1000 ;
-		 spikeCount = 6; // Número de espinas a lanzar
-		 angleIncrement = 360f / spikeCount; //separacion
+		 a = spike; // Número de espinas a lanzar
+		 
 		 
 	 }
 
 	@Override
 	public void atacar(BossAttack bossAttack, Nave4 nave, float delta, PantallaJuego juego, SpriteBatch batch) {
+		 //separacion
+		spikeCount=a;
+		angleIncrement = 360f / spikeCount;
+		
 		time += delta;
-        if (time >= 1) {
+		
+        if (time >= 2) {
             time = 0;
 
             float initialAngle = bossAttack.getRotation(); // Ángulo inicial de las espinas

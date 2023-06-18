@@ -13,24 +13,13 @@ public class EarthMap {
     private Sprite earthSprite; 
     private Texture starTexture;
     private Sprite[] stars;
+    private int ancho, alto;
+    private boolean mundoCargado;
     
-
-    public EarthMap() {
-        
-        earthTextures = new Texture[100];
-        for (int i = 0; i < 100; i++) {
-        	int x = i+1;
-            earthTextures[i] = new Texture(Gdx.files.internal("earth" + x + ".png"));
-        }
-
-        // Crear el sprite del planeta Tierra y posicionarlo en el centro de la pantalla
-        earthSprite = new Sprite(earthTextures[0]);
-        earthSprite.setPosition((Gdx.graphics.getWidth() - earthSprite.getWidth()) / 2,
-                (Gdx.graphics.getHeight() - earthSprite.getHeight()) / 2);
-        
+    public EarthMap() { 
+    	mundoCargado = false;
+    	
         starTexture = new Texture(Gdx.files.internal("star.png"));
-        
-        createStars();
     }
 
     public void update(float porcentaje) {
@@ -57,23 +46,44 @@ public class EarthMap {
         }
     }
     
-    private void createStars() {
-        int numStars = 1000;
+    public void createStars(int ancho, int alto) {
+        int numStars = 10000;
         stars = new Sprite[numStars];
 
         for (int i = 0; i < numStars; i++) {
             Sprite star = new Sprite(starTexture);
 
             // Posicionar la estrella de manera aleatoria en el mapa
-            float x = MathUtils.random(Gdx.graphics.getWidth());
-            float y = MathUtils.random(Gdx.graphics.getHeight());
+            float x = MathUtils.random(ancho);
+            float y = MathUtils.random(alto);
 
             star.setPosition(x, y);
             stars[i] = star;
         }
     }
+    
+    public boolean CargarMundo() {
+    	if(!mundoCargado) {
+    		
+    		mundoCargado = true;
+    		
+	    	earthTextures = new Texture[100];
+	    	
+	        for (int i = 0; i < 100; i++) {
+	        	int x = i+1;
+	            earthTextures[i] = new Texture(Gdx.files.internal("earth" + x + ".png"));
+	        }
+	        return true;
+    	}
+        return false;
+    }
 
-
+    public void iniciar() {
+    	// Crear el sprite del planeta Tierra y posicionarlo en el centro de la pantalla
+        earthSprite = new Sprite(earthTextures[0]);
+        earthSprite.setPosition((Gdx.graphics.getWidth() - earthSprite.getWidth()) / 2,
+                (Gdx.graphics.getHeight() - earthSprite.getHeight()) / 2);
+    }
     public void dispose() {
         // Liberar las texturas del planeta Tierra
         for (Texture texture : earthTextures) {
