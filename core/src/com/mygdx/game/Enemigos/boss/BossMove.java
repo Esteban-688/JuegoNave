@@ -2,7 +2,7 @@ package com.mygdx.game.Enemigos.boss;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import com.mygdx.game.Nave4;
+import com.mygdx.game.navecita.Nave4;
 
 public class BossMove {
     private Sprite sprite;

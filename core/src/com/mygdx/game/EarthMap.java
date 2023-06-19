@@ -13,15 +13,22 @@ public class EarthMap {
     private Sprite earthSprite; 
     private Texture starTexture;
     private Sprite[] stars;
-    private int ancho, alto;
     private boolean mundoCargado;
+    private static EarthMap instance;
     
-    public EarthMap() { 
+    private EarthMap() { 
     	mundoCargado = false;
-    	
         starTexture = new Texture(Gdx.files.internal("star.png"));
     }
-
+    
+    public static EarthMap getInstance() {
+    	
+        if (instance == null) {
+            instance = new EarthMap();
+        }
+        return instance;
+    }
+    
     public void update(float porcentaje) {
         int index = (int) (porcentaje / 100f * earthTextures.length);
         if(porcentaje <=100) {
@@ -63,6 +70,7 @@ public class EarthMap {
     }
     
     public boolean CargarMundo() {
+    	
     	if(!mundoCargado) {
     		
     		mundoCargado = true;
@@ -84,6 +92,7 @@ public class EarthMap {
         earthSprite.setPosition((Gdx.graphics.getWidth() - earthSprite.getWidth()) / 2,
                 (Gdx.graphics.getHeight() - earthSprite.getHeight()) / 2);
     }
+    
     public void dispose() {
         // Liberar las texturas del planeta Tierra
         for (Texture texture : earthTextures) {

@@ -18,6 +18,7 @@ import com.mygdx.game.Enemigos.boss.BossEstrategy;
 import com.mygdx.game.Enemigos.boss.BossFinal;
 import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
 import com.mygdx.game.balas.Bullet;
+import com.mygdx.game.navecita.Nave4;
 
 
 public class PantallaJuego implements Screen {
@@ -28,7 +29,6 @@ public class PantallaJuego implements Screen {
 	
 	private EarthMap earthMap;
 	
-	private int a= 3;
 	private BossEstrategy ataqueEstrategy;
 
 	private SpriteBatch batch;
@@ -51,15 +51,9 @@ public class PantallaJuego implements Screen {
 	private BossFinal boss;
 	private boolean bossActivado = false;
 	private boolean bossMuerto = false;
-	//private EnemyComun enemigoComun, enemigoComun1, enemigoComun2;
+	
 	
 	private float velocidadEnemigo = 5;
-	
-	
-	//private int yUp=0;
-	//private int yDown=0;
-	//private int xDer=0;
-	//private boolean vd = true;
 	
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
@@ -67,7 +61,7 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
 	
 
-	public PantallaJuego( SpaceNavigation game, int velXAsteroides, int velYAsteroides, int cantAsteroides, EarthMap map) {
+	public PantallaJuego( SpaceNavigation game, int velXAsteroides, int velYAsteroides, int cantAsteroides ){
 		
 		
 		ancho = 20000;
@@ -91,7 +85,7 @@ public class PantallaJuego implements Screen {
 		secondCamera.setToOrtho(false, 1800, 1600);
 
 		//cargar mapa
-		earthMap = map;
+		earthMap = EarthMap.getInstance();
 		earthMap.iniciar();
 		earthMap.createStars(ancho, alto);
 		
@@ -131,7 +125,7 @@ public class PantallaJuego implements Screen {
         		);
         
         //crear asteroides
-        Random r = new Random();
+       /* Random r = new Random();
 	    for (int i = 0; i < cantAsteroides; i++) {
 	        Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
 	  	            50+r.nextInt((int)Gdx.graphics.getHeight()-50),
@@ -141,7 +135,7 @@ public class PantallaJuego implements Screen {
 	  	    balls1.add(bb);
 	  	    balls2.add(bb);
 	  	    
-	  	}
+	  	}*/
 	   
 	   
 	}

@@ -4,9 +4,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.mygdx.game.Nave4;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.balas.BalaNormal;
+import com.mygdx.game.navecita.Nave4;
 
 public class AtaqueSpike implements BossEstrategy{
 	

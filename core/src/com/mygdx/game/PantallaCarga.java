@@ -24,7 +24,8 @@ public class PantallaCarga implements Screen {
 		
         time = 0;
         
-        map = new EarthMap();
+        
+        map = EarthMap.getInstance();
        
         
         
@@ -48,20 +49,17 @@ public class PantallaCarga implements Screen {
         batch.begin();
         
         batch.draw(backgroundTexture, 0, 0);
+        
+        batch.end();
+       
         if(time >=1) {
         	map.CargarMundo();
         }
         
-        
-        batch.end();
-       
-		
 		if (time >=5 ) {
 			time = 0;
 			 
-			 
-			Screen ss = new PantallaJuego(game,1,1,15, map);
-			//ss.resize(1200, 800);
+			Screen ss = new PantallaJuego(game,1,1,15);
 			game.setScreen(ss);
 			dispose();
 		}

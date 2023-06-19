@@ -3,9 +3,9 @@ package com.mygdx.game.Enemigos.boss;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Nave4;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.balas.BalaNormal;
+import com.mygdx.game.navecita.Nave4;
 
 public class AtaqueRecto implements BossEstrategy {
 	 private float time;

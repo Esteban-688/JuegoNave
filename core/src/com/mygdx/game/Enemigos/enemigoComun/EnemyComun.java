@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Ball2;
-import com.mygdx.game.Nave4;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.Enemigos.Enemigo;
 import com.mygdx.game.balas.BalaNormal;
 import com.mygdx.game.balas.Bullet;
+import com.mygdx.game.navecita.Nave4;
 
 
 public class EnemyComun implements Enemigo {

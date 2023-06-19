@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.mygdx.game.Nave4;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.balas.BalaNormal;
+import com.mygdx.game.navecita.Nave4;
 
 
 

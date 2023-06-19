@@ -15,7 +15,7 @@ public class Ball2 {
     private Sprite spr;
     private int heart = 10;
 
-    public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx, int bordeX, int bordeY) {
+    public Ball2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx, int bordeX, int bordeY, int t) {
     	spr = new Sprite(tx);
     	this.x = x; 
     	/*
