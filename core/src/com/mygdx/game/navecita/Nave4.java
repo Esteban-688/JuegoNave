@@ -1,7 +1,6 @@
 package com.mygdx.game.navecita;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,28 +9,26 @@ import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.Ball2;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.Enemigos.boss.BossFinal;
-import com.mygdx.game.balas.BalaEspecial;
-import com.mygdx.game.balas.BalaNormal;
 import com.mygdx.game.balas.Bullet;
 
 
 public class Nave4 implements Nave{
 	
 	private boolean destruida = false;
-    private int vida = 50000;
+    private int vida;
     private Sprite spr;
-    private float xVel;
-	private float yVel;
     private Sound sonidoHerido;
     private boolean herido = false;
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
     private float rotacion = -90;
-    private int daño;
     private AtacarNave ataque;
 	private MoverNave mover;
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
+    	
+    	vida = 50000;
+    	
     	sonidoHerido = soundChoque;
     	spr = new Sprite(tx);
     	spr.setPosition(x, y);
@@ -46,9 +43,6 @@ public class Nave4 implements Nave{
     	ataque= new AtacarNave(spr,txBala, soundBala, txBalaEspecial, soundBalaEspecial);
     	
     	mover = new MoverNave(spr);
-    	
-    	xVel = 0;
-		yVel = 0;
     	
     }
     
@@ -80,9 +74,14 @@ public class Nave4 implements Nave{
     	    }
     	
     }
+    
+    public void inmune() {
+    	
+    }
+    
     public boolean checkCollision(Ball2 b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
-        	// rebote
+        	/* rebote
             if (xVel == 0) xVel += b.getXSpeed()/2;
             if (b.getXSpeed() ==0) b.setXSpeed(b.getXSpeed() + (int)xVel/2);
             xVel = - xVel;
@@ -109,11 +108,7 @@ public class Nave4 implements Nave{
         return false;
     }
     
-    public boolean checkCollision(Bullet balaa) {
-    	
-        if (balaa instanceof BalaNormal) {
-        	
-            BalaNormal bala = (BalaNormal) balaa;
+    public boolean checkCollision(Bullet bala) {
             if(!bala.getMia()) {
 	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
 	                vida-=bala.getDaño();
@@ -126,23 +121,19 @@ public class Nave4 implements Nave{
 	                return true;
 	            }
             }
-        }
         return false;
     }
     public boolean checkCollision(BossFinal boss) {
     	
-    	/* if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-    		 vida -= 500;
-             //herido = true;
-            // tiempoHerido = tiempoHeridoMax;
+    	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+    		 vida -= 50;
              sonidoHerido.play();
-    	 
              if (vida <= 0) {
                  destruida = true;
              }
              return true;
-    	 }*/
-    	
+    	 }
+    	 
     	return false;
     }
     
