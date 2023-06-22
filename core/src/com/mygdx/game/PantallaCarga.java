@@ -26,7 +26,7 @@ public class PantallaCarga implements Screen {
         
         
         map = EarthMap.getInstance();
-       
+        
         
         
 		camera = new OrthographicCamera();

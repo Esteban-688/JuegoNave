@@ -45,7 +45,13 @@ public class AtaqueRecto implements BossEstrategy {
 	            float bulletSpeedX = bulletDirectionX * bulletSpeed;
 	            float bulletSpeedY = bulletDirectionY * bulletSpeed;
 
-	            BalaNormal bala = new BalaNormal(daño ,bossAttack.getSprite().getX(), bossAttack.getSprite().getY(), bulletSpeedX, bulletSpeedY, bulletTexture, false);
+	            BalaNormal bala = new BalaNormal(daño, 
+	            		bossAttack.getSprite().getX(),
+	            		bossAttack.getSprite().getY(),
+	            		bulletSpeedX,
+	            		bulletSpeedY,
+	            		bulletTexture,
+	            		false);
 
 	            juego.agregarBala(bala);
 	            sound.play();

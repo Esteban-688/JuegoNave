@@ -54,15 +54,17 @@ public class BossFinal implements Enemigo {
         yDown = 0;
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, PantallaJuego juego) {
         spr.draw(batch);
+        moverse(spr);
+        atacar(batch, juego, spr);
     }
 
-    public void atacar(SpriteBatch batch, PantallaJuego juego) {
+    public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
         ataque.atacar(tiempo, juego, batch); 
     }
 
-    public void moverse() {
+    public void moverse(Sprite spr) {
         movement.move(xIzq, xDer, yDown, yUp, Gdx.graphics.getDeltaTime());
        
     }

@@ -1,8 +1,6 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -16,8 +14,13 @@ import com.mygdx.game.Enemigos.boss.AtaqueRecto;
 import com.mygdx.game.Enemigos.boss.AtaqueSpike;
 import com.mygdx.game.Enemigos.boss.BossEstrategy;
 import com.mygdx.game.Enemigos.boss.BossFinal;
+import com.mygdx.game.Enemigos.enemigoComun.ActionCompany;
+import com.mygdx.game.Enemigos.enemigoComun.ArtilleroManuFacturer;
 import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
+import com.mygdx.game.Enemigos.enemigoComun.LanzamisilesManuFacturer;
 import com.mygdx.game.balas.Bullet;
+import com.mygdx.game.diccionaInterfaces.Atacar;
+import com.mygdx.game.diccionaInterfaces.Moverse;
 import com.mygdx.game.navecita.Nave4;
 
 
@@ -40,7 +43,6 @@ public class PantallaJuego implements Screen {
 	private int anchoCamara;
 	private int altoCamara;
 	private int porcentaje = 0;
-	private float tiempoTotal = 0.0f;
 	private float tiempoTotal1 = 0.0f;
 	private boolean barreraBoolean = false;
 	private int barreraX = 0, barreraY = 0;
@@ -53,7 +55,10 @@ public class PantallaJuego implements Screen {
 	private boolean bossMuerto = false;
 	
 	
-	private float velocidadEnemigo = 5;
+	private ActionCompany lanzamisiles, artillero;
+	private Atacar ataqueLanzamisiles, ataqueArtillero;
+	private Moverse movimientoLanzamisiles, movimientoArtillero;
+	
 	
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
@@ -64,8 +69,8 @@ public class PantallaJuego implements Screen {
 	public PantallaJuego( SpaceNavigation game, int velXAsteroides, int velYAsteroides, int cantAsteroides ){
 		
 		
-		ancho = 20000;
-		alto = 1200;
+		ancho = Config.getDer();
+		alto = Config.getUp();
 		
 		this.game = game;
 		this.velXAsteroides = velXAsteroides;
@@ -112,7 +117,7 @@ public class PantallaJuego implements Screen {
 	    				new Texture(Gdx.files.internal("anilloEspecial.png")),//bala especial
 	    				Gdx.audio.newSound(Gdx.files.internal("soundBalaespecial.mp3"))//sonido bala especial
 	    				); 
-       // nave.setVida(vida);
+       Config.setnave(nave);
         
 	    
 	  //crear y cargar boss
@@ -271,11 +276,10 @@ public class PantallaJuego implements Screen {
 			    		  }
 					
 		    		  if(!boss.isDestruida()) {
-		    			  boss.draw(batch);
-		    			  boss.moverse();
-			    		  boss.atacar(batch , this);
+		    			  boss.draw(batch,this);
 			    		 
-			    		  nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
+			    		 nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
+			    		 
 			    		
 		    		  }
 		    		  else {
@@ -393,8 +397,7 @@ public class PantallaJuego implements Screen {
 		
 		for(int x = 0; x < enemigos.size(); x++) {
   		  EnemyComun nuevo = enemigos.get(x);
-  		  nuevo.draw(batch);
-  		  nuevo.atacar(batch, this);
+  		  nuevo.draw(batch, this);
   	  }
 	}
 
@@ -413,23 +416,47 @@ public class PantallaJuego implements Screen {
 	}
 
 	private void createEnemigo() {
+		
 		tiempoTotal1 += Gdx.graphics.getDeltaTime();
 		
-		if(tiempoTotal1 > 3 && enemigos.size()< 6 && contadorDeEnemigos <= 100 && !bossActivado ) {
+		
+		//uso abstract factory
+		lanzamisiles = new LanzamisilesManuFacturer();//company
+		ataqueLanzamisiles = lanzamisiles.createAtaque();//atacar
+		movimientoLanzamisiles = lanzamisiles.createMovimiento();//moverse
+		
+		artillero = new ArtilleroManuFacturer();
+		ataqueArtillero = artillero.createAtaque();
+		movimientoArtillero = artillero.createMovimiento();
+		
+		if(tiempoTotal1 > 2 && enemigos.size()< 5 && contadorDeEnemigos <= 100 && !bossActivado ) {
+			
 			tiempoTotal1= 0.0f;
-			enemigoComun = new EnemyComun (ancho/2,//x
-					alto/2,//y
-					300,
-					velocidadEnemigo,
-					new Texture(Gdx.files.internal("MainShip3.png")),//textura
-					nave,//nave
-					new Texture(Gdx.files.internal("Rocket2.png")),//bala
-					Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),//sonido
-					alto// amplitud
+			
+			int randomNumber = numeroRandom.generateRandomNumber();
+			
+			if(randomNumber == 1) {
+				
+			enemigoComun = new EnemyComun (nave.getX()+200,//x
+					alto/2,//
+					new Texture(Gdx.files.internal("TxLanzamisilesNave.png")),
+					ataqueLanzamisiles,//tipo de ataque
+					movimientoLanzamisiles//tipo de moviento
 					);
-			//añadir
+			}
+			else if(randomNumber == 2) {
+				enemigoComun = new EnemyComun (nave.getX()-300,//x
+						alto/2,
+						new Texture(Gdx.files.internal("TxArtilleroNave.png")),
+						ataqueArtillero,//tipo de ataque
+						movimientoArtillero//tipo de movimiento
+						);
+			}
+			//añadir 
+			if(enemigoComun != null) {
 			enemigos.add(enemigoComun);
 			contadorDeEnemigos ++;
+			}
 		}
     }
 	

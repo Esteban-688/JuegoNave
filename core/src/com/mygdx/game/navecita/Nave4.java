@@ -52,16 +52,16 @@ public class Nave4 implements Nave{
       
     	spr.draw(batch);
     	
-        moverse();
-    	atacar(batch, juego);
+        moverse(spr);
+    	atacar(batch, juego,spr);
         
 		}
 	
-    public void atacar(SpriteBatch batch, PantallaJuego juego) {
+    public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
     	ataque.atacar(batch, juego, mover.getRotacion());
     }
     
-    public void moverse() {
+    public void moverse(Sprite sprite) {
 
     	if (!herido) {
     		mover.mover();
