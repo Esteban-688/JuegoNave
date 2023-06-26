@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.navecita.Nave4;
 
 public class PantallaCarga implements Screen {
 	
@@ -19,9 +20,11 @@ public class PantallaCarga implements Screen {
 	private EarthMap map;
 	private float time;
 	
-	public PantallaCarga(SpaceNavigation game) {
+	private Nave4 nave;
+	
+	public PantallaCarga(SpaceNavigation game, Nave4 navecita) {
 		this.game = game;
-		
+		nave = navecita;
         time = 0;
         
         
@@ -53,16 +56,16 @@ public class PantallaCarga implements Screen {
         batch.end();
        
         if(time >=1) {
-        	map.CargarMundo();
+        	time = 0;
+        	if(map.CargarMundo()) {
+        		nave.inicio((500+Config.getDer())-Config.getDer(),  (Config.getUp()-(Config.getUp()/2)));
+        		Screen ss = new PantallaJuego(game, nave);
+    			game.setScreen(ss);
+    			dispose();
+    			
+        	}
         }
-        
-		if (time >=5 ) {
-			time = 0;
-			 
-			Screen ss = new PantallaJuego(game,1,1,15);
-			game.setScreen(ss);
-			dispose();
-		}
+    
 	}
  
 	

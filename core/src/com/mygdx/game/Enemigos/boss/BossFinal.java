@@ -56,8 +56,8 @@ public class BossFinal implements Enemigo {
 
     public void draw(SpriteBatch batch, PantallaJuego juego) {
         spr.draw(batch);
-        moverse(spr);
-        atacar(batch, juego, spr);
+       // moverse(spr);
+        //atacar(batch, juego, spr);
     }
 
     public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {

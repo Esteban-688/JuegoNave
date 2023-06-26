@@ -5,16 +5,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.navecita.Nave4;
 
 
 public class PantallaGameOver implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
-
-	public PantallaGameOver(SpaceNavigation game) {
+	private Nave4 nave;
+	public PantallaGameOver(SpaceNavigation game, Nave4 navecita) {
 		this.game = game;
-        
+        nave = navecita;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
 	}
@@ -33,7 +34,7 @@ public class PantallaGameOver implements Screen {
 		game.getBatch().end();
 
 		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-			Screen ss = new PantallaCarga(game);
+			Screen ss = new PantallaMenu(game, nave);
 			//ss.resize(1200, 800);
 			game.setScreen(ss);
 			dispose();

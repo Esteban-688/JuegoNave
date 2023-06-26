@@ -5,7 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
-
+import com.mygdx.game.Tienda.Tienda;
+import com.mygdx.game.navecita.Nave4;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,25 +21,19 @@ public class PantallaMenu implements Screen {
 	    private SpriteBatch batch;
 	    private Texture backgroundTexture;
 	    
-	    
 	    private Sprite playButtonSprite;
 	   // private Sprite levelsButtonSprite;
 	    private Sprite storeButtonSprite;
 	    private Vector3 touchPoint;
-	    private int screenWidth;
-	    private int screenHeight;
-	    
-	    private int ancho, alto;
+	    private Nave4 nave;
+	   
 
-	    public PantallaMenu(SpaceNavigation game, int screenWidth, int screenHeight) {
+	    public PantallaMenu(SpaceNavigation game, Nave4 navecita) {
 	        this.game = game;
-	        this.screenWidth = screenWidth;
-	        this.screenHeight = screenHeight;
-	        ancho = 20000;
-	        alto = 1200;
-	        
+	 
+	        nave= navecita;
 	        camera = new OrthographicCamera();
-	        camera.setToOrtho(false, screenWidth, screenHeight);
+	        camera.setToOrtho(false, 1000,600);
 
 	        batch = new SpriteBatch();
 
@@ -88,7 +83,7 @@ public class PantallaMenu implements Screen {
 
 	            //  "Jugar"
 	            if (playButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-	                Screen ss = new PantallaCarga(game);
+	                Screen ss = new PantallaCarga(game, nave);
 	                game.setScreen(ss);
 	                dispose();
 	            }
@@ -101,7 +96,7 @@ public class PantallaMenu implements Screen {
 
 	            // "Tienda"
 	            if (storeButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-	                // game.setScreen(new Tienda(game));
+	                 game.setScreen(new Tienda(game, nave));
 	                dispose();
 	            }
 	        }

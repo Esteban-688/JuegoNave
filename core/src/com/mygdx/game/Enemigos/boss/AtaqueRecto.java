@@ -1,5 +1,6 @@
 package com.mygdx.game.Enemigos.boss;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,11 +21,11 @@ public class AtaqueRecto implements BossEstrategy {
 	 }
 	
 	
-	 public void atacar(BossAttack bossAttack, Nave4 nave, float delta, PantallaJuego juego, SpriteBatch batch) {
+	 public void atacar(BossAttack bossAttack, Nave4 nave, PantallaJuego juego, SpriteBatch batch) {
 		 
-		 	time += delta;
-	     	if (time >= 1) {
-	     		
+		 	time += Gdx.graphics.getDeltaTime();
+	     	if (time >= 0.6) {
+	     		System.out.println("ataco");
 	            time = 0;
 
 	            // Obtener la posición actual de la nave

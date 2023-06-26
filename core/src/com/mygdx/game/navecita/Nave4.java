@@ -27,7 +27,7 @@ public class Nave4 implements Nave{
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
     	
-    	vida = 50000;
+    	vida = 20000;
     	
     	sonidoHerido = soundChoque;
     	spr = new Sprite(tx);
@@ -46,7 +46,12 @@ public class Nave4 implements Nave{
     	
     }
     
-    
+    public void inicio(int x, int y) {
+    	vida = 20000;
+    	spr.setBounds(x, y, 45, 45);
+    	spr.setRotation(rotacion);
+    	
+    }
     
     public void draw(SpriteBatch batch, PantallaJuego juego) {
       
@@ -126,7 +131,7 @@ public class Nave4 implements Nave{
     public boolean checkCollision(BossFinal boss) {
     	
     	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-    		 vida -= 50;
+    		 vida -= 1;
              sonidoHerido.play();
              if (vida <= 0) {
                  destruida = true;
@@ -174,5 +179,9 @@ public class Nave4 implements Nave{
     public int getY() {return (int) spr.getY();}
 	public void dañoVida(int vida2) {vida = vida-vida2;}
 	public void setPosition(float x, float y) {spr.setPosition(x, y);}
+	
+	public void setTx(Texture skin) {
+		 spr.setTexture(skin);
+	}
 	
 }

@@ -16,6 +16,7 @@ import com.mygdx.game.Enemigos.boss.BossEstrategy;
 import com.mygdx.game.Enemigos.boss.BossFinal;
 import com.mygdx.game.Enemigos.enemigoComun.ActionCompany;
 import com.mygdx.game.Enemigos.enemigoComun.ArtilleroManuFacturer;
+import com.mygdx.game.Enemigos.enemigoComun.CreateEnemigo;
 import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
 import com.mygdx.game.Enemigos.enemigoComun.LanzamisilesManuFacturer;
 import com.mygdx.game.balas.Bullet;
@@ -55,9 +56,7 @@ public class PantallaJuego implements Screen {
 	private boolean bossMuerto = false;
 	
 	
-	private ActionCompany lanzamisiles, artillero;
-	private Atacar ataqueLanzamisiles, ataqueArtillero;
-	private Moverse movimientoLanzamisiles, movimientoArtillero;
+	private CreateEnemigo crearEnemy;
 	
 	
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
@@ -66,16 +65,16 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
 	
 
-	public PantallaJuego( SpaceNavigation game, int velXAsteroides, int velYAsteroides, int cantAsteroides ){
+	public PantallaJuego( SpaceNavigation game, Nave4 navecita ){
 		
 		
 		ancho = Config.getDer();
 		alto = Config.getUp();
 		
 		this.game = game;
-		this.velXAsteroides = velXAsteroides;
-		this.velYAsteroides = velYAsteroides;
-		this.cantAsteroides = cantAsteroides;
+		//this.velXAsteroides = velXAsteroides;
+		//this.velYAsteroides = velYAsteroides;
+		//this.cantAsteroides = cantAsteroides;
 		
 		anchoCamara = 800;
 		altoCamara = 640;
@@ -106,19 +105,11 @@ public class PantallaJuego implements Screen {
 		gameMusic.setVolume(0.6f);
 		gameMusic.play();
 		
-	    // cargar imagen de la nave, 64x64   
-	    nave = new Nave4(((500+ancho)-ancho),
-	    				(alto-(alto/2)),
-	    				//new Texture(Gdx.files.internal("MainShip3.png")),
-	    				new Texture(Gdx.files.internal("naveMala1.png")),
-	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
-	    				new Texture(Gdx.files.internal("Rocket2.png")), //bala normal
-	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),//sonido bala normal
-	    				new Texture(Gdx.files.internal("anilloEspecial.png")),//bala especial
-	    				Gdx.audio.newSound(Gdx.files.internal("soundBalaespecial.mp3"))//sonido bala especial
-	    				); 
+	   nave = navecita;
        Config.setnave(nave);
+       
         
+       crearEnemy = new CreateEnemigo();
 	    
 	  //crear y cargar boss
 	    boss = new BossFinal(ancho,
@@ -249,7 +240,7 @@ public class PantallaJuego implements Screen {
 		    	  
 		    	  
 		    		
-		    		 System.out.println(" x "+nave.getX() +" y "+ nave.getY());
+		    		// System.out.println(" x "+nave.getX() +" y "+ nave.getY());
 		    		 
 		    		 
 						if(barreraBoolean) {//solo sucede una vez
@@ -277,7 +268,8 @@ public class PantallaJuego implements Screen {
 					
 		    		  if(!boss.isDestruida()) {
 		    			  boss.draw(batch,this);
-			    		 
+			    		 boss.atacar(batch, this, boss.getSprite());
+			    		 boss.moverse(boss.getSprite());
 			    		 nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
 			    		 
 			    		
@@ -299,7 +291,7 @@ public class PantallaJuego implements Screen {
 		    			  
 		    		  }
 		    		   if(porcentaje >= 100  && bossMuerto) {
-		    	    	  Screen ss = new PantallaMenu(game, 800, 600);
+		    	    	  Screen ss = new PantallaMenu(game, nave);
 		    	    	 // ss.resize(1200, 800);
 		    	    	  game.setScreen(ss);
 		    	    	  dispose();
@@ -317,7 +309,7 @@ public class PantallaJuego implements Screen {
 		if (nave.estaDestruido()) {
   			//if (score > game.getHighScore())
   				//game.setHighScore(score);
-	    	Screen ss = new PantallaGameOver(game);
+	    	Screen ss = new PantallaGameOver(game, nave);
   			ss.resize(1200, 800);
   			game.setScreen(ss);
   			dispose();
@@ -419,46 +411,29 @@ public class PantallaJuego implements Screen {
 		
 		tiempoTotal1 += Gdx.graphics.getDeltaTime();
 		
-		
-		//uso abstract factory
-		lanzamisiles = new LanzamisilesManuFacturer();//company
-		ataqueLanzamisiles = lanzamisiles.createAtaque();//atacar
-		movimientoLanzamisiles = lanzamisiles.createMovimiento();//moverse
-		
-		artillero = new ArtilleroManuFacturer();
-		ataqueArtillero = artillero.createAtaque();
-		movimientoArtillero = artillero.createMovimiento();
-		
-		if(tiempoTotal1 > 2 && enemigos.size()< 5 && contadorDeEnemigos <= 100 && !bossActivado ) {
+		if(tiempoTotal1 > 2 &&//cada cuanto se generan
+				enemigos.size()< 3 &&//cuantos enemigos por mapa
+				contadorDeEnemigos <= 100 &&//maxima cantidad de enemigos
+				!bossActivado ) {//si el boss no esta activo generan
 			
-			tiempoTotal1= 0.0f;
-			
-			int randomNumber = numeroRandom.generateRandomNumber();
-			
-			if(randomNumber == 1) {
-				
-			enemigoComun = new EnemyComun (nave.getX()+200,//x
-					alto/2,//
-					new Texture(Gdx.files.internal("TxLanzamisilesNave.png")),
-					ataqueLanzamisiles,//tipo de ataque
-					movimientoLanzamisiles//tipo de moviento
-					);
-			}
-			else if(randomNumber == 2) {
-				enemigoComun = new EnemyComun (nave.getX()-300,//x
-						alto/2,
-						new Texture(Gdx.files.internal("TxArtilleroNave.png")),
-						ataqueArtillero,//tipo de ataque
-						movimientoArtillero//tipo de movimiento
-						);
-			}
-			//añadir 
-			if(enemigoComun != null) {
+			enemigoComun = crearEnemy.CrearArtillero(nave.getX()-360, alto/2);
+			//añadir  
 			enemigos.add(enemigoComun);
 			contadorDeEnemigos ++;
 			}
+		if(tiempoTotal1 > 2 &&//cada cuanto se generan
+				enemigos.size()< 5 &&//cuantos enemigos por mapa
+				contadorDeEnemigos <= 100 &&//maxima cantidad de enemigos
+				!bossActivado ) {//si el boss no esta activo generan
+		
+			tiempoTotal1= 0.0f;
+		
+			enemigoComun = crearEnemy.crearLanzamisiles(nave.getX()+200, alto/2);
+			//añadir  
+			enemigos.add(enemigoComun);
+			contadorDeEnemigos ++;
 		}
-    }
+	}
 	
 	@Override
 	public void render(float delta) {

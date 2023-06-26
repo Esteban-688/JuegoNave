@@ -37,7 +37,7 @@ public class BossAttack {
         sprite.draw(batch);
     }
     public void atacar(float delta, PantallaJuego juego, SpriteBatch batch) {
-    	ataqueEstrategy.atacar(this, nave, delta, juego, batch);
+    	ataqueEstrategy.atacar(this, nave, juego, batch);
     	
     }
 

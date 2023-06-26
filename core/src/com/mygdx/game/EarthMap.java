@@ -68,7 +68,7 @@ public class EarthMap {
             stars[i] = star;
         }
     }
-    
+    /*
     public boolean CargarMundo() {
     	
     	if(!mundoCargado) {
@@ -78,12 +78,28 @@ public class EarthMap {
 	    	earthTextures = new Texture[100];
 	    	
 	        for (int i = 0; i < 100; i++) {
-	        	int x = i+1;
+	        	int x= i+1;
 	            earthTextures[i] = new Texture(Gdx.files.internal("earth" + x + ".png"));
 	        }
 	        return true;
     	}
         return false;
+    }*/
+    public boolean CargarMundo() {
+
+        if(!mundoCargado) {
+
+            mundoCargado = true;
+
+            earthTextures = new Texture[100];
+
+            for (int i = 0; i < 100; i++) {
+                int x = i+1;
+                earthTextures[i] = new Texture(Gdx.files.internal("earth" + x + ".png"));
+            }
+            return true;
+        }
+        return true;
     }
 
     public void iniciar() {

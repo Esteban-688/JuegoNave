@@ -1,5 +1,6 @@
 package com.mygdx.game.Enemigos.boss;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,15 +30,15 @@ public class AtaqueSpike implements BossEstrategy{
 	 }
 
 	@Override
-	public void atacar(BossAttack bossAttack, Nave4 nave, float delta, PantallaJuego juego, SpriteBatch batch) {
+	public void atacar(BossAttack bossAttack, Nave4 nave, PantallaJuego juego, SpriteBatch batch) {
 		 //separacion
 		spikeCount=a;
 		angleIncrement = 360f / spikeCount;
 		
-		time += delta;
+		time += Gdx.graphics.getDeltaTime();
 		
-        if (time >= 2) {
-            time = 0;
+        if (time >= 1) {
+            time = 0.0f ;
 
             float initialAngle = bossAttack.getRotation(); // Ángulo inicial de las espinas
 
