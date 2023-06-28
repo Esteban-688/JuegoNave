@@ -13,12 +13,10 @@ public class EarthMap {
     private Sprite earthSprite; 
     private Texture starTexture;
     private Sprite[] stars;
-    private boolean mundoCargado;
     private static EarthMap instance;
     
     private EarthMap() { 
-    	mundoCargado = false;
-        starTexture = new Texture(Gdx.files.internal("star.png"));
+       
     }
     
     public static EarthMap getInstance() {
@@ -68,28 +66,8 @@ public class EarthMap {
             stars[i] = star;
         }
     }
-    /*
+   
     public boolean CargarMundo() {
-    	
-    	if(!mundoCargado) {
-    		
-    		mundoCargado = true;
-    		
-	    	earthTextures = new Texture[100];
-	    	
-	        for (int i = 0; i < 100; i++) {
-	        	int x= i+1;
-	            earthTextures[i] = new Texture(Gdx.files.internal("earth" + x + ".png"));
-	        }
-	        return true;
-    	}
-        return false;
-    }*/
-    public boolean CargarMundo() {
-
-        if(!mundoCargado) {
-
-            mundoCargado = true;
 
             earthTextures = new Texture[100];
 
@@ -97,9 +75,8 @@ public class EarthMap {
                 int x = i+1;
                 earthTextures[i] = new Texture(Gdx.files.internal("earth" + x + ".png"));
             }
+            starTexture = new Texture(Gdx.files.internal("star.png"));
             return true;
-        }
-        return true;
     }
 
     public void iniciar() {

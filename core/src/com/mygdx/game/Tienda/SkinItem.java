@@ -8,11 +8,12 @@ public class SkinItem {
 	private Texture skin, txSkinBloqueada,txSkinDesbloqueada;
 	private int id;
 	private boolean skinDesbloqueada;
-	private Sprite spr;
+	private int precio;
 	
 	public SkinItem(int iD) {
 		id = iD;
 		skinDesbloqueada = false;
+		precio = 0;
 	}
 	
 	public boolean setSkinNave(Nave4 nave) {
@@ -21,22 +22,12 @@ public class SkinItem {
 	}
 	public void setSkin(Texture tx) {
 		skin = tx;
-		spr = new Sprite(tx);
-	}
-	public void setPositionSpr(int x, int y) {
-		spr.setPosition(x, y);
 	}
 	public void setTxSkinlock(Texture tx) {
 		txSkinBloqueada= tx;
 	}
-	public Texture getTxSkinlock() {
-		return txSkinBloqueada;
-	}
 	public void setTxSkinUnlock(Texture tx) {
 		txSkinDesbloqueada= tx;
-	}
-	public Texture getTXSkinUnlock() {
-		return txSkinDesbloqueada;
 	}
 	public int gettId() {
 		return id;
@@ -54,5 +45,11 @@ public class SkinItem {
 	    }else {
 	    	return txSkinBloqueada;
 	    }
+	}
+	public int getPrecio() {
+		return precio;
+	}
+	public void setPrecio(int price) {
+		precio = price;
 	}
 }

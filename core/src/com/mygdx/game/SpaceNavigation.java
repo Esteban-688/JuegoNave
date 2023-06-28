@@ -13,7 +13,9 @@ import com.mygdx.game.navecita.Nave4;
 
 public class SpaceNavigation extends Game {
 	private Nave4 nave;
-	private String nombreJuego = "Space Navigation";
+	private SaveLoad saveload;
+	private Perfil perfil;
+	private String nombreJuego = "Space Navigation el regreso de edu skyWalker ";
 	private SpriteBatch batch;
 	private BitmapFont font;
 	//private int highScore;	
@@ -32,11 +34,14 @@ public class SpaceNavigation extends Game {
                         new Texture(Gdx.files.internal("anilloEspecial.png")),//bala especial
                         Gdx.audio.newSound(Gdx.files.internal("soundBalaespecial.mp3"))//sonido bala especial
                         );
-		
+        //cargar perfil desde 0
+        
+        perfil = new Perfil(this,"Nombre Por Defecto", 1000);
+		saveload = new SaveLoad(perfil);
 		batch = new SpriteBatch();
 		font = new BitmapFont(); // usa Arial font x defecto
 		font.getData().setScale(2f);
-		Screen ss = new PantallaMenu(this, nave);
+		Screen ss = new PantallaMenu(this, nave, saveload);
 		this.setScreen(ss);
 	}
 

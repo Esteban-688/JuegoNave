@@ -14,7 +14,6 @@ import com.mygdx.game.balas.BalaNormal;
 public class AtacarNave {
 	
 	private Sprite spr;
-	//private float rotacion;
 	private boolean disparoEspecial;
 	private float tiempo;
 	private Sound soundBala;
@@ -35,7 +34,6 @@ public class AtacarNave {
 		disparoEspecial = true;
 		tiempo = 0.0f;
 		daño = 50;
-		//rotacion = -90;
 	}
 	
 	public void atacar(SpriteBatch batch, PantallaJuego juego, float rotacion) {
@@ -50,7 +48,7 @@ public class AtacarNave {
 			            float balaInicialY = spr.getY()+15;// + spr.getHeight() / 2- 5;
 			        	    
 			            BalaEspecial balaEspecial = new BalaEspecial(
-			            		500,
+			            		1,
 			                balaInicialX,
 			                balaInicialY,
 			                txBalaEspecial,

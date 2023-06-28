@@ -25,7 +25,6 @@ public class AtaqueRecto implements BossEstrategy {
 		 
 		 	time += Gdx.graphics.getDeltaTime();
 	     	if (time >= 0.6) {
-	     		System.out.println("ataco");
 	            time = 0;
 
 	            // Obtener la posición actual de la nave

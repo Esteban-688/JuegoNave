@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.PantallaCarga;
 import com.mygdx.game.PantallaMenu;
+import com.mygdx.game.Perfil;
 import com.mygdx.game.SpaceNavigation;
 import com.mygdx.game.navecita.Nave4;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -27,22 +28,23 @@ import com.badlogic.gdx.math.Vector3;
 public class Tienda implements Screen {
     
 	private SpaceNavigation game;
-	
+	private Perfil perfil;
 	private SkinItem skinItem;
 	private Texture backgroundTexture;
 	private Sprite spr, volver;
     private Nave4 nave;
     private ArrayList<SkinItem> skinItems= new ArrayList<>();
     private ArrayList<Sprite> sprSkins = new ArrayList<>();
-    
+    private float time;
     private OrthographicCamera camera;
-    
     private SpriteBatch batch;
 	private Vector3 touchPoint;
     
-    public Tienda(SpaceNavigation game, Nave4 navecita) {
+    public Tienda(SpaceNavigation game, Nave4 navecita, Perfil miPerfil) {
     	this.game = game;
+    	
     	nave = navecita;
+    	perfil = miPerfil;
     	rellenarSkins();
     	camera = new OrthographicCamera();
         camera.setToOrtho(false, 1000, 600);
@@ -50,26 +52,24 @@ public class Tienda implements Screen {
         batch = new SpriteBatch();
         backgroundTexture = new Texture("inicio1.png");
         
-        volver = new Sprite(new Texture(Gdx.files.internal("botonVolver.png")));
+        volver = new Sprite(new Texture(Gdx.files.internal("flecha.png")));
         volver.setSize(100, 60);
         volver.setPosition(800, 20);
         
         touchPoint = new Vector3();
+        time = 0.0f;
         
 
     }
     
+    
     private void rellenarSkins() {
-        for(int i = 2; i <= 4; i++) {
-        	int x = i-2;//borrar cuando esten todas la imagenes
-            skinItem = new SkinItem(x);
-            skinItem.setSkin(new Texture(Gdx.files.internal("skin" + i + ".png")));
-            skinItem.setTxSkinlock(new Texture(Gdx.files.internal("locked" + i + ".png")));
-            skinItem.setTxSkinUnlock(new Texture(Gdx.files.internal("unlocked" + i + ".png")));
-            skinItems.add(x,skinItem);//cambiar a x por i cuando esten todas la imagenes
+        for(int i = 0; i < perfil.size(); i++) {
+            skinItem = perfil.getSkinPerfil(i);
+            skinItems.add(i,skinItem);//cambiar a x por i cuando esten todas la imagenes
         }
         for(int i = 0; i < skinItems.size() ;i++) {
-       		spr = new Sprite (skinItems.get(i).getTxSkinlock());
+       		spr = new Sprite (skinItems.get(i).getCurrentTexture());
     		sprSkins.add(i,spr);
     	}
     }
@@ -94,27 +94,43 @@ public class Tienda implements Screen {
     	}
     }
     private void updateComprarEquipar(OrthographicCamera camera) {
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPoint);
-            
-            
-            for(int i = 0; i < sprSkins.size();i++) {
-            	if (sprSkins.get(i).getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-            		if(skinItems.get(i).getSkinDesbloqueada()) {
-            			skinItems.get(i).setSkinNave(nave);
-            		}else {
-            			skinItems.get(i).setSkinDesbloqueada(true);
-            		}
-            	}
-            }
-            if (volver.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-                Screen ss = new PantallaMenu(game, nave);
-                game.setScreen(ss);
-                dispose();
-            }
-            
-        }
+
+    	time += Gdx.graphics.getDeltaTime();
+    	if(time >= 0.5) {
+	    	if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+	            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+	            camera.unproject(touchPoint);
+	            
+	            
+	            for(int i = 0; i < sprSkins.size();i++) {
+	            	if (sprSkins.get(i).getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+	            		if(skinItems.get(i).getSkinDesbloqueada()) {
+	            			skinItems.get(i).setSkinNave(nave);
+	            		}else {
+	            			if(skinItems.get(i).getPrecio()<= perfil.getEduCoins()) {
+	            				skinItems.get(i).setSkinDesbloqueada(true);
+	            				perfil.restarEduCoins(skinItems.get(i).getPrecio());
+	            			}
+	            			
+	            		}
+	            	}
+	            }
+	            if (volver.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+	                rellenarPerfil();
+	            	Screen ss = new PantallaMenu(game, nave, perfil);
+	                game.setScreen(ss);
+	                dispose();
+	            }
+	            
+	        }
+    	}
+    	
+    }
+    private void rellenarPerfil() {
+    	
+    	for (int i = 0; i < sprSkins.size();i++) {
+    		perfil.setSkinsItem(skinItems.get(i),i);
+    	}
     }
     
     @Override
@@ -136,6 +152,7 @@ public class Tienda implements Screen {
 	        batch.draw(backgroundTexture, 0, 0);
 	        updateTxSkins();
 	        volver.draw(batch);
+	        perfil.dibujarCoins(batch);
 	        batch.end();
 	        
 	        updateComprarEquipar(camera);

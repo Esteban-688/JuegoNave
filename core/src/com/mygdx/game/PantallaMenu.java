@@ -21,16 +21,16 @@ public class PantallaMenu implements Screen {
 	    private SpriteBatch batch;
 	    private Texture backgroundTexture;
 	    
-	    private Sprite playButtonSprite;
-	   // private Sprite levelsButtonSprite;
-	    private Sprite storeButtonSprite;
+	    private Sprite playButtonSprite, storeButtonSprite, guardar, cargar;
 	    private Vector3 touchPoint;
 	    private Nave4 nave;
-	   
+	    private Perfil perfil;
+	    private SaveLoad saveLoad;
 
-	    public PantallaMenu(SpaceNavigation game, Nave4 navecita) {
+	    public PantallaMenu(SpaceNavigation game, Nave4 navecita, SaveLoad saveload) {
 	        this.game = game;
-	 
+	        perfil = saveload.getPerfil();
+	        saveLoad = saveload;
 	        nave= navecita;
 	        camera = new OrthographicCamera();
 	        camera.setToOrtho(false, 1000,600);
@@ -41,20 +41,61 @@ public class PantallaMenu implements Screen {
 	        playButtonSprite = new Sprite(new Texture("botonPlay.png"));
 	        //levelsButtonSprite = new Sprite(new Texture("botonPlay.png"));
 	        storeButtonSprite = new Sprite(new Texture("store.png"));
+	        guardar = new Sprite(new Texture("botonGuardar.png"));
+	        cargar = new Sprite(new Texture("botonCargar.png"));
+	        
+	        
+	        touchPoint = new Vector3();
+
+	        // boton play
+	        playButtonSprite.setSize(150, 49);
+	        playButtonSprite.setPosition(70,350);
+	        
+	        //boton guardar
+	        guardar.setSize(150, 49);
+	        guardar.setPosition(70,280);
+	        
+	        //boton cargar
+	        cargar.setSize(150, 49);
+	        cargar.setPosition(70,210);
+	        
+	        //boton tienda
+	        storeButtonSprite.setSize(150, 49);
+	        storeButtonSprite.setPosition(70, 140);
+	    }
+	    public PantallaMenu(SpaceNavigation game, Nave4 navecita, Perfil miPerfil) {
+	        this.game = game;
+	        perfil = miPerfil;
+	        saveLoad = new SaveLoad(miPerfil);
+	        nave= navecita;
+	        camera = new OrthographicCamera();
+	        camera.setToOrtho(false, 1000,600);
+
+	        batch = new SpriteBatch();
+
+	        backgroundTexture = new Texture("inicio1.png");
+	        playButtonSprite = new Sprite(new Texture("botonPlay.png"));
+	        guardar = new Sprite(new Texture("botonGuardar.png"));
+	        cargar = new Sprite(new Texture("botonCargar.png"));
+	        storeButtonSprite = new Sprite(new Texture("store.png"));
 
 	        touchPoint = new Vector3();
 
 	        // boton play
-	        playButtonSprite.setSize(200, 150);
-	        playButtonSprite.setPosition(60,300);
+	        playButtonSprite.setSize(150, 49);
+	        playButtonSprite.setPosition(70,350);
 	        
-	        //boton niveles
-	       // levelsButtonSprite.setSize(200, 150);
-	        //levelsButtonSprite.setPosition(300, 40);
+	        //boton guardar
+	        guardar.setSize(150, 49);
+	        guardar.setPosition(70,280);
+	        
+	        //boton cargar
+	        cargar.setSize(150, 49);
+	        cargar.setPosition(70,210);
 	        
 	        //boton tienda
-	        storeButtonSprite.setSize(80, 80);//tamaño
-	        storeButtonSprite.setPosition(700, 10);//position
+	        storeButtonSprite.setSize(150, 49);
+	        storeButtonSprite.setPosition(70, 140);
 	    }
 
 	    @Override
@@ -69,10 +110,12 @@ public class PantallaMenu implements Screen {
 	        
 	        batch.draw(backgroundTexture, 0, 0);
 	        
-	        
+	        perfil.dibujarCoins(batch);
 	        playButtonSprite.draw(batch);
 	      //  levelsButtonSprite.draw(batch);
 	        storeButtonSprite.draw(batch);
+	        guardar.draw(batch);
+	        cargar.draw(batch);
 	        
 	        
 	        batch.end();
@@ -83,20 +126,22 @@ public class PantallaMenu implements Screen {
 
 	            //  "Jugar"
 	            if (playButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-	                Screen ss = new PantallaCarga(game, nave);
+	                Screen ss = new PantallaCarga(game, nave, perfil);
 	                game.setScreen(ss);
 	                dispose();
 	            }
-
-	            // V"Niveles"
-	           // if (levelsButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-	                // game.setScreen(new LevelsScreen(game));
-	             //   dispose();
-	            //}
+	            
+	            if (guardar.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+	               SaveLoad.saved(perfil);
+	            }
+	            if (cargar.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+		           SaveLoad.load(perfil);
+		            }
 
 	            // "Tienda"
 	            if (storeButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-	                 game.setScreen(new Tienda(game, nave));
+	            	
+	            	game.setScreen(new Tienda(game, nave, perfil));
 	                dispose();
 	            }
 	        }

@@ -28,8 +28,7 @@ import com.mygdx.game.navecita.Nave4;
 public class PantallaJuego implements Screen {
 
 	private SpaceNavigation game;
-	private OrthographicCamera camera, originalCamera;	
-	private OrthographicCamera secondCamera;
+	private OrthographicCamera camera;
 	
 	private EarthMap earthMap;
 	
@@ -38,7 +37,6 @@ public class PantallaJuego implements Screen {
 	private SpriteBatch batch;
 	private Sound explosionSound;
 	private Music gameMusic, battleMusic;
-	private int velXAsteroides, velYAsteroides, cantAsteroides;
 	private int ancho;
 	private int alto;
 	private int anchoCamara;
@@ -52,9 +50,9 @@ public class PantallaJuego implements Screen {
 	private int contadorDeKill = 0;
 	private EnemyComun enemigoComun;
 	private BossFinal boss;
-	private boolean bossActivado = false;
-	private boolean bossMuerto = false;
-	
+	private boolean bossActivado;
+	private boolean bossMuerto;
+	private Perfil perfil;
 	
 	private CreateEnemigo crearEnemy;
 	
@@ -65,8 +63,11 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
 	
 
-	public PantallaJuego( SpaceNavigation game, Nave4 navecita ){
+	public PantallaJuego( SpaceNavigation game, Nave4 navecita, Perfil miPerfil ){
 		
+		perfil = miPerfil;
+		bossActivado = false;
+		bossMuerto = false;
 		
 		ancho = Config.getDer();
 		alto = Config.getUp();
@@ -84,9 +85,6 @@ public class PantallaJuego implements Screen {
 		//camaras
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, anchoCamara, altoCamara);
-		originalCamera = camera;
-		secondCamera = new OrthographicCamera();
-		secondCamera.setToOrtho(false, 1800, 1600);
 
 		//cargar mapa
 		earthMap = EarthMap.getInstance();
@@ -220,7 +218,7 @@ public class PantallaJuego implements Screen {
 		//inicio
 		if(porcentaje <= 90 && !bossActivado) {
 				nave.bordeNave(0, ancho, alto, 0);
-			//	System.out.println("principio");
+				//System.out.println("principio");
 				//medio nivel
 	    }else if(porcentaje > 90  && !bossActivado) {
 		    	  
@@ -240,8 +238,7 @@ public class PantallaJuego implements Screen {
 		    	  
 		    	  
 		    		
-		    		// System.out.println(" x "+nave.getX() +" y "+ nave.getY());
-		    		 
+		    	
 		    		 
 						if(barreraBoolean) {//solo sucede una vez
 						  nave.setPosition(ancho-500 ,alto/2);
@@ -288,10 +285,10 @@ public class PantallaJuego implements Screen {
 		    			  }
 		    			  nave.bordeNave(barreraX -280  , barreraX +880 , barreraY + 400 , barreraY -400);
 		    			  
-		    			  
+		    			 
 		    		  }
 		    		   if(porcentaje >= 100  && bossMuerto) {
-		    	    	  Screen ss = new PantallaMenu(game, nave);
+		    	    	  Screen ss = new PantallaMenu(game, nave, perfil);
 		    	    	 // ss.resize(1200, 800);
 		    	    	  game.setScreen(ss);
 		    	    	  dispose();
@@ -309,7 +306,7 @@ public class PantallaJuego implements Screen {
 		if (nave.estaDestruido()) {
   			//if (score > game.getHighScore())
   				//game.setHighScore(score);
-	    	Screen ss = new PantallaGameOver(game, nave);
+	    	Screen ss = new PantallaGameOver(game, nave, perfil);
   			ss.resize(1200, 800);
   			game.setScreen(ss);
   			dispose();
@@ -336,7 +333,7 @@ public class PantallaJuego implements Screen {
 		            
 		           //colision boss
 		            boss.checkCollision(balas.get(i));
-		            nave.checkCollision(boss);
+		            nave.checkCollision(boss, camera);
 		            
 		            if(nave.checkCollision(balas.get(i))){
 		            	balas.remove(i);

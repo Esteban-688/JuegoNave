@@ -21,12 +21,13 @@ public class PantallaCarga implements Screen {
 	private float time;
 	
 	private Nave4 nave;
+	private Perfil perfil;
 	
-	public PantallaCarga(SpaceNavigation game, Nave4 navecita) {
+	public PantallaCarga(SpaceNavigation game, Nave4 navecita, Perfil miPerfil) {
 		this.game = game;
 		nave = navecita;
         time = 0;
-        
+        perfil = miPerfil;
         
         map = EarthMap.getInstance();
         
@@ -57,9 +58,11 @@ public class PantallaCarga implements Screen {
        
         if(time >=1) {
         	time = 0;
+        	nave.inicio((500+Config.getDer())-Config.getDer(),(Config.getUp()-(Config.getUp()/2)));
+        	//System.out.println("si reestablecio la nave");
         	if(map.CargarMundo()) {
-        		nave.inicio((500+Config.getDer())-Config.getDer(),  (Config.getUp()-(Config.getUp()/2)));
-        		Screen ss = new PantallaJuego(game, nave);
+        		//nave.inicio((500+Config.getDer())-Config.getDer(),(Config.getUp()-(Config.getUp()/2)));
+        		Screen ss = new PantallaJuego(game, nave, perfil);
     			game.setScreen(ss);
     			dispose();
     			

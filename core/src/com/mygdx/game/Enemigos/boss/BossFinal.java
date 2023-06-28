@@ -76,7 +76,9 @@ public class BossFinal implements Enemigo {
         yDown = (int)ydown;
     	return true;
     }
-
+    public void setPosition(int x, int y) {
+    	spr.setPosition(x, y);
+    }
 
 	public boolean checkCollision(Ball2 ball) {
         

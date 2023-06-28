@@ -2,6 +2,7 @@ package com.mygdx.game.navecita;
 
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,25 +15,26 @@ import com.mygdx.game.balas.Bullet;
 
 public class Nave4 implements Nave{
 	
-	private boolean destruida = false;
+	private boolean destruida;
     private int vida;
     private Sprite spr;
     private Sound sonidoHerido;
-    private boolean herido = false;
-    private int tiempoHeridoMax=50;
+    private boolean herido;
+    private int tiempoHeridoMax = 15;
     private int tiempoHerido;
-    private float rotacion = -90;
+    private float rotacion;
     private AtacarNave ataque;
 	private MoverNave mover;
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
     	
-    	vida = 20000;
-    	
+    	vida = 50000;
+    	destruida = false;
+    	herido = false;
     	sonidoHerido = soundChoque;
     	spr = new Sprite(tx);
     	spr.setPosition(x, y);
-    	
+    	rotacion = -90;
     	spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
     	
     	//spr.setOriginCenter();
@@ -47,9 +49,14 @@ public class Nave4 implements Nave{
     }
     
     public void inicio(int x, int y) {
-    	vida = 20000;
+    	vida = 50000;
+    	spr.setPosition(x, y);
+    	spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
     	spr.setBounds(x, y, 45, 45);
     	spr.setRotation(rotacion);
+    	destruida = false;
+    	 herido = false;
+    	 rotacion = -90;
     	
     }
     
@@ -86,25 +93,9 @@ public class Nave4 implements Nave{
     
     public boolean checkCollision(Ball2 b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
-        	/* rebote
-            if (xVel == 0) xVel += b.getXSpeed()/2;
-            if (b.getXSpeed() ==0) b.setXSpeed(b.getXSpeed() + (int)xVel/2);
-            xVel = - xVel;
-            b.setXSpeed(-b.getXSpeed());
-            
-            if (yVel ==0) yVel += b.getySpeed()/2;
-            if (b.getySpeed() ==0) b.setySpeed(b.getySpeed() + (int)yVel/2);
-            yVel = - yVel;
-            b.setySpeed(- b.getySpeed());
-            // despegar sprites
-      /*      int cont = 0;
-            while (b.getArea().overlaps(spr.getBoundingRectangle()) && cont<xVel) {
-               spr.setX(spr.getX()+Math.signum(xVel));
-            }   */
-        	//actualizar vidas y herir
             vida-=100;
             herido = true;
-  		    tiempoHerido=tiempoHeridoMax;
+  		    tiempoHerido = tiempoHeridoMax;
   		    sonidoHerido.play();
             if (vida<=0) 
           	    destruida = true; 
@@ -117,8 +108,6 @@ public class Nave4 implements Nave{
             if(!bala.getMia()) {
 	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
 	                vida-=bala.getDaño();
-	                //herido = true;
-	                tiempoHerido = tiempoHeridoMax;
 	                sonidoHerido.play();
 	                if (vida <= 0) {
 	                    destruida = true;
@@ -128,10 +117,14 @@ public class Nave4 implements Nave{
             }
         return false;
     }
-    public boolean checkCollision(BossFinal boss) {
+    public boolean checkCollision(BossFinal boss, Camera camera) {
     	
     	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-    		 vida -= 1;
+    		 vida -= 300;
+    		 herido = true;
+    		 spr.setPosition(camera.position.x-250,camera.position.y);
+    		 boss.setPosition(getX()+500, getY());
+   		    tiempoHerido = tiempoHeridoMax;
              sonidoHerido.play();
              if (vida <= 0) {
                  destruida = true;
