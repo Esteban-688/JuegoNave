@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.MathUtils;
 
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.Enemigos.boss.BossFinal;
-import com.mygdx.game.balas.Bullet;
 
 
 public class Nave4 implements Nave{
@@ -53,7 +52,7 @@ public class Nave4 implements Nave{
     }
     
     public void inicio(int x, int y) {
-    	vida = 2000;
+    	vida = 20000;
     	spr.setPosition(x, y);
     	spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
     	spr.setBounds(x, y, 45, 45);

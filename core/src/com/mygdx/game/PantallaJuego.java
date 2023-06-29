@@ -24,6 +24,10 @@ import com.mygdx.game.diccionaInterfaces.Atacar;
 import com.mygdx.game.diccionaInterfaces.Moverse;
 import com.mygdx.game.navecita.Nave4;
 
+import TemplateMethod.ComportamientoBossEnfurecido;
+import TemplateMethod.ComportamientoBossNormal;
+import TemplateMethod.ComportamientoBossTemplate;
+
 
 public class PantallaJuego implements Screen {
 
@@ -32,8 +36,8 @@ public class PantallaJuego implements Screen {
 	
 	private EarthMap earthMap;
 	
-	private BossEstrategy ataqueEstrategy;
-
+	private ComportamientoBossTemplate comportamientoBoss;
+	
 	private SpriteBatch batch;
 	private Sound explosionSound;
 	private Music gameMusic, battleMusic;
@@ -69,9 +73,6 @@ public class PantallaJuego implements Screen {
 		alto = Config.getUp();
 		
 		this.game = game;
-		//this.velXAsteroides = velXAsteroides;
-		//this.velYAsteroides = velYAsteroides;
-		//this.cantAsteroides = cantAsteroides;
 		
 		anchoCamara = 800;
 		altoCamara = 640;
@@ -251,8 +252,12 @@ public class PantallaJuego implements Screen {
 			    		 boss.atacar(batch, this, boss.getSprite());
 			    		 boss.moverse(boss.getSprite());
 			    		 
-			    		 //uso del strategy en el boss
-			    		 if((int)boss.getVidaPorcentaje()== 50) {
+			    		 //uso del strategy en el boss, con el patron templed method
+			    		 if(boss.getVidaPorcentaje()>=50) {
+			    			 comportamientoBoss = new ComportamientoBossNormal();
+			    		 }else {comportamientoBoss = new ComportamientoBossEnfurecido();}
+			    		 comportamientoBoss.comportamiento(boss);
+			    		/* if((int)boss.getVidaPorcentaje()== 50) {
 			    			 ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
 			    		                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
 			    		                6,
@@ -272,7 +277,7 @@ public class PantallaJuego implements Screen {
 			    		                10,
 			    		                0.8f);
 			    		        boss.setAtaqueStrategy(ataqueEstrategy);
-			    		 }
+			    		 }*/
 			    		 
 			    		 nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
 			    		 
@@ -342,9 +347,7 @@ public class PantallaJuego implements Screen {
 		                balas.remove(b);
 		                i--; //para no saltarse 1 tras eliminar del arraylist
 		            }
-		      }
-		      
-		      //colisiones entre asteroides y sus rebotes  
+		      }  
 		      
 	      }
 	}
@@ -436,10 +439,6 @@ public class PantallaJuego implements Screen {
     }
 	
 	@Override
-	/*public void show() {
-		// TODO Auto-generated method stub
-		gameMusic.play();
-	}*/
 	public void show() {
 		
         gameMusic.play();
