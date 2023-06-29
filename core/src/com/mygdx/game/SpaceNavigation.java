@@ -17,8 +17,7 @@ public class SpaceNavigation extends Game {
 	private Perfil perfil;
 	private String nombreJuego = "Space Navigation el regreso de edu skyWalker ";
 	private SpriteBatch batch;
-	private BitmapFont font;
-	//private int highScore;	
+	private BitmapFont font;	
 
 	public void create() {
 		
@@ -26,7 +25,6 @@ public class SpaceNavigation extends Game {
 		// cargar imagen de la nave, 64x64   
         nave = new Nave4(((500+Config.getDer())-Config.getDer()),
                         (Config.getUp()-(Config.getUp()/2)),
-                        //new Texture(Gdx.files.internal("MainShip3.png")),
                         new Texture(Gdx.files.internal("naveMala1.png")),
                         Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
                         new Texture(Gdx.files.internal("Rocket2.png")), //bala normal
@@ -36,10 +34,10 @@ public class SpaceNavigation extends Game {
                         );
         //cargar perfil desde 0
         
-        perfil = new Perfil(this,"Nombre Por Defecto", 1000);
+        perfil = new Perfil(this,"Nombre Por Defecto", 100);
 		saveload = new SaveLoad(perfil);
 		batch = new SpriteBatch();
-		font = new BitmapFont(); // usa Arial font x defecto
+		font = new BitmapFont();
 		font.getData().setScale(2f);
 		Screen ss = new PantallaMenu(this, nave, saveload);
 		this.setScreen(ss);
@@ -61,15 +59,4 @@ public class SpaceNavigation extends Game {
 	public BitmapFont getFont() {
 		return font;
 	}
-
-	//public int getHighScore() {
-		//return highScore;
-	//}
-
-	public void setHighScore(int highScore) {
-		//this.highScore = highScore;
-	}
-	
-	
-
 }

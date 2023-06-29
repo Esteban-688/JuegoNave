@@ -122,7 +122,7 @@ public class PantallaJuego implements Screen {
 	
 	//accesorios
 	private void dibujaEncabezado() {
-		CharSequence str = "Vida: "+ nave.getVidas()+" Nivel: "+ 1;
+		CharSequence str = "Vida: "+ nave.getVidas()+"  EduCoins: "+ perfil.getEduCoins();
 		 int xVida, yVida,xVidaBoss,yVidaBoss,xKill,yKill,xPorcentaje, yPorcentaje; 
 		game.getFont().getData().setScale(2f);
 		
@@ -140,7 +140,7 @@ public class PantallaJuego implements Screen {
 		
 		//colocar en pantalla vidas y ronda
 		game.getFont().draw(batch, str,xVida,yVida);
-		game.getFont().draw(batch, "kill: "+contadorDeKill, xKill,yKill);
+		if(!bossActivado) {game.getFont().draw(batch, "   kill: "+contadorDeKill, xKill,yKill);}
 		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
 		
 		if(bossActivado && !bossMuerto)game.getFont().draw(batch, " Jefe: "+(int)boss.getVidaPorcentaje()+" %", xVidaBoss-100,yVidaBoss);
@@ -240,11 +240,10 @@ public class PantallaJuego implements Screen {
 			    		  battleMusic.setVolume(1.0f);
 			    		  battleMusic.play();
 			    		  
-			    		  	//limpiar enemigos
-				    		  for(int x = 0; x < enemigos.size(); x++) {
-				    	  		  enemigos.get(x).destruirTodo();
-				    	  		  
-				    	  	  }
+			    		  //limpio el mapa antes del boss 
+				    	  		  enemigos.clear();
+				    	  		  balas.clear();
+				    	  	  
 			    		  }
 					
 		    		  if(!boss.isDestruida()) {
@@ -253,31 +252,10 @@ public class PantallaJuego implements Screen {
 			    		 boss.moverse(boss.getSprite());
 			    		 
 			    		 //uso del strategy en el boss, con el patron templed method
-			    		 if(boss.getVidaPorcentaje()>=50) {
+			    		 if(boss.getVidaPorcentaje()>49) {
 			    			 comportamientoBoss = new ComportamientoBossNormal();
 			    		 }else {comportamientoBoss = new ComportamientoBossEnfurecido();}
 			    		 comportamientoBoss.comportamiento(boss);
-			    		/* if((int)boss.getVidaPorcentaje()== 50) {
-			    			 ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
-			    		                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
-			    		                6,
-			    		                1.2f);
-			    		        boss.setAtaqueStrategy(ataqueEstrategy);
-			    		 }
-			    		 if((int)boss.getVidaPorcentaje() == 25) {
-			    			 ataqueEstrategy = new AtaqueRecto(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
-			    		                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
-			    		                0.9f);
-			    		        boss.setAtaqueStrategy(ataqueEstrategy);
-			    		 }
-			    		 
-			    		 if((int)boss.getVidaPorcentaje()== 10) {
-			    			 ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
-			    		                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
-			    		                10,
-			    		                0.8f);
-			    		        boss.setAtaqueStrategy(ataqueEstrategy);
-			    		 }*/
 			    		 
 			    		 nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
 			    		 
@@ -290,6 +268,7 @@ public class PantallaJuego implements Screen {
 		    					gameMusic.setVolume(0.6f);
 		    					gameMusic.play();
 		    					bossMuerto = true;
+		    					perfil.sumarEduCoins(10);
 		    			  }
 		    			  nave.bordeNave(barreraX -280  , barreraX +880 , barreraY + 400 , barreraY -400);
 		    			  
@@ -331,7 +310,8 @@ public class PantallaJuego implements Screen {
 		            	balas.get(i).checkCollision(z); 	
 		            	if(z.isDestruida()){
 		            		enemigos.remove(z);
-		            		contadorDeKill ++; 
+		            		contadorDeKill++;
+		            		perfil.sumarEduCoins(1);
 		            	}
 		            }
 		            nave.checkCollision(boss, camera);
@@ -341,12 +321,10 @@ public class PantallaJuego implements Screen {
 		            
 		            b.update((int)camera.position.x,(int)camera.position.y, anchoCamara, altoCamara, nave.getX()+25, nave.getY()+15);
 		            
-		           
-		         //   b.draw(batch);
 		             if (b.isDestroyed()) {
 		                balas.remove(b);
 		                i--; //para no saltarse 1 tras eliminar del arraylist
-		            }
+		             }
 		      }  
 		      
 	      }

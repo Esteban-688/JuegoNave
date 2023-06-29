@@ -52,7 +52,7 @@ public class Nave4 implements Nave{
     }
     
     public void inicio(int x, int y) {
-    	vida = 20000;
+    	vida = 2000;
     	spr.setPosition(x, y);
     	spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
     	spr.setBounds(x, y, 45, 45);
