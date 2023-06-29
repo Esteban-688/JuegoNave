@@ -41,10 +41,7 @@ public class PantallaJuego implements Screen {
 	private SpriteBatch batch;
 	private Sound explosionSound;
 	private Music gameMusic, battleMusic;
-	private int ancho;
-	private int alto;
-	private int anchoCamara;
-	private int altoCamara;
+	private int ancho, alto, anchoCamara, altoCamara;;
 	private int porcentaje = 0;
 	private float tiempoTotal1 = 0.0f;
 	private boolean barreraBoolean = false;
@@ -115,9 +112,6 @@ public class PantallaJuego implements Screen {
         		new Texture(Gdx.files.internal("MiniBossMarcianoHerido.png")),
         		nave
         		);
-        
-	   
-	   
 	}
 	
 	//accesorios
@@ -192,10 +186,7 @@ public class PantallaJuego implements Screen {
 			camera.update();
 			porcentaje = (int) ((nave.getX() / (float) ancho) * 100);
 			batch.setProjectionMatrix(camera.combined);
-			//System.out.println(": x = " + nave.getX() + ", y = " + nave.getY());
-			
-			
-			
+				
 			
 	}
 	
@@ -205,7 +196,6 @@ public class PantallaJuego implements Screen {
 		if(porcentaje <= 90 && !bossActivado) {
 				nave.inmune(6);
 				nave.bordeNave(0, ancho, alto, 0);
-				//System.out.println("principio");
 				//medio nivel
 	    }else if(porcentaje > 90  && !bossActivado) {
 		    	  
@@ -213,7 +203,6 @@ public class PantallaJuego implements Screen {
 		    		  
 		    		  barreraBoolean = true;
 		    		  barreraX = nave.getX();
-		    		  //barreraY = nave.getY();
 		    	  }
 		    	  
 		    	  nave.bordeNave(barreraX + 290 , barreraX + 500, alto, 0);
@@ -289,8 +278,6 @@ public class PantallaJuego implements Screen {
 
 	private void gameOver() {
 		if (nave.estaDestruido()) {
-  			//if (score > game.getHighScore())
-  				//game.setHighScore(score);
 	    	Screen ss = new PantallaGameOver(game, nave, perfil);
   			ss.resize(1200, 800);
   			game.setScreen(ss);

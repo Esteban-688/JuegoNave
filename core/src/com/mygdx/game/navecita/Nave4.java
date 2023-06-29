@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.Enemigos.boss.BossFinal;
+
 
 
 public class Nave4 implements Nave{
@@ -21,7 +21,7 @@ public class Nave4 implements Nave{
     private Sound sonidoHerido;
     private boolean herido, inmune;
     private int tiempoHeridoMax = 15;
-    private int tiempoHerido;
+    private float tiempoHerido;
     private float rotacion;
     private AtacarNave ataque;
 	private MoverNave mover;
@@ -40,7 +40,6 @@ public class Nave4 implements Nave{
     	rotacion = -90;
     	spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
     	
-    	//spr.setOriginCenter();
     	spr.setBounds(x, y, 45, 45);
     	
     	spr.setRotation(rotacion);
@@ -116,7 +115,6 @@ public class Nave4 implements Nave{
     	 
     	return false;
     }
-    
     public boolean estaDestruido() {
        return !herido && destruida;
     }

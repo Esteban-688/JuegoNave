@@ -11,22 +11,19 @@ public class BalaNormal extends Bullet {
 	
 	private float xSpeed;
     private float ySpeed;
-    private Sprite spr;
     private float tiempoVida = 5;
     private float tiempoTranscurrido;
     
 	public BalaNormal(int daño, float x, float y, float xSpeed, float ySpeed, Texture tx, boolean balamia) {
 		
-		super(daño, balamia);
-		
-		spr = new Sprite(tx);
-        spr.setPosition(x, y);
+		super(daño, balamia, tx);
+		getSprite().setPosition(x, y);
 		this.xSpeed = xSpeed;
 		this.ySpeed = ySpeed;
 	}
 	
 	public void draw(SpriteBatch batch) {
-        spr.draw(batch);
+        getSprite().draw(batch);
     }
 	
 	public void up(float deltaTime) {
@@ -34,7 +31,7 @@ public class BalaNormal extends Bullet {
             float deltaPositionX = xSpeed * deltaTime;
             float deltaPositionY = ySpeed * deltaTime;
             
-            spr.setPosition(spr.getX() + deltaPositionX, spr.getY() + deltaPositionY);
+            getSprite().setPosition(getSprite().getX() + deltaPositionX, getSprite().getY() + deltaPositionY);
     
             tiempoTranscurrido += deltaTime;
             if (tiempoTranscurrido >= tiempoVida) {
@@ -44,12 +41,12 @@ public class BalaNormal extends Bullet {
     }
 	public void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara, int x, int y) {
 		
-		spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
+		getSprite().setPosition(getSprite().getX() + xSpeed, getSprite().getY() + ySpeed);
 
-        if (spr.getX() < ((anchoCamara / 2) - posicionXCamara) || // izquierda
-            spr.getX() > ((anchoCamara / 2) + posicionXCamara) || // derecha
-            spr.getY() > ((altoCamara / 2) + posicionYCamara) ||  // arriba
-            spr.getY() < ((altoCamara / 2) - posicionYCamara)) {   // abajo
+        if (getSprite().getX() < ((anchoCamara / 2) - posicionXCamara) || // izquierda
+        getSprite().getX() > ((anchoCamara / 2) + posicionXCamara) || // derecha
+        getSprite().getY() > ((altoCamara / 2) + posicionYCamara) ||  // arriba
+        getSprite().getY() < ((altoCamara / 2) - posicionYCamara)) {   // abajo
             setDestroyed(true);
         }
 	}
@@ -59,15 +56,11 @@ public class BalaNormal extends Bullet {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
     }
-	
-	public Sprite getSprite() {
-        return spr;
-    }
 
 	@Override
 	public boolean checkCollision(BossFinal boss) {
 		if(getMia()) {
-            if (boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+            if (boss.getSprite().getBoundingRectangle().overlaps(getSprite().getBoundingRectangle())) {
                 boss.restarVida(getDaño());
              // Actualizar la vida en porcentaje
                 float vidaPorcentaje = (boss.getVida() * 100f) / boss.getMaxVida();
@@ -89,7 +82,7 @@ public class BalaNormal extends Bullet {
 	@Override
 	public boolean checkCollision(EnemyComun enemigo) {
 		if(getMia()) {
-            if (enemigo.getSpr().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+            if (enemigo.getSpr().getBoundingRectangle().overlaps(getSprite().getBoundingRectangle())) {
                 enemigo.restarVida(getDaño());
                 setDestroyed(true);
                 if (enemigo.getVida() <= 0) {
@@ -105,7 +98,7 @@ public class BalaNormal extends Bullet {
 	@Override
 	public boolean checkCollision(Nave4 nave) {
 		if(!getMia()) {
-            if (!nave.estaHerido() && nave.getSpr().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+            if (!nave.estaHerido() && nave.getSpr().getBoundingRectangle().overlaps(getSprite().getBoundingRectangle())) {
                 nave.restarVida(getDaño());
                 setDestroyed(true);
                 nave.sonidoHerido();

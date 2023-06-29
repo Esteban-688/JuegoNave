@@ -16,26 +16,24 @@ public class BalaEspecial extends Bullet {
     
     private float sizeBala = 150;
     private Circle circle;
-    private Sprite sprite;
     private float tiempoDeBala = 0.0f;
    
     public BalaEspecial(int daño, float x, float y, Texture tx, boolean balaMia) {
-       super(daño, balaMia);
+       super(daño, balaMia, tx);
        
     	circle = new Circle(x, y, sizeBala / 2);
-        sprite = new Sprite(tx);
-        sprite.setSize(sizeBala, sizeBala);
+    	getSprite().setSize(sizeBala, sizeBala);
         }
 
     public void draw(SpriteBatch batch) {
-    	sprite.setPosition(circle.x - circle.radius, circle.y - circle.radius);
-        sprite.draw(batch);
+    	getSprite().setPosition(circle.x - circle.radius, circle.y - circle.radius);
+    	getSprite().draw(batch);
         
     }
 
     public void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara, int x, int y) {
         circle.setPosition(x, y);
-        sprite.setPosition(x, y);
+        getSprite().setPosition(x, y);
         tiempoDeBala += Gdx.graphics.getDeltaTime();
       
         if(tiempoDeBala >= 4) {
@@ -44,7 +42,7 @@ public class BalaEspecial extends Bullet {
     }
     public boolean checkCollision(BossFinal boss) {
 		if(getMia()) {
-            if (boss.getSprite().getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
+            if (boss.getSprite().getBoundingRectangle().overlaps(getSprite().getBoundingRectangle())) {
                 boss.restarVida(getDaño());
                 boss.setPosition(Config.getDer()-300, Config.getUp()/2);
              // Actualizar la vida en porcentaje
@@ -66,7 +64,7 @@ public class BalaEspecial extends Bullet {
     @Override
 	public boolean checkCollision(EnemyComun enemigo) {
 		if(getMia()) {
-            if (enemigo.getSpr().getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
+            if (enemigo.getSpr().getBoundingRectangle().overlaps(getSprite().getBoundingRectangle())) {
                 enemigo.restarVida(getDaño());
                 setDestroyed(true);
                 enemigo.setDestruida(true);
@@ -78,19 +76,16 @@ public class BalaEspecial extends Bullet {
 	}
     public boolean checkCollision(Nave4 nave) {
 		if(getMia()) {
-            if (!nave.estaHerido() && nave.getSpr().getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
+            if (!nave.estaHerido() && nave.getSpr().getBoundingRectangle().overlaps(getSprite().getBoundingRectangle())) {
                 nave.SumarVida(1);
-                return true;
+                return false;
             }
         }
-    return false;
+    return true;
 	}
 
     public Circle getCircle() {
         return circle;
-    }
-    public Sprite getSprite() {
-        return sprite;
     }
 
 }

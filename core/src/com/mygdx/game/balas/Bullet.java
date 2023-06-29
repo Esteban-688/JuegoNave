@@ -2,6 +2,7 @@ package com.mygdx.game.balas;
 
 
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Enemigos.boss.BossFinal;
@@ -13,8 +14,10 @@ public abstract class Bullet {
 	private int daño;
     private boolean destroyed;
     private boolean mia;
-
-    public Bullet(int dañoAlObjeto, boolean esMia) {
+    private Sprite spr;
+    
+    public Bullet(int dañoAlObjeto, boolean esMia, Texture tx) {
+    	spr= new Sprite(tx);
         daño = dañoAlObjeto;
         destroyed = false;
         mia = esMia;
@@ -22,8 +25,6 @@ public abstract class Bullet {
     public abstract void draw(SpriteBatch batch);
     
     public abstract void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara,int x, int y);
-    
-    public abstract Sprite getSprite();
    
     public abstract boolean checkCollision (BossFinal boss);
     
@@ -34,6 +35,7 @@ public abstract class Bullet {
     public int getDaño() {
     	return daño;
     }
+    public Sprite getSprite() {return spr;}
     
     public boolean isDestroyed() {
         return destroyed;
