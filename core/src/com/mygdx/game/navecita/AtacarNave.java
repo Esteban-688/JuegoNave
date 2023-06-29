@@ -50,7 +50,7 @@ public class AtacarNave {
 			            float balaInicialY = spr.getY()+15;// + spr.getHeight() / 2- 5;
 			        	    
 			            Bullet balaEspecial = new BalaEspecial(
-			            		1,
+			            		150,
 			                balaInicialX,
 			                balaInicialY,
 			                txBalaEspecial,

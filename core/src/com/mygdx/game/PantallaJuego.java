@@ -100,6 +100,7 @@ public class PantallaJuego implements Screen {
 		gameMusic.play();
 		
 	   nave = navecita;
+	   
        Config.setnave(nave);
        
         
@@ -201,6 +202,7 @@ public class PantallaJuego implements Screen {
 		 
 		//inicio
 		if(porcentaje <= 90 && !bossActivado) {
+				nave.inmune(6);
 				nave.bordeNave(0, ancho, alto, 0);
 				//System.out.println("principio");
 				//medio nivel
@@ -271,6 +273,7 @@ public class PantallaJuego implements Screen {
 			    		                0.8f);
 			    		        boss.setAtaqueStrategy(ataqueEstrategy);
 			    		 }
+			    		 
 			    		 nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
 			    		 
 			    		
@@ -396,8 +399,8 @@ public class PantallaJuego implements Screen {
 	    batch.begin();
 	    
 	    // Dibujar el mapa de la Tierra
-	    earthMap.update(porcentaje);
-	    earthMap.render(batch, camera);
+	    if(porcentaje<100) {earthMap.update(porcentaje); earthMap.render(batch, camera);}
+	     
 	    
 	    // Dibujar el encabezado
 	    dibujaEncabezado();
@@ -422,8 +425,9 @@ public class PantallaJuego implements Screen {
 	    
 	    // Verificar si se acabaron las vidas
 	    gameOver();
-
+	    
 	    batch.end();
+	    
 	}
 
     

@@ -1,6 +1,7 @@
 package com.mygdx.game.navecita;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,21 +18,23 @@ public class Nave4 implements Nave{
 	
 	private boolean destruida;
     private int vida;
-    private Sprite spr;
+    private Sprite spr, inmunidad;
     private Sound sonidoHerido;
-    private boolean herido;
+    private boolean herido, inmune;
     private int tiempoHeridoMax = 15;
     private int tiempoHerido;
     private float rotacion;
     private AtacarNave ataque;
 	private MoverNave mover;
+	private float tiempoInmune = 0;
 	
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
     	
-    	vida = 2000;
+    	
     	destruida = false;
     	herido = false;
+    	inmune = false;
     	sonidoHerido = soundChoque;
     	spr = new Sprite(tx);
     	spr.setPosition(x, y);
@@ -44,7 +47,7 @@ public class Nave4 implements Nave{
     	spr.setRotation(rotacion);
     	
     	ataque= new AtacarNave(spr,txBala, soundBala, txBalaEspecial, soundBalaEspecial);
-    	
+    	inmunidad = new Sprite(new Texture(Gdx.files.internal("inmunidad.png")));
     	mover = new MoverNave(spr);
     	
     }
@@ -64,7 +67,7 @@ public class Nave4 implements Nave{
     public void draw(SpriteBatch batch, PantallaJuego juego) {
       
     	spr.draw(batch);
-    	
+    	if(inmune) {inmunidad.draw(batch);}
         moverse(spr);
     	atacar(batch, juego,spr);
         
@@ -88,18 +91,24 @@ public class Nave4 implements Nave{
     	
     }
     
-    public void inmune() {
-    	
+    public void inmune(float tiempoDeInmunidad) {
+    	tiempoInmune += Gdx.graphics.getDeltaTime();
+    	inmune = true;
+    	inmunidad.setPosition(getX()-36, getY()-33);
+    	if(tiempoInmune > tiempoDeInmunidad) {
+    		inmune=false;
+    	}
     }
     public boolean checkCollision(BossFinal boss, Camera camera) {
     	
     	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-    		 vida -= 100;
-    		 herido = true;
-    		 spr.setPosition(camera.position.x-250,camera.position.y);
-    		 boss.setPosition(getX()+500, getY());
-   		    tiempoHerido = tiempoHeridoMax;
-             sonidoHerido.play();
+	    		 vida -= 100;
+	    		 herido = true;
+	    		 spr.setPosition(camera.position.x-250,camera.position.y);
+	    		 boss.setPosition(getX()+500, getY());
+	   		    tiempoHerido = tiempoHeridoMax;
+	             sonidoHerido.play();
+	             inmune(2);
              if (vida <= 0) {
                  destruida = true;
              }
@@ -146,10 +155,17 @@ public class Nave4 implements Nave{
     public void setDestruida(boolean a) { destruida = a;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
-	public void restarVida(int a) {vida-=a;}
+    public boolean getInmunidad() {
+    	return inmune;
+    }
 	public void SumarVida(int a) {
 		if(vida<800) {
 		vida += a;
+		}
+	}
+	public void restarVida(int a) {
+		if(!inmune) {
+			vida-=a;
 		}
 	}
 	public void sonidoHerido() {

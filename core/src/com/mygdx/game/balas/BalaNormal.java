@@ -3,7 +3,6 @@ package com.mygdx.game.balas;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.Enemigos.boss.BossFinal;
 import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
 import com.mygdx.game.navecita.Nave4;
