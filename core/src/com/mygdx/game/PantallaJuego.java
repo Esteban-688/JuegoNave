@@ -398,8 +398,8 @@ public class PantallaJuego implements Screen {
 			enemigos.add(enemigoComun);
 			contadorDeEnemigos ++;
 			}
-		if(tiempoTotal1 > 2 &&//cada cuanto se generan
-				enemigos.size()< 5 &&//cuantos enemigos por mapa
+		 if(tiempoTotal1 > 2 &&//cada cuanto se generan
+				enemigos.size()< 3 &&//cuantos enemigos por mapa
 				contadorDeEnemigos <= 100 &&//maxima cantidad de enemigos
 				!bossActivado ) {//si el boss no esta activo generan
 		

@@ -14,7 +14,7 @@ import com.mygdx.game.diccionaInterfaces.Moverse;
 public class EnemyComun implements Enemigo{
     
 	private boolean destruida = false;
-	private int vida = 200;
+	private int vida;
     private Sprite spr;
    
     private Atacar ataque;
@@ -25,7 +25,7 @@ public class EnemyComun implements Enemigo{
         spr.setSize(50, 60);
         spr.setPosition(x, y);
         //alto= altoY;
-        
+        vida = 200;
        // distancia = xDistancia;
        // this.ySpeed = ySpeed;
         spr.setRotation(90);
