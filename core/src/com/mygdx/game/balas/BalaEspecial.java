@@ -11,17 +11,13 @@ import com.badlogic.gdx.math.Intersector;
 
 public class BalaEspecial extends Bullet {
     
-    private int vidaBala = 3;
     private float sizeBala = 150;
     private Circle circle;
     private Sprite sprite;
     private float tiempoDeBala = 0.0f;
-    private boolean mia;//verifica si la bala es mia //true es mi bala, si es falso es enemiga
-    
-    public BalaEspecial(int daño, float x, float y, Texture tx, boolean miaa) {
-       super(daño);
-       
-       mia=miaa;
+   
+    public BalaEspecial(int daño, float x, float y, Texture tx, boolean balaMia) {
+       super(daño, balaMia);
        
     	circle = new Circle(x, y, sizeBala / 2);
         sprite = new Sprite(tx);
@@ -34,36 +30,15 @@ public class BalaEspecial extends Bullet {
         
     }
 
-    public boolean checkCollision(Ball2 b2) {
-        Circle circle = getCircle();
-        Rectangle rectangle = b2.getArea();
-        
-        if (Intersector.overlaps(circle, rectangle)) {
-            if (vidaBala <= 0) {
-                destroyed = true;
-                return true;
-            }
-            vidaBala--;
-        }
-        return false;
-    }
-
     public void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara, int x, int y) {
         circle.setPosition(x, y);
         sprite.setPosition(x, y);
-        //sprite.rotate(45f+1);
         tiempoDeBala += Gdx.graphics.getDeltaTime();
-        //System.out.println(Gdx.graphics.getDeltaTime());
-        //System.out.println("tiempoDebala"+tiempoDeBala);
-        if(tiempoDeBala >= 5) {
-        	destroyed = true;
+      
+        if(tiempoDeBala >= 4) {
+        	setDestroyed(true);
         }
-        
-        
     }
-    public boolean getMia() {
-		return mia;
-	}
 
     public Circle getCircle() {
         return circle;

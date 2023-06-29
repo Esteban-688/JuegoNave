@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.balas.BalaEspecial;
 import com.mygdx.game.balas.BalaNormal;
+import com.mygdx.game.balas.Bullet;
 
 public class AtacarNave {
 	
@@ -21,6 +22,7 @@ public class AtacarNave {
 	private Texture txBalaNormal;
 	private Texture txBalaEspecial;
 	private int daño;
+	private float tiempoEntreDisparo = 0.0f;
 	 
 	public AtacarNave(Sprite sprite, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
 		spr = sprite;
@@ -47,7 +49,7 @@ public class AtacarNave {
 			            float balaInicialX = spr.getX()+25;//  + spr.getWidth() / 2 - 5;
 			            float balaInicialY = spr.getY()+15;// + spr.getHeight() / 2- 5;
 			        	    
-			            BalaEspecial balaEspecial = new BalaEspecial(
+			            Bullet balaEspecial = new BalaEspecial(
 			            		1,
 			                balaInicialX,
 			                balaInicialY,
@@ -64,40 +66,45 @@ public class AtacarNave {
 				if(disparoEspecial == false) {
 					tiempo += Gdx.graphics.getDeltaTime();
 					
-					if(tiempo >= 15) {
+					if(tiempo >= 10) {
 						disparoEspecial = true;
 						tiempo = 0.0f;
 					}
 				}
-					
-				if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 				
-					//disparo normal 
-					 
-				    float balaVelocidad = 40; // Velocidad de la bala
-		            float balaDireccionX = -MathUtils.sinDeg(rotacion); 
-		            float balaDireccionY = MathUtils.cosDeg(rotacion); 
-
-		            // Calcular la posición inicial de la bala en el centro de la nave
-		            float balaInicialX = spr.getX() + spr.getWidth() / 2 - 5;
-		            float balaInicialY = spr.getY() + spr.getHeight() / 2 - 27;
-
-		            BalaNormal bala = new BalaNormal(daño,
-		                balaInicialX,
-		                balaInicialY,
-		                balaDireccionX * balaVelocidad,
-		                balaDireccionY * balaVelocidad,
-		                txBalaNormal,
-		                true
-		            );
-		            
-		            bala.setVelocity(balaDireccionX * balaVelocidad, balaDireccionY * balaVelocidad);
-
-		            // Girar la textura de la bala según la rotación de la nave
-		            bala.getSprite().setRotation(rotacion);
-
-		            juego.agregarBala(bala);
-		            soundBala.play();
-					}
+					
+					
+				   tiempoEntreDisparo += Gdx.graphics.getDeltaTime();
+				   
+					if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE ) && tiempoEntreDisparo > 0.2 ) {
+						tiempoEntreDisparo = 0.0f;
+						//disparo normal 
+						 
+					    float balaVelocidad = 40; // Velocidad de la bala
+			            float balaDireccionX = -MathUtils.sinDeg(rotacion); 
+			            float balaDireccionY = MathUtils.cosDeg(rotacion); 
+	
+			            // Calcular la posición inicial de la bala en el centro de la nave
+			            float balaInicialX = spr.getX() + spr.getWidth() / 2 - 5;
+			            float balaInicialY = spr.getY() + spr.getHeight() / 2 - 27;
+	
+			            BalaNormal bala = new BalaNormal(daño,
+			                balaInicialX,
+			                balaInicialY,
+			                balaDireccionX * balaVelocidad,
+			                balaDireccionY * balaVelocidad,
+			                txBalaNormal,
+			                true
+			            );
+			            
+			            bala.setVelocity(balaDireccionX * balaVelocidad, balaDireccionY * balaVelocidad);
+	
+			            // Girar la textura de la bala según la rotación de la nave
+			            bala.getSprite().setRotation(rotacion);
+	
+			            juego.agregarBala(bala);
+			            soundBala.play();
+						}
+				
 	}
 }

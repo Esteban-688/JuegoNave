@@ -50,15 +50,12 @@ public class EnemyComun implements Enemigo{
     	
     }
 
-    public boolean checkCollision(Ball2 ball) {
-        
-        return true;
-    }
     public boolean checkCollision(Bullet bala) {
     	
         if(bala.getMia()) {
             if (bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
                 vida-=bala.getDaño();
+                bala.setDestroyed(true);
                 if (vida <= 0) {
                     destruida = true;
                 }

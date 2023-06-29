@@ -32,7 +32,7 @@ public class BossFinal implements Enemigo {
     public BossFinal(int x, int y, float speed, Texture txOriginal, Texture txHerido, Nave4 nave1) {
         // Inicializa los atributos
         destruida = false;
-        vida = 15000;
+        vida = 5000;
         maxVida = vida;
         vidaPorcentaje= 100f;
         spr = new Sprite(txOriginal);
@@ -91,7 +91,7 @@ public class BossFinal implements Enemigo {
                 vida-=bala.getDaño();
              // Actualizar la vida en porcentaje
                 vidaPorcentaje = (vida * 100f) / maxVida;
-                
+                bala.setDestroyed(true);
                 if (vida <= 0) {
                     destruida = true;
                     return false;

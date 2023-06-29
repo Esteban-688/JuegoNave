@@ -23,7 +23,7 @@ public class AtaqueSpike implements BossEstrategy{
 		 bulletTexture = bullet;
 		 sound = sonido;
 		 
-		 daño = 1000 ;
+		 daño = 120 ;
 		 a = spike; // Número de espinas a lanzar
 		 
 		 
@@ -37,7 +37,7 @@ public class AtaqueSpike implements BossEstrategy{
 		
 		time += Gdx.graphics.getDeltaTime();
 		
-        if (time >= 1) {
+        if (time >= 0.7) {
             time = 0.0f ;
 
             float initialAngle = bossAttack.getRotation(); // Ángulo inicial de las espinas
@@ -51,7 +51,7 @@ public class AtaqueSpike implements BossEstrategy{
                 float spikeDirectionY = MathUtils.sinDeg(angle);
 
                 // Establecer la velocidad de la espina
-                float spikeSpeed = 10f; // Velocidad de la espina
+                float spikeSpeed = 10; // Velocidad de la espina
                 float spikeSpeedX = spikeDirectionX * spikeSpeed;
                 float spikeSpeedY = spikeDirectionY * spikeSpeed;
 

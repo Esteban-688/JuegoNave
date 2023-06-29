@@ -19,7 +19,7 @@ public class LanzamisilesAtacar implements Atacar {
 	 
 	 public LanzamisilesAtacar() {
 		 tiempo = 0.0f;
-		 daño = 100;
+		 daño = 10;
 		 rotacion = 90;
 		 txBalaNormal = new Texture(Gdx.files.internal("Txlanzamisiles.png"));
 		 soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
@@ -29,10 +29,10 @@ public class LanzamisilesAtacar implements Atacar {
 	public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
 		tiempo += Gdx.graphics.getDeltaTime();
 		
-        if (tiempo >= 1) {
+        if (tiempo >= 0.5) {
         	
             tiempo = 0.0f;
-            float balaVelocidad = 10; // Velocidad de la bala
+            float balaVelocidad = 15; // Velocidad de la bala
             float balaDireccionX = -MathUtils.sinDeg(rotacion); // Componente X de la dirección de la bala (invertido)
             float balaDireccionY = MathUtils.cosDeg(rotacion); // Componente Y de la dirección de la bala 
             

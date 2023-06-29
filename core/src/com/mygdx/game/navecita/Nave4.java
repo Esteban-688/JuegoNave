@@ -28,7 +28,7 @@ public class Nave4 implements Nave{
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
     	
-    	vida = 50000;
+    	vida = 2000;
     	destruida = false;
     	herido = false;
     	sonidoHerido = soundChoque;
@@ -49,7 +49,7 @@ public class Nave4 implements Nave{
     }
     
     public void inicio(int x, int y) {
-    	vida = 50000;
+    	vida = 2000;
     	spr.setPosition(x, y);
     	spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
     	spr.setBounds(x, y, 45, 45);
@@ -108,6 +108,7 @@ public class Nave4 implements Nave{
             if(!bala.getMia()) {
 	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
 	                vida-=bala.getDaño();
+	                bala.setDestroyed(true);
 	                sonidoHerido.play();
 	                if (vida <= 0) {
 	                    destruida = true;
@@ -120,7 +121,7 @@ public class Nave4 implements Nave{
     public boolean checkCollision(BossFinal boss, Camera camera) {
     	
     	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-    		 vida -= 300;
+    		 vida -= 100;
     		 herido = true;
     		 spr.setPosition(camera.position.x-250,camera.position.y);
     		 boss.setPosition(getX()+500, getY());

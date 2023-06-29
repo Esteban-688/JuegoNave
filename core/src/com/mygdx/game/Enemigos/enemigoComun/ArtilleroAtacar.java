@@ -17,7 +17,7 @@ public class ArtilleroAtacar implements Atacar {
 	private Sound soundBala;
 	
 	public ArtilleroAtacar() {
-		daño = 150;
+		daño = 30;
 		time = 0.0f;
 		
 		txBalaNormal = new Texture(Gdx.files.internal("artilleroBala.png"));
@@ -28,7 +28,7 @@ public class ArtilleroAtacar implements Atacar {
 	public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
 		time += Gdx.graphics.getDeltaTime();
 		
-     	if (time >= 2) {
+     	if (time >= 1) {
             time = 0.0f;
 
             // Obtener la posición actual de la nave
@@ -45,7 +45,7 @@ public class ArtilleroAtacar implements Atacar {
             bulletDirectionY /= magnitude;
 
             // Establecer la velocidad de la bala
-            float bulletSpeed = 6; // Velocidad de la bala
+            float bulletSpeed = 10; // Velocidad de la bala
             float bulletSpeedX = (bulletDirectionX) * bulletSpeed;
             float bulletSpeedY = bulletDirectionY * bulletSpeed;
 

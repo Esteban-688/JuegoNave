@@ -34,13 +34,17 @@ public class CreateEnemigo {
 		
 		return enemigoComun;
 	}
-	public EnemyComun CrearArtillero(int x, int y) {
+	public EnemyComun crearArtillero(int x, int y) {
 		enemigoComun = new EnemyComun (x,//x
 				y,
 				new Texture(Gdx.files.internal("TxArtilleroNave.png")),
 				ataqueArtillero,//tipo de ataque
 				movimientoArtillero//tipo de movimiento
 				);
+		return enemigoComun;
+	}
+	public EnemyComun CrearKamikaze(int x, int y) {
+		
 		return enemigoComun;
 	}
 }

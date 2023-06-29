@@ -10,7 +10,7 @@ import com.mygdx.game.navecita.Nave4;
 
 public class AtaqueRecto implements BossEstrategy {
 	 private float time;
-	 private int daño = 500 ;
+	 private int daño;
 	 private Texture bulletTexture;
 	 private Sound sound;
 	 
@@ -18,13 +18,14 @@ public class AtaqueRecto implements BossEstrategy {
 	 public AtaqueRecto(Texture bullet, Sound sonido) {
 		 bulletTexture = bullet;
 		 sound = sonido;
+		 daño = 40;
 	 }
 	
 	
 	 public void atacar(BossAttack bossAttack, Nave4 nave, PantallaJuego juego, SpriteBatch batch) {
 		 
 		 	time += Gdx.graphics.getDeltaTime();
-	     	if (time >= 0.6) {
+	     	if (time >= 1) {
 	            time = 0;
 
 	            // Obtener la posición actual de la nave

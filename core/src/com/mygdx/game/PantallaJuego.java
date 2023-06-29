@@ -320,43 +320,23 @@ public class PantallaJuego implements Screen {
 	    	  for (int i = 0; i < balas.size(); i++) {
 		            Bullet b = balas.get(i);
 		            
-		            
 		            for(int f = 0; f < enemigos.size(); f++) {
-		            	EnemyComun z= enemigos.get(f);
-		            	z.checkCollision(balas.get(i));
+		            	EnemyComun z = enemigos.get(f);
+		            	z.checkCollision(balas.get(i)); 	
+		               
 		            	if(z.isDestruida()){
 		            		enemigos.remove(z);
-		            		contadorDeKill ++;
-		            		//System.out.println("hola");
+		            		contadorDeKill ++; 
 		            	}
 		            }
-		            
-		           //colision boss
-		            boss.checkCollision(balas.get(i));
 		            nave.checkCollision(boss, camera);
-		            
-		            if(nave.checkCollision(balas.get(i))){
-		            	balas.remove(i);
-		            	if(bossActivado){
-		            		nave.dañoVida(1000);
-		            	}
-		            }
+		            nave.checkCollision(balas.get(i));
+		            boss.checkCollision(balas.get(i));
 		            
 		            b.update((int)camera.position.x,(int)camera.position.y, anchoCamara, altoCamara, nave.getX()+25, nave.getY()+15);
-		            for (int j = 0; j < balls1.size(); j++) {    
-		 
-		            	  if (b.checkCollision(balls1.get(j)) || nave.checkCollision(balls1.get(j))) {
-
-		            	 explosionSound.play();
-		            	 balls1.remove(j);
-		            	 balls2.remove(j);
-		            	 j--;
-		            	 
-		              }   	  
-		  	        }
 		                
 		         //   b.draw(batch);
-		            if (b.isDestroyed()) {
+		             if (b.isDestroyed()) {
 		                balas.remove(b);
 		                i--; //para no saltarse 1 tras eliminar del arraylist
 		            }
@@ -413,7 +393,7 @@ public class PantallaJuego implements Screen {
 				contadorDeEnemigos <= 100 &&//maxima cantidad de enemigos
 				!bossActivado ) {//si el boss no esta activo generan
 			
-			enemigoComun = crearEnemy.CrearArtillero(nave.getX()-360, alto/2);
+			enemigoComun = crearEnemy.crearArtillero(nave.getX()-360, alto/2);
 			//añadir  
 			enemigos.add(enemigoComun);
 			contadorDeEnemigos ++;

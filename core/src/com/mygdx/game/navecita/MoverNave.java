@@ -28,31 +28,31 @@ public class MoverNave {
 			 // Que se mueva con teclado
 	    	//mover adelante
 	        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-	            xVel -= 0.5f * MathUtils.sinDeg(rotacion);
-	            yVel += 0.5f * MathUtils.cosDeg(rotacion);
+	            xVel -= 0.4f * MathUtils.sinDeg(rotacion);
+	            yVel += 0.4f * MathUtils.cosDeg(rotacion);
 	            //turbo
-	            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-	                xVel -= 0.5f * MathUtils.sinDeg(rotacion);
-	                yVel += 0.5f * MathUtils.cosDeg(rotacion);
+	            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)||(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))) {
+	                xVel -= 0.2f * MathUtils.sinDeg(rotacion);
+	                yVel += 0.2f * MathUtils.cosDeg(rotacion);
 	            }
 	        }
 	        
 	        
 	        //mover atras
 	        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-	            xVel += 0.5f * MathUtils.sinDeg(rotacion);
-	            yVel -= 0.5f * MathUtils.cosDeg(rotacion);
+	            xVel += 0.4f * MathUtils.sinDeg(rotacion);
+	            yVel -= 0.4f * MathUtils.cosDeg(rotacion);
 	        }
 	
 	        // Que rote con teclado
 	        
 	        //sentido antihorario
 	        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)||Gdx.input.isKeyPressed(Input.Keys.A)) {
-	            rotacion += 4f; // Incrementa la rotación en sentido antihorario
+	            rotacion += 6f; // Incrementa la rotación en sentido antihorario
 	        }
 	            //sentido horario
 	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)||Gdx.input.isKeyPressed(Input.Keys.D)) {
-	            rotacion -= 4f; // Incrementa la rotación en sentido horario
+	            rotacion -= 6f; // Incrementa la rotación en sentido horario
 	        }
 	        // Disminuir gradualmente la velocidad de desplazamiento
 	        float reduccionVelocidad = 0.95f; // Factor de reducción
