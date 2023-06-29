@@ -86,7 +86,7 @@ public class PantallaCarga implements Screen {
 		
 	}
 	private void rellenarConsejos() {
-		consejos.add("Puedes curarte con el ataque Especial, Hasta 800");
+		consejos.add("Puedes curarte con el Ataque Especial, Hasta 800");
 		consejos.add("Para ganar debes matar al boss");
 		consejos.add("Un piloto requiere un gran habilidad en espacio");
 		consejos.add("Se uno con la nave");
@@ -97,7 +97,7 @@ public class PantallaCarga implements Screen {
 		consejos.add("Ni la NASA tiene tus habilidades");
 		consejos.add("Ostia que has llegado lejos");
 		consejos.add("Derrota muchas naves para ganar EduCoins");
-		consejos.add("Las EduCoins te ayuda a comprar Skins ");
+		consejos.add("Las EduCoins te ayudaran a comprar Skins ");
 		consejos.add("Ni el Warden te hara daño como los EduNianos");
 		consejos.add("¿Podrás contra los EduNianos?");
 		consejos.add("El Universo se formó hace 13.800 millones de años");

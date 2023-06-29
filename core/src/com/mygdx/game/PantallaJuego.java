@@ -43,7 +43,7 @@ public class PantallaJuego implements Screen {
 	private Music gameMusic, battleMusic;
 	private int ancho, alto, anchoCamara, altoCamara;;
 	private int porcentaje = 0;
-	private float tiempoTotal1 = 0.0f;
+	private float tiempoTotal1, tiempoTotal2;
 	private boolean barreraBoolean = false;
 	private int barreraX = 0, barreraY = 0;
 	private Nave4 nave;
@@ -91,7 +91,7 @@ public class PantallaJuego implements Screen {
 		
 		//gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
 		battleMusic = Gdx.audio.newMusic (Gdx.files.internal("Sound-battle.mp3"));
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("musicaFondo.mp3")); 
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("Musica.mp3")); 
 		
 		gameMusic.setLooping(true);
 		gameMusic.setVolume(0.6f);
@@ -154,8 +154,18 @@ public class PantallaJuego implements Screen {
 
 	    // Dibujar la barra de progreso
 	    game.getFont().draw(batch, "[" + barraProgreso , xPorcentaje-150, yPorcentaje);
+	    //consejos en pantalla
+	    dibujarConsejos(xPorcentaje,yPorcentaje);
 	}
- 
+	
+	private void dibujarConsejos(int x, int y) {
+		game.getFont().getData().setScale(3f);
+		game.getFont().draw(batch, "Avanza", Config.getIzq()+200,Config.getUp()/2+260);
+		game.getFont().draw(batch, ">>>>>>", Config.getIzq()+200,Config.getUp()/2+224);
+		if(bossActivado && boss.getVidaPorcentaje()==100) {game.getFont().draw(batch, "Disparale al Boss", x-130 , y - 110);}
+		
+		
+	}
 	//camara moviendose
 	private void actualizarCamara() {
 		
@@ -328,20 +338,21 @@ public class PantallaJuego implements Screen {
 	private void createEnemigo() {
 		
 		tiempoTotal1 += Gdx.graphics.getDeltaTime();
+		tiempoTotal2 += Gdx.graphics.getDeltaTime();
 		
-		if(tiempoTotal1 > 2 &&//cada cuanto se generan
-				enemigos.size()< 3 &&//cuantos enemigos por mapa
-				contadorDeEnemigos <= 100 &&//maxima cantidad de enemigos
+		if(tiempoTotal2 > 2.2 &&//cada cuanto se generan
+				enemigos.size()< 4 &&//cuantos enemigos por mapa
+				contadorDeEnemigos <= 40 &&//maxima cantidad de enemigos
 				!bossActivado ) {//si el boss no esta activo generan
-			
+			tiempoTotal2= 0.0f;
 			enemigoComun = crearEnemy.crearArtillero(nave.getX()-360, alto/2);
 			//añadir  
 			enemigos.add(enemigoComun);
 			contadorDeEnemigos ++;
 			}
-		 if(tiempoTotal1 > 2 &&//cada cuanto se generan
-				enemigos.size()< 3 &&//cuantos enemigos por mapa
-				contadorDeEnemigos <= 100 &&//maxima cantidad de enemigos
+		 if(tiempoTotal1 > 2.2 &&//cada cuanto se generan
+				enemigos.size()< 5 &&//cuantos enemigos por mapa
+				contadorDeEnemigos <= 40 &&//maxima cantidad de enemigos
 				!bossActivado ) {//si el boss no esta activo generan
 		
 			tiempoTotal1= 0.0f;

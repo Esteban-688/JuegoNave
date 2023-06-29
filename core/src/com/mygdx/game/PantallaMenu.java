@@ -21,7 +21,7 @@ public class PantallaMenu implements Screen {
 	    private SpriteBatch batch;
 	    private Texture backgroundTexture;
 	    
-	    private Sprite playButtonSprite, storeButtonSprite, guardar, cargar;
+	    private Sprite playButtonSprite, storeButtonSprite, guardar, cargar, cambiarName;
 	    private Vector3 touchPoint;
 	    private Nave4 nave;
 	    private Perfil perfil;
@@ -43,6 +43,7 @@ public class PantallaMenu implements Screen {
 	        storeButtonSprite = new Sprite(new Texture("store.png"));
 	        guardar = new Sprite(new Texture("botonGuardar.png"));
 	        cargar = new Sprite(new Texture("botonCargar.png"));
+	        cambiarName = new Sprite(new Texture("Cnombre.png"));
 	        
 	        
 	        touchPoint = new Vector3();
@@ -62,6 +63,10 @@ public class PantallaMenu implements Screen {
 	        //boton tienda
 	        storeButtonSprite.setSize(150, 49);
 	        storeButtonSprite.setPosition(70, 140);
+	        
+	        //boton cambiar nombre
+	        cambiarName.setSize(41, 39);
+	        cambiarName.setPosition(630, 542);
 	    }
 	    public PantallaMenu(SpaceNavigation game, Nave4 navecita, Perfil miPerfil) {
 	        this.game = game;
@@ -75,9 +80,12 @@ public class PantallaMenu implements Screen {
 
 	        backgroundTexture = new Texture("inicio1.png");
 	        playButtonSprite = new Sprite(new Texture("botonPlay.png"));
+	        //levelsButtonSprite = new Sprite(new Texture("botonPlay.png"));
+	        storeButtonSprite = new Sprite(new Texture("store.png"));
 	        guardar = new Sprite(new Texture("botonGuardar.png"));
 	        cargar = new Sprite(new Texture("botonCargar.png"));
-	        storeButtonSprite = new Sprite(new Texture("store.png"));
+	        cambiarName = new Sprite(new Texture("Cnombre.png"));
+	        
 
 	        touchPoint = new Vector3();
 
@@ -96,6 +104,9 @@ public class PantallaMenu implements Screen {
 	        //boton tienda
 	        storeButtonSprite.setSize(150, 49);
 	        storeButtonSprite.setPosition(70, 140);
+	        //boton cambiar nombre
+	        cambiarName.setSize(150, 49);
+	        cambiarName.setPosition(630, 542);
 	    }
 
 	    @Override
@@ -116,6 +127,7 @@ public class PantallaMenu implements Screen {
 	        storeButtonSprite.draw(batch);
 	        guardar.draw(batch);
 	        cargar.draw(batch);
+	        cambiarName.draw(batch);
 	        
 	        
 	        batch.end();
@@ -137,6 +149,10 @@ public class PantallaMenu implements Screen {
 	            if (cargar.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
 		           SaveLoad.load(perfil);
 		            }
+	            if (cambiarName.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+			        //pedirlo por pantalla
+	            	perfil.setNombre("");
+			            }
 
 	            // "Tienda"
 	            if (storeButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {

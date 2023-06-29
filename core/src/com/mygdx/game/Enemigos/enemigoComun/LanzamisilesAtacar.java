@@ -29,7 +29,7 @@ public class LanzamisilesAtacar implements Atacar {
 	public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
 		tiempo += Gdx.graphics.getDeltaTime();
 		
-        if (tiempo >= 0.5) {
+        if (tiempo >= 0.9) {
         	
             tiempo = 0.0f;
             float balaVelocidad = 15; // Velocidad de la bala
