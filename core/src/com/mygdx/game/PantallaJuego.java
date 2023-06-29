@@ -55,10 +55,6 @@ public class PantallaJuego implements Screen {
 	private Perfil perfil;
 	
 	private CreateEnemigo crearEnemy;
-	
-	
-	private  ArrayList<Ball2> balls1 = new ArrayList<>();
-	private  ArrayList<Ball2> balls2 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
 	
@@ -118,18 +114,6 @@ public class PantallaJuego implements Screen {
         		nave
         		);
         
-        //crear asteroides
-       /* Random r = new Random();
-	    for (int i = 0; i < cantAsteroides; i++) {
-	        Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
-	  	            50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-	  	            20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4), 
-	  	            new Texture(Gdx.files.internal("aGreyMedium4.png")),
-	  	            ancho,alto);	   
-	  	    balls1.add(bb);
-	  	    balls2.add(bb);
-	  	    
-	  	}*/
 	   
 	   
 	}
@@ -235,10 +219,7 @@ public class PantallaJuego implements Screen {
 		    
 		    	  
 		      }else  if(bossActivado) {
-		    	  
-		    	  
-		    		
-		    	
+	
 		    		 
 						if(barreraBoolean) {//solo sucede una vez
 						  nave.setPosition(ancho-500 ,alto/2);
@@ -267,15 +248,34 @@ public class PantallaJuego implements Screen {
 		    			  boss.draw(batch,this);
 			    		 boss.atacar(batch, this, boss.getSprite());
 			    		 boss.moverse(boss.getSprite());
+			    		 
+			    		 //uso del strategy en el boss
+			    		 if((int)boss.getVidaPorcentaje()== 50) {
+			    			 ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
+			    		                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
+			    		                6,
+			    		                1.2f);
+			    		        boss.setAtaqueStrategy(ataqueEstrategy);
+			    		 }
+			    		 if((int)boss.getVidaPorcentaje() == 25) {
+			    			 ataqueEstrategy = new AtaqueRecto(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
+			    		                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
+			    		                0.9f);
+			    		        boss.setAtaqueStrategy(ataqueEstrategy);
+			    		 }
+			    		 
+			    		 if((int)boss.getVidaPorcentaje()== 10) {
+			    			 ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
+			    		                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
+			    		                10,
+			    		                0.8f);
+			    		        boss.setAtaqueStrategy(ataqueEstrategy);
+			    		 }
 			    		 nave.bordeNave(barreraX-305, barreraX +290, barreraY + 390 , barreraY -405);
 			    		 
 			    		
 		    		  }
 		    		  else {
-		    			 // Screen ss = new PantallaMenu(game, 800, 600);
-		    	    	  //ss.resize(1200, 800);
-		    	    	  //game.setScreen(ss);
-		    	    	  //dispose();
 		    			  if(!bossMuerto) {
 		    				  	battleMusic.stop();
 		    				  	gameMusic.setLooping(true);
@@ -294,10 +294,8 @@ public class PantallaJuego implements Screen {
 		    	    	  dispose();
 		    	      
 		    		  }
-		    		  //System.out.println("bossFinal");
-		    	  }//else if(!bossActivado) {
-		    		 // nave.bordeNave(0, ancho, alto, 0);
-		    	  //}
+		    		 
+		    	  }
 		    		 
 		      }
 	
@@ -322,43 +320,29 @@ public class PantallaJuego implements Screen {
 		            
 		            for(int f = 0; f < enemigos.size(); f++) {
 		            	EnemyComun z = enemigos.get(f);
-		            	z.checkCollision(balas.get(i)); 	
-		               
+		            	balas.get(i).checkCollision(z); 	
 		            	if(z.isDestruida()){
 		            		enemigos.remove(z);
 		            		contadorDeKill ++; 
 		            	}
 		            }
 		            nave.checkCollision(boss, camera);
-		            nave.checkCollision(balas.get(i));
-		            boss.checkCollision(balas.get(i));
+		            balas.get(i).checkCollision(nave);
+		            balas.get(i).checkCollision(boss);
+		            
 		            
 		            b.update((int)camera.position.x,(int)camera.position.y, anchoCamara, altoCamara, nave.getX()+25, nave.getY()+15);
-		                
+		            
+		           
 		         //   b.draw(batch);
 		             if (b.isDestroyed()) {
 		                balas.remove(b);
 		                i--; //para no saltarse 1 tras eliminar del arraylist
 		            }
 		      }
-		      //actualizar movimiento de asteroides dentro del area
-		      for (Ball2 ball : balls1) {
-		          ball.update(ancho, alto);
-		      }
+		      
 		      //colisiones entre asteroides y sus rebotes  
-		      for (int i = 0; i < balls1.size();i++) {
-		    	Ball2 ball1 = balls1.get(i);   
-		        for (int j = 0 ; j < balls2.size();j++) {
-		          Ball2 ball2 = balls2.get(j); 
-		          if (i < j) {
-		        	  ball1.checkCollision(ball2);
-		        	  if (ball2.isDestroyed()) {
-		        		 balls1.remove(j);
-		        		 balls2.remove(j);
-		        	  }
-		          }
-		        }
-		      } 
+		      
 	      }
 	}
 	
@@ -368,20 +352,6 @@ public class PantallaJuego implements Screen {
   		  EnemyComun nuevo = enemigos.get(x);
   		  nuevo.draw(batch, this);
   	  }
-	}
-
-	private void colisioNaveAsteroide() {
-		for (int i = 0; i < balls1.size(); i++) {
-    	    Ball2 b=balls1.get(i);
-    	    b.draw(batch);
-	          //perdió vida o game over
-              if (nave.checkCollision(b)) {
-	            //asteroide se destruye con el choque             
-            	 balls1.remove(i);
-            	 balls2.remove(i);
-            	 i--;
-          }   	  
-	        }
 	}
 
 	private void createEnemigo() {
@@ -450,25 +420,8 @@ public class PantallaJuego implements Screen {
 	    // Dibujar nave
 	    nave.draw(batch, this);
 	    
-	    // Dibujar asteroides y manejar colisión con nave
-	    colisioNaveAsteroide();
-	      
 	    // Verificar si se acabaron las vidas
 	    gameOver();
-	    
-	    // Prueba de ataque del jefe
-	    if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-	    	
-	        ataqueEstrategy = new AtaqueSpike(new Texture(Gdx.files.internal("ataqueSpike.png")),
-	                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
-	                6);
-	        boss.setAtaqueStrategy(ataqueEstrategy);
-	    }
-	    if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-	        ataqueEstrategy = new AtaqueRecto(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
-	                Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
-	        boss.setAtaqueStrategy(ataqueEstrategy);
-	    }
 
 	    batch.end();
 	}

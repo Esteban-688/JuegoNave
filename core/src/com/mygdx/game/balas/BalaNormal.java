@@ -3,7 +3,10 @@ package com.mygdx.game.balas;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Ball2;
+import com.badlogic.gdx.utils.Timer;
+import com.mygdx.game.Enemigos.boss.BossFinal;
+import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
+import com.mygdx.game.navecita.Nave4;
 
 public class BalaNormal extends Bullet {
 	
@@ -61,5 +64,59 @@ public class BalaNormal extends Bullet {
 	public Sprite getSprite() {
         return spr;
     }
+
+	@Override
+	public boolean checkCollision(BossFinal boss) {
+		if(getMia()) {
+            if (boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+                boss.restarVida(getDaño());
+             // Actualizar la vida en porcentaje
+                float vidaPorcentaje = (boss.getVida() * 100f) / boss.getMaxVida();
+                boss.setVidaPorcentaje(vidaPorcentaje);
+                setDestroyed(true);
+                if (boss.getVida() <= 0) {
+                    boss.setDestruida (true);
+                    return false;
+                }else {
+                	boss.texturaHerida();
+                }
+                return true;
+            }
+        }
+        
+      return false;
+	}
+
+	@Override
+	public boolean checkCollision(EnemyComun enemigo) {
+		if(getMia()) {
+            if (enemigo.getSpr().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+                enemigo.restarVida(getDaño());
+                setDestroyed(true);
+                if (enemigo.getVida() <= 0) {
+                    enemigo.setDestruida(true);
+                }
+                return true;
+            }
+        
+    }
+		return false;
+	}
+
+	@Override
+	public boolean checkCollision(Nave4 nave) {
+		if(!getMia()) {
+            if (!nave.estaHerido() && nave.getSpr().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
+                nave.restarVida(getDaño());
+                setDestroyed(true);
+                nave.sonidoHerido();
+                if (nave.getVidas() <= 0) {
+                    nave.setDestruida(true);
+                }
+                return true;
+            }
+        }
+    return false;
+	}
 	
 }

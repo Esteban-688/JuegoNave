@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.mygdx.game.Ball2;
+
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.Enemigos.boss.BossFinal;
 import com.mygdx.game.balas.Bullet;
@@ -25,6 +25,7 @@ public class Nave4 implements Nave{
     private float rotacion;
     private AtacarNave ataque;
 	private MoverNave mover;
+	
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala,Texture txBalaEspecial, Sound soundBalaEspecial) {
     	
@@ -90,34 +91,6 @@ public class Nave4 implements Nave{
     public void inmune() {
     	
     }
-    
-    public boolean checkCollision(Ball2 b) {
-        if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
-            vida-=100;
-            herido = true;
-  		    tiempoHerido = tiempoHeridoMax;
-  		    sonidoHerido.play();
-            if (vida<=0) 
-          	    destruida = true; 
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean checkCollision(Bullet bala) {
-            if(!bala.getMia()) {
-	            if (!herido && bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-	                vida-=bala.getDaño();
-	                bala.setDestroyed(true);
-	                sonidoHerido.play();
-	                if (vida <= 0) {
-	                    destruida = true;
-	                }
-	                return true;
-	            }
-            }
-        return false;
-    }
     public boolean checkCollision(BossFinal boss, Camera camera) {
     	
     	 if (!herido && boss.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
@@ -167,11 +140,21 @@ public class Nave4 implements Nave{
         
     	
     }
+    public Sprite getSpr() {return spr;}
     public int getVidas() {return vida;}
     public boolean isDestruida() {return destruida;}
+    public void setDestruida(boolean a) { destruida = a;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
-	public void dañoVida(int vida2) {vida = vida-vida2;}
+	public void restarVida(int a) {vida-=a;}
+	public void SumarVida(int a) {
+		if(vida<800) {
+		vida += a;
+		}
+	}
+	public void sonidoHerido() {
+		sonidoHerido.play();
+	}
 	public void setPosition(float x, float y) {spr.setPosition(x, y);}
 	
 	public void setTx(Texture skin) {

@@ -1,17 +1,12 @@
 package com.mygdx.game.Enemigos.boss;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.game.Ball2;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.Enemigos.Enemigo;
-import com.mygdx.game.balas.BalaNormal;
-import com.mygdx.game.balas.Bullet;
 import com.mygdx.game.navecita.Nave4;
 
 public class BossFinal implements Enemigo {
@@ -34,7 +29,7 @@ public class BossFinal implements Enemigo {
         destruida = false;
         vida = 5000;
         maxVida = vida;
-        vidaPorcentaje= 100f;
+        vidaPorcentaje = 100f;
         spr = new Sprite(txOriginal);
         
         spr.setPosition(x, y);
@@ -79,51 +74,36 @@ public class BossFinal implements Enemigo {
     public void setPosition(int x, int y) {
     	spr.setPosition(x, y);
     }
-
-	public boolean checkCollision(Ball2 ball) {
-        
-        return true;
-    }
-    public boolean checkCollision(Bullet bala) {
-    	
-        if(bala.getMia()) {
-            if (bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-                vida-=bala.getDaño();
-             // Actualizar la vida en porcentaje
-                vidaPorcentaje = (vida * 100f) / maxVida;
-                bala.setDestroyed(true);
-                if (vida <= 0) {
-                    destruida = true;
-                    return false;
-                }else {
-                	//se reemplaza la tx
-                	 spr.setTexture(heridoTx);
-                	 float heridoDuration = 0.1f;//se crea el contador
-                	 Timer.schedule(new Timer.Task() {
-                         @Override
-                         public void run() {
-                             spr.setTexture(originalTx);
-                         }
-                     }, heridoDuration);
-                }
-                return true;
-            }
-        }
-        
-      return false;
-    }
     
     public float getVidaPorcentaje() {
         return vidaPorcentaje;
     }
-    
+    public void setVidaPorcentaje(float a) {
+    	vidaPorcentaje = a;
+    }
+    public void restarVida(int a) {
+    	vida -= a;
+    }
     public void setAtaqueStrategy(BossEstrategy ataqueStrategy) {
         ataque.setAtaqueStrategy(ataqueStrategy);
     }
     
+    public void texturaHerida() {
+	    	//se reemplaza la tx
+	   	 spr.setTexture(heridoTx);
+	   	 float heridoDuration = 0.1f;//se crea el contador
+	   	 Timer.schedule(new Timer.Task() {
+	            @Override
+	            public void run() {
+	                spr.setTexture(originalTx);
+	            }
+	        }, heridoDuration);
+    }
 	public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public int getVida() {return vida;}
+    public int getMaxVida() {return maxVida;}
     public Sprite getSprite() {return spr;}
     public boolean isDestruida() {return destruida;}
+    public void setDestruida(boolean a) {destruida=a;}
 }

@@ -4,7 +4,9 @@ package com.mygdx.game.balas;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Ball2;
+import com.mygdx.game.Enemigos.boss.BossFinal;
+import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
+import com.mygdx.game.navecita.Nave4;
 
 public abstract class Bullet {
 	
@@ -22,6 +24,12 @@ public abstract class Bullet {
     public abstract void update(int posicionXCamara, int posicionYCamara, int anchoCamara, int altoCamara,int x, int y);
     
     public abstract Sprite getSprite();
+   
+    public abstract boolean checkCollision (BossFinal boss);
+    
+    public abstract boolean checkCollision(EnemyComun enemigo);
+    
+    public abstract boolean checkCollision(Nave4 nave);
     
     public int getDaño() {
     	return daño;

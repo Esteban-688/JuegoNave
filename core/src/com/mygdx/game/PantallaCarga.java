@@ -34,7 +34,7 @@ public class PantallaCarga implements Screen {
         
         
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1920, 1200);
+		camera.setToOrtho(false, 1920, 1080);
 
         batch = new SpriteBatch();
         

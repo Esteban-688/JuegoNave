@@ -17,9 +17,7 @@ public class BossAttack {
 	private BossEstrategy ataqueEstrategy;
     private Sprite sprite;
     private float rotation;
-    private float time;
     private Nave4 nave;
-    private int speed = 10;
    
     
     public BossAttack(Sprite sprite, Nave4 nave1) {
@@ -30,7 +28,8 @@ public class BossAttack {
         
         //se define el ataque por defecto
        ataqueEstrategy = new AtaqueRecto(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
-        									Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+        									Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
+        									2);
     }
 
     public void draw(SpriteBatch batch) {

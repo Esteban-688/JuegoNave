@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.game.Ball2;
+import com.mygdx.game.Config;
+import com.mygdx.game.Enemigos.boss.BossFinal;
+import com.mygdx.game.Enemigos.enemigoComun.EnemyComun;
+import com.mygdx.game.navecita.Nave4;
 import com.badlogic.gdx.math.Intersector;
 
 public class BalaEspecial extends Bullet {
@@ -39,6 +42,49 @@ public class BalaEspecial extends Bullet {
         	setDestroyed(true);
         }
     }
+    public boolean checkCollision(BossFinal boss) {
+		if(getMia()) {
+            if (boss.getSprite().getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
+                boss.restarVida(getDaño());
+                boss.setPosition(Config.getDer()-300, Config.getUp()/2);
+             // Actualizar la vida en porcentaje
+                float vidaPorcentaje = (boss.getVida() * 100f) / boss.getMaxVida();
+                boss.setVidaPorcentaje(vidaPorcentaje);
+                setDestroyed(true);
+                if (boss.getVida() <= 0) {
+                    boss.setDestruida (true);
+                    return false;
+                }else {
+                	boss.texturaHerida();
+                }
+                return true;
+            }
+        }
+        
+      return false;
+	}
+    @Override
+	public boolean checkCollision(EnemyComun enemigo) {
+		if(getMia()) {
+            if (enemigo.getSpr().getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
+                enemigo.restarVida(getDaño());
+                setDestroyed(true);
+                enemigo.setDestruida(true);
+                return true;
+            }
+        
+    }
+		return false;
+	}
+    public boolean checkCollision(Nave4 nave) {
+		if(getMia()) {
+            if (!nave.estaHerido() && nave.getSpr().getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
+                nave.SumarVida(1);
+                return true;
+            }
+        }
+    return false;
+	}
 
     public Circle getCircle() {
         return circle;

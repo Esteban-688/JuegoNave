@@ -13,19 +13,20 @@ public class AtaqueRecto implements BossEstrategy {
 	 private int daño;
 	 private Texture bulletTexture;
 	 private Sound sound;
+	 private float lapso;
 	 
-	 
-	 public AtaqueRecto(Texture bullet, Sound sonido) {
+	 public AtaqueRecto(Texture bullet, Sound sonido, float tiempo) {
 		 bulletTexture = bullet;
 		 sound = sonido;
 		 daño = 40;
+		 lapso = tiempo;
 	 }
 	
 	
 	 public void atacar(BossAttack bossAttack, Nave4 nave, PantallaJuego juego, SpriteBatch batch) {
 		 
 		 	time += Gdx.graphics.getDeltaTime();
-	     	if (time >= 1) {
+	     	if (time >= lapso) {
 	            time = 0;
 
 	            // Obtener la posición actual de la nave

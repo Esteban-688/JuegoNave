@@ -28,7 +28,7 @@ public class ArtilleroAtacar implements Atacar {
 	public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
 		time += Gdx.graphics.getDeltaTime();
 		
-     	if (time >= 1) {
+     	if (time >= 2) {
             time = 0.0f;
 
             // Obtener la posición actual de la nave

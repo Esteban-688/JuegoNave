@@ -3,7 +3,6 @@
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Ball2;
 import com.mygdx.game.PantallaJuego;
 import com.mygdx.game.Enemigos.Enemigo;
 import com.mygdx.game.balas.Bullet;
@@ -24,10 +23,7 @@ public class EnemyComun implements Enemigo{
         spr = new Sprite(tx);
         spr.setSize(50, 60);
         spr.setPosition(x, y);
-        //alto= altoY;
         vida = 200;
-       // distancia = xDistancia;
-       // this.ySpeed = ySpeed;
         spr.setRotation(90);
         ataque = atacar;
         moverse = mover;
@@ -49,22 +45,6 @@ public class EnemyComun implements Enemigo{
        moverse.moverse(spr);
     	
     }
-
-    public boolean checkCollision(Bullet bala) {
-    	
-        if(bala.getMia()) {
-            if (bala.getSprite().getBoundingRectangle().overlaps(spr.getBoundingRectangle())) {
-                vida-=bala.getDaño();
-                bala.setDestroyed(true);
-                if (vida <= 0) {
-                    destruida = true;
-                }
-                return true;
-            }
-        
-    }
-    return false;
-    }
     
     public void destruirTodo() {
     	destruida = true;
@@ -77,5 +57,9 @@ public class EnemyComun implements Enemigo{
     public int getY() {
         return (int) spr.getY();
     }
+    public Sprite getSpr(){return spr;}
+    public int getVida(){return vida;}
+    public void restarVida(int a){vida-=a;}
     public boolean isDestruida() {return destruida;}
+    public void setDestruida(boolean a){destruida=a;}
 }

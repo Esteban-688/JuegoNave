@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,7 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 
 public class EarthMap {
-    private Texture[] earthTextures; 
+    private ArrayList<Texture> earthTextures; 
     private Sprite earthSprite; 
     private Texture starTexture;
     private Sprite[] stars;
@@ -28,12 +30,11 @@ public class EarthMap {
     }
     
     public void update(float porcentaje) {
-        int index = (int) (porcentaje / 100f * earthTextures.length);
-        if(porcentaje <=100) {
-        	earthSprite.setTexture(earthTextures[index]);
+        int index = (int) (porcentaje / 100f * earthTextures.size());
+        if(porcentaje <= 100) {
+        	earthSprite.setTexture(earthTextures.get(index));
         }
     }
-
 
     public void render(SpriteBatch batch, Camera camera) {
     	 float scale = 0.4f;
@@ -68,12 +69,10 @@ public class EarthMap {
     }
    
     public boolean CargarMundo() {
+            earthTextures = new ArrayList<>();
 
-            earthTextures = new Texture[100];
-
-            for (int i = 0; i < 100; i++) {
-                int x = i+1;
-                earthTextures[i] = new Texture(Gdx.files.internal("earth" + x + ".png"));
+            for (int i = 1; i <= 100; i++) {
+                earthTextures.add(new Texture(Gdx.files.internal("earth" + i + ".png")));
             }
             starTexture = new Texture(Gdx.files.internal("star.png"));
             return true;
@@ -81,15 +80,15 @@ public class EarthMap {
 
     public void iniciar() {
     	// Crear el sprite del planeta Tierra y posicionarlo en el centro de la pantalla
-        earthSprite = new Sprite(earthTextures[0]);
+        earthSprite = new Sprite(earthTextures.get(1));
         earthSprite.setPosition((Gdx.graphics.getWidth() - earthSprite.getWidth()) / 2,
                 (Gdx.graphics.getHeight() - earthSprite.getHeight()) / 2);
     }
     
     public void dispose() {
         // Liberar las texturas del planeta Tierra
-        for (Texture texture : earthTextures) {
-            texture.dispose();
+        for (int i = 0; i < earthTextures.size();i++ ) {
+        	earthTextures.get(i).dispose();
         }
         starTexture.dispose();
     }
