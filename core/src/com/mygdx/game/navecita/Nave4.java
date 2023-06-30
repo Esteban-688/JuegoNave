@@ -170,6 +170,9 @@ public class Nave4 implements Nave{
 	}
 	public void setPosition(float x, float y) {spr.setPosition(x, y);}
 	
+	public Texture getTx() {
+		return spr.getTexture();
+	}
 	public void setTx(Texture skin) {
 		 spr.setTexture(skin);
 	}

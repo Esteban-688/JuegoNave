@@ -43,7 +43,8 @@ public class PantallaJuego implements Screen {
 	private Nave4 nave;
 	private EnemyComun enemigoComun;
 	private BossFinal boss;
-	private boolean bossActivado, bossMuerto, barreraBoolean;
+	private boolean bossActivado, bossMuerto, barreraBoolean, renderPausado;
+	private Pause pause;
 	private Perfil perfil;
 	private CreateEnemigo crearEnemy;
 	private  ArrayList<Bullet> balas = new ArrayList<>();
@@ -57,6 +58,7 @@ public class PantallaJuego implements Screen {
 		bossActivado = false;
 		bossMuerto = false;
 		barreraBoolean = false;
+		renderPausado = false;
 		
 		ancho = Config.getDer();
 		alto = Config.getUp();
@@ -272,7 +274,6 @@ public class PantallaJuego implements Screen {
 		    		  }
 		    		   if(porcentaje >= 100  && bossMuerto) {
 		    	    	  Screen ss = new PantallaMenu(game, nave, perfil);
-		    	    	 // ss.resize(1200, 800);
 		    	    	  game.setScreen(ss);
 		    	    	  dispose();
 		    	      
@@ -362,6 +363,17 @@ public class PantallaJuego implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		
+		//se usa para detener el render en la pausa
+		if(renderPausado) {
+			return;
+		}
+		//verificar Pausa
+	    if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+	    	pause();
+	    }
+		
+		
 	    Gdx.gl.glClearColor(0, 0, 0, 1);
 	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -383,7 +395,7 @@ public class PantallaJuego implements Screen {
 	    // Validar que la nave no salga del límite del mapa 
 	    porcentajeDeBarera();
 	      
-	    // Comprobar colisiones de asteroides y balas, y su destrucción si no está herido
+	    // Comprobar colisiones de balas, y su destrucción, si no está herido
 	    noEstaHeridoLaNave();
 	    
 	    // Dibujar balas
@@ -398,8 +410,9 @@ public class PantallaJuego implements Screen {
 	    // Dibujar nave
 	    nave.draw(batch, this);
 	    
-	    // Verificar si se acabaron las vidas
+	    // Verificar si su vida llego a 0
 	    gameOver();
+	    
 	    
 	    batch.end();
 	    
@@ -408,6 +421,10 @@ public class PantallaJuego implements Screen {
     
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
+    }
+    public void setRender(boolean a) {renderPausado = a;}
+    public int getContadorkill() {
+    	return contadorDeKill;
     }
 	
 	@Override
@@ -424,8 +441,9 @@ public class PantallaJuego implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-		
+		pause = new Pause(game, this, nave, perfil);
+		renderPausado = true;
+		game.setScreen(pause);
 	}
 
 	@Override
@@ -442,7 +460,6 @@ public class PantallaJuego implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		this.earthMap.dispose();
 		this.explosionSound.dispose();
 		this.gameMusic.dispose();

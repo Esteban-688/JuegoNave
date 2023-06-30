@@ -16,16 +16,12 @@ public class PantallaCarga implements Screen {
 	
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
-	
-	 private SpriteBatch batch;
-	 private Texture backgroundTexture;
-	
+	private SpriteBatch batch;
+	private Texture backgroundTexture;
 	private EarthMap map;
 	private float time;
-	
 	private Nave4 nave;
 	private Perfil perfil;
-	
 	private ArrayList<String> consejos = new ArrayList<>();
 	private String consejoAleatorio;
 	
@@ -36,18 +32,11 @@ public class PantallaCarga implements Screen {
         perfil = miPerfil;
         rellenarConsejos();
         map = EarthMap.getInstance();
-        
-        
-        
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1600, 900);
-
         batch = new SpriteBatch();
-        
-        
         backgroundTexture = new Texture("pantallaCarga.png");
         consejo();
-        
 	}
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
@@ -66,10 +55,8 @@ public class PantallaCarga implements Screen {
        
         if(time >= 1) {
         	nave.inicio((500+Config.getDer())-Config.getDer(),(Config.getUp()-(Config.getUp()/2)));
-        	//System.out.println("si reestablecio la nave");
         	if(time > 3 && map.CargarMundo()) {
         		time = 0;
-        		//nave.inicio((500+Config.getDer())-Config.getDer(),(Config.getUp()-(Config.getUp()/2)));
         		Screen ss = new PantallaJuego(game, nave, perfil);
     			game.setScreen(ss);
     			dispose();
@@ -93,7 +80,7 @@ public class PantallaCarga implements Screen {
 		consejos.add("Puedes moverte con las flechas como alternativa");
 		consejos.add("La tecla E puede salvarte la vida");
 		consejos.add("El turbo puede ser de gran ayuda");
-		consejos.add("Una nave y boss, ¿quien ganara?");
+		consejos.add("Una nave y un boss, ¿quien ganara?");
 		consejos.add("Ni la NASA tiene tus habilidades");
 		consejos.add("Ostia que has llegado lejos");
 		consejos.add("Derrota muchas naves para ganar EduCoins");

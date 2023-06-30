@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import javax.swing.JOptionPane;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -17,10 +18,8 @@ public class PantallaMenu implements Screen {
 	
 	 	private SpaceNavigation game;
 	    private OrthographicCamera camera;
-	    
 	    private SpriteBatch batch;
 	    private Texture backgroundTexture;
-	    
 	    private Sprite playButtonSprite, storeButtonSprite, guardar, cargar, cambiarName;
 	    private Vector3 touchPoint;
 	    private Nave4 nave;
@@ -32,41 +31,40 @@ public class PantallaMenu implements Screen {
 	        perfil = saveload.getPerfil();
 	        saveLoad = saveload;
 	        nave= navecita;
+	        
 	        camera = new OrthographicCamera();
-	        camera.setToOrtho(false, 1000,600);
+	        camera.setToOrtho(false, 1024, 576);
 
 	        batch = new SpriteBatch();
 
 	        backgroundTexture = new Texture("inicio1.png");
 	        playButtonSprite = new Sprite(new Texture("botonPlay.png"));
-	        //levelsButtonSprite = new Sprite(new Texture("botonPlay.png"));
 	        storeButtonSprite = new Sprite(new Texture("store.png"));
 	        guardar = new Sprite(new Texture("botonGuardar.png"));
 	        cargar = new Sprite(new Texture("botonCargar.png"));
 	        cambiarName = new Sprite(new Texture("Cnombre.png"));
-	        
-	        
+
 	        touchPoint = new Vector3();
 
 	        // boton play
-	        playButtonSprite.setSize(150, 49);
+	        playButtonSprite.setSize(170, 49);
 	        playButtonSprite.setPosition(70,350);
 	        
 	        //boton guardar
-	        guardar.setSize(150, 49);
+	        guardar.setSize(170, 49);
 	        guardar.setPosition(70,280);
 	        
 	        //boton cargar
-	        cargar.setSize(150, 49);
+	        cargar.setSize(170, 49);
 	        cargar.setPosition(70,210);
 	        
 	        //boton tienda
-	        storeButtonSprite.setSize(150, 49);
+	        storeButtonSprite.setSize(170, 49);
 	        storeButtonSprite.setPosition(70, 140);
 	        
 	        //boton cambiar nombre
 	        cambiarName.setSize(41, 39);
-	        cambiarName.setPosition(630, 542);
+	        cambiarName.setPosition(660, 530);
 	    }
 	    public PantallaMenu(SpaceNavigation game, Nave4 navecita, Perfil miPerfil) {
 	        this.game = game;
@@ -80,7 +78,6 @@ public class PantallaMenu implements Screen {
 
 	        backgroundTexture = new Texture("inicio1.png");
 	        playButtonSprite = new Sprite(new Texture("botonPlay.png"));
-	        //levelsButtonSprite = new Sprite(new Texture("botonPlay.png"));
 	        storeButtonSprite = new Sprite(new Texture("store.png"));
 	        guardar = new Sprite(new Texture("botonGuardar.png"));
 	        cargar = new Sprite(new Texture("botonCargar.png"));
@@ -90,23 +87,23 @@ public class PantallaMenu implements Screen {
 	        touchPoint = new Vector3();
 
 	        // boton play
-	        playButtonSprite.setSize(150, 49);
+	        playButtonSprite.setSize(170, 49);
 	        playButtonSprite.setPosition(70,350);
 	        
 	        //boton guardar
-	        guardar.setSize(150, 49);
+	        guardar.setSize(170, 49);
 	        guardar.setPosition(70,280);
 	        
 	        //boton cargar
-	        cargar.setSize(150, 49);
+	        cargar.setSize(170, 49);
 	        cargar.setPosition(70,210);
 	        
 	        //boton tienda
-	        storeButtonSprite.setSize(150, 49);
+	        storeButtonSprite.setSize(170, 49);
 	        storeButtonSprite.setPosition(70, 140);
 	        //boton cambiar nombre
-	        cambiarName.setSize(150, 49);
-	        cambiarName.setPosition(630, 542);
+	        cambiarName.setSize(41, 39);
+	        cambiarName.setPosition(660, 530);
 	    }
 
 	    @Override
@@ -123,7 +120,6 @@ public class PantallaMenu implements Screen {
 	        
 	        perfil.dibujarCoins(batch);
 	        playButtonSprite.draw(batch);
-	      //  levelsButtonSprite.draw(batch);
 	        storeButtonSprite.draw(batch);
 	        guardar.draw(batch);
 	        cargar.draw(batch);
@@ -150,9 +146,10 @@ public class PantallaMenu implements Screen {
 		           SaveLoad.load(perfil);
 		            }
 	            if (cambiarName.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-			        //pedirlo por pantalla
-	            	perfil.setNombre("");
-			            }
+	            	
+	            	String inputText = JOptionPane.showInputDialog("Ingrese Nombre");
+	            	perfil.setNombre(inputText);
+			      }
 
 	            // "Tienda"
 	            if (storeButtonSprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {

@@ -1,5 +1,5 @@
-Nombre Por Defecto
-1000
+Basty
+100
 false
 false
 false

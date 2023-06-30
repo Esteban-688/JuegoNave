@@ -18,7 +18,7 @@ public class EarthMap {
     private static EarthMap instance;
     
     private EarthMap() { 
-       
+       //constructor privado para el uso del singleton
     }
     
     public static EarthMap getInstance() {
