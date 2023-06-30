@@ -33,28 +33,18 @@ public class PantallaJuego implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
-	
 	private EarthMap earthMap;
-	
 	private ComportamientoBossTemplate comportamientoBoss;
-	
 	private SpriteBatch batch;
 	private Sound explosionSound;
 	private Music gameMusic, battleMusic;
-	private int ancho, alto, anchoCamara, altoCamara;;
-	private int porcentaje = 0;
+	private int ancho, alto, anchoCamara, altoCamara, porcentaje, barreraY, barreraX, contadorDeEnemigos, contadorDeKill;
 	private float tiempoTotal1, tiempoTotal2;
-	private boolean barreraBoolean = false;
-	private int barreraX = 0, barreraY = 0;
 	private Nave4 nave;
-	private int contadorDeEnemigos = 0;
-	private int contadorDeKill = 0;
 	private EnemyComun enemigoComun;
 	private BossFinal boss;
-	private boolean bossActivado;
-	private boolean bossMuerto;
+	private boolean bossActivado, bossMuerto, barreraBoolean;
 	private Perfil perfil;
-	
 	private CreateEnemigo crearEnemy;
 	private  ArrayList<Bullet> balas = new ArrayList<>();
 	private  ArrayList<EnemyComun> enemigos = new ArrayList<>();
@@ -63,8 +53,10 @@ public class PantallaJuego implements Screen {
 	public PantallaJuego( SpaceNavigation game, Nave4 navecita, Perfil miPerfil ){
 		
 		perfil = miPerfil;
+		
 		bossActivado = false;
 		bossMuerto = false;
+		barreraBoolean = false;
 		
 		ancho = Config.getDer();
 		alto = Config.getUp();
@@ -73,6 +65,12 @@ public class PantallaJuego implements Screen {
 		
 		anchoCamara = 800;
 		altoCamara = 640;
+		porcentaje = 0;
+		barreraX = 0;
+		barreraY = 0;
+		contadorDeEnemigos = 0;
+		contadorDeKill = 0;
+		
 		
 		batch = game.getBatch();
 		
@@ -89,7 +87,6 @@ public class PantallaJuego implements Screen {
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		explosionSound.setVolume(1,0.5f);
 		
-		//gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
 		battleMusic = Gdx.audio.newMusic (Gdx.files.internal("Sound-battle.mp3"));
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("Musica.mp3")); 
 		
@@ -289,7 +286,6 @@ public class PantallaJuego implements Screen {
 	private void gameOver() {
 		if (nave.estaDestruido()) {
 	    	Screen ss = new PantallaGameOver(game, nave, perfil);
-  			ss.resize(1200, 800);
   			game.setScreen(ss);
   			dispose();
   		  }
@@ -343,7 +339,7 @@ public class PantallaJuego implements Screen {
 		if(tiempoTotal2 > 2.2 &&//cada cuanto se generan
 				enemigos.size()< 4 &&//cuantos enemigos por mapa
 				contadorDeEnemigos <= 40 &&//maxima cantidad de enemigos
-				!bossActivado ) {//si el boss no esta activo generan
+				!bossActivado ) {//si el boss no esta activo se generan
 			tiempoTotal2= 0.0f;
 			enemigoComun = crearEnemy.crearArtillero(nave.getX()-360, alto/2);
 			//añadir  
@@ -353,7 +349,7 @@ public class PantallaJuego implements Screen {
 		 if(tiempoTotal1 > 2.2 &&//cada cuanto se generan
 				enemigos.size()< 5 &&//cuantos enemigos por mapa
 				contadorDeEnemigos <= 40 &&//maxima cantidad de enemigos
-				!bossActivado ) {//si el boss no esta activo generan
+				!bossActivado ) {//si el boss no esta activo se generan
 		
 			tiempoTotal1= 0.0f;
 		
@@ -369,7 +365,7 @@ public class PantallaJuego implements Screen {
 	    Gdx.gl.glClearColor(0, 0, 0, 1);
 	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	  //  batch.setProjectionMatrix(camera.combined);
+	   batch.setProjectionMatrix(camera.combined);
 
 	    // Actualizar movimiento de la cámara
 	    actualizarCamara();

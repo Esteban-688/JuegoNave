@@ -7,6 +7,7 @@ import com.mygdx.game.Enemigos.boss.BossEstrategy;
 import com.mygdx.game.Enemigos.boss.BossFinal;
 
 public abstract class ComportamientoBossTemplate {
+	
 	private BossEstrategy ataqueEstrategy;
 	
 	public ComportamientoBossTemplate() {
