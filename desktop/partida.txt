@@ -1,4 +1,4 @@
-Basty
+Nombre Por Defecto
 100
 false
 false

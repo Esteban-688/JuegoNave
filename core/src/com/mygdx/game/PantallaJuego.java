@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -115,34 +116,51 @@ public class PantallaJuego implements Screen {
 	
 	//accesorios
 	private void dibujaEncabezado() {
-		CharSequence str = "Vida: "+ nave.getVidas()+"  EduCoins: "+ perfil.getEduCoins();
-		 int xVida, yVida,xVidaBoss,yVidaBoss,xKill,yKill,xPorcentaje, yPorcentaje; 
+		CharSequence str = "  EduCoins: "+ perfil.getEduCoins();
+		 int xVida, yVida,xKill,yKill,xPorcentaje, yPorcentaje; 
 		game.getFont().getData().setScale(2f);
 		
+		
 		// x
-		xVida = ((int)camera.position.x-370);
-		xVidaBoss = ((int)camera.position.x+240);
-		xKill = (int)camera.position.x;
+		xVida = ((int)camera.position.x-40);
+		xKill = (int)camera.position.x+250;
 		xPorcentaje = ((int)camera.position.x)-40;	
 		//Y
-
 		yVida = ((int)camera.position.y)-280;
-		yVidaBoss = ((int)camera.position.y)-280;
 		yKill =	((int)camera.position.y)-280;	
 		yPorcentaje =((int)camera.position.y)+290;
 		
-		//colocar en pantalla vidas y ronda
-		game.getFont().draw(batch, str,xVida,yVida);
-		if(!bossActivado) {game.getFont().draw(batch, "   kill: "+contadorDeKill, xKill,yKill);}
-		game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje);
-		
-		if(bossActivado && !bossMuerto)game.getFont().draw(batch, " Jefe: "+(int)boss.getVidaPorcentaje()+" %", xVidaBoss-100,yVidaBoss);
+		//colocar en pantalla encabezados
+		game.getFont().setColor(Color.CHARTREUSE);
+		game.getFont().draw(batch, "Vida: "+ nave.getVidas() , xVida,yVida);
+		if(!bossActivado || bossMuerto) {
+			game.getFont().setColor(Color.GOLDENROD);
+			game.getFont().draw(batch,"EduCoins: "+ perfil.getEduCoins() , xVida-330,yVida);
+			game.getFont().setColor(Color.SCARLET);
+			game.getFont().draw(batch, "   Kills: "+contadorDeKill, xKill,yKill);
+			game.getFont().setColor(Color.LIGHT_GRAY);
+			game.getFont().draw(batch, "] "+ porcentaje + "%", xPorcentaje+ 230, yPorcentaje-20);
+		}
+		if(bossActivado && !bossMuerto) {
+		game.getFont().setColor(Color.RED);
+		game.getFont().draw(batch, "] "+ (int)boss.getVidaPorcentaje() + "%", xPorcentaje+ 230, yPorcentaje-20);
+		game.getFont().draw(batch, " JEFE ", xPorcentaje+10, yPorcentaje+15);
+		}
 		// Barra de progreso
 		
 		int longitudBarra = 62;
-		int longitudRelleno = (int) (porcentaje / 100f * longitudBarra);
+		int longitudRelleno;
+		
+		if(bossActivado && !bossMuerto) {
+			game.getFont().setColor(Color.RED);
+			longitudRelleno = (int) (boss.getVidaPorcentaje() / 100f * longitudBarra);
+		}else {
+			game.getFont().setColor(Color.LIGHT_GRAY);
+			longitudRelleno = (int) (porcentaje / 100f * longitudBarra);
+		}
 		
 	    String barraProgreso = "";
+	    
 	    for (int i = 0; i < longitudBarra; i++) {
 	        if (i < longitudRelleno) {
 	            barraProgreso += "|"; 
@@ -150,9 +168,9 @@ public class PantallaJuego implements Screen {
 	            barraProgreso += ""; 
 	        }
 	    }
-
 	    // Dibujar la barra de progreso
-	    game.getFont().draw(batch, "[" + barraProgreso , xPorcentaje-150, yPorcentaje);
+	    game.getFont().draw(batch, "[" + barraProgreso , xPorcentaje-150, yPorcentaje-20);
+	    
 	    //consejos en pantalla
 	    dibujarConsejos(xPorcentaje,yPorcentaje);
 	}
@@ -246,12 +264,14 @@ public class PantallaJuego implements Screen {
 					
 		    		  if(!boss.isDestruida()) {
 		    			  boss.draw(batch,this);
-			    		 boss.atacar(batch, this, boss.getSprite());
-			    		 boss.moverse(boss.getSprite());
+		    			  boss.atacar(batch, this, boss.getSprite());
+		    			  boss.moverse(boss.getSprite());
 			    		 
 			    		 //uso del strategy en el boss, con el patron templed method
-			    		 if(boss.getVidaPorcentaje()>49) {
+			    		 if(boss.getVidaPorcentaje() > 49) {
+			    			 
 			    			 comportamientoBoss = new ComportamientoBossNormal();
+			    			 
 			    		 }else {comportamientoBoss = new ComportamientoBossEnfurecido();}
 			    		 comportamientoBoss.comportamiento(boss);
 			    		 

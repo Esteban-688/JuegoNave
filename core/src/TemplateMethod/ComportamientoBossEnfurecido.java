@@ -12,7 +12,7 @@ public class ComportamientoBossEnfurecido extends ComportamientoBossTemplate {
 	public void stepTwo(BossFinal boss) {
 		setAtaqueEstrategy(new AtaqueRecto(new Texture(Gdx.files.internal("ataqueNormalBoss.png")),
 				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")),
-				0.9f)
+				0.8f)
 		); 
 		if(boss.getVidaPorcentaje()== 25) {
         boss.setAtaqueStrategy(getAtaqueEstrategy());

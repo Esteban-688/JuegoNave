@@ -128,7 +128,7 @@ public class PantallaMenu implements Screen {
 	        
 	        batch.end();
 
-	        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+	        if (Gdx.input.isTouched()) {
 	            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 	            camera.unproject(touchPoint);
 

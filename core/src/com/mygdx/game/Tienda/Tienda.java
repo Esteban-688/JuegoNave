@@ -97,7 +97,7 @@ public class Tienda implements Screen {
 
     	time += Gdx.graphics.getDeltaTime();
     	if(time >= 0.5) {
-	    	if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+	    	if (Gdx.input.isTouched()) {
 	            touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 	            camera.unproject(touchPoint);
 	            
@@ -123,6 +123,12 @@ public class Tienda implements Screen {
 	            }
 	            
 	        }
+	    	if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                rellenarPerfil();
+            	Screen ss = new PantallaMenu(game, nave, perfil);
+                game.setScreen(ss);
+                dispose();
+            }
     	}
     	
     }

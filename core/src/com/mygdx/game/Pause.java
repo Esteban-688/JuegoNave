@@ -75,12 +75,8 @@ public class Pause implements Screen {
         
         batch.end();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-        	game.setScreen(juego);
-        	juego.setRender(false);
-        	dispose();
-        }
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        
+        if (Gdx.input.isTouched()) {
             touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPoint);
             
@@ -91,19 +87,25 @@ public class Pause implements Screen {
             	dispose();
             }
             //reintentar
-            if (reintentar.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+            else if (reintentar.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
             	Screen ss = new PantallaCarga(game, nave, perfil);
             	game.setScreen(ss);
             	juego.dispose();
             	dispose();
             }
             //MenuPrincipal
-            if (menuPrincipal.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+            else if (menuPrincipal.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
             	Screen ss = new PantallaMenu(game, nave, perfil);
             	game.setScreen(ss);
             	juego.dispose();
             	dispose();
             }
+            
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        	game.setScreen(juego);
+        	juego.setRender(false);
+        	dispose();
         }
     }
     private void estadisticasDraw(SpriteBatch batch) {
