@@ -11,32 +11,36 @@ import com.mygdx.game.navecita.Nave4;
 
 public class BossFinal implements Enemigo {
     
-	private Texture originalTx, heridoTx;
-	private boolean destruida;
+	private Texture enojado, triste, curioso, heridoTx, auxTx;
+	private boolean destruida, herido;
     private float tiempo = Gdx.graphics.getDeltaTime();
     private int vida;
     private Sprite spr;
     private Nave4 nave;
     private BossMove movement;
     private BossAttack ataque;
-    private int xIzq, xDer, yUp, yDown;
-    private int maxVida;
+    private int xIzq, xDer, yUp, yDown, maxVida;
     private float vidaPorcentaje;
     
 
-    public BossFinal(int x, int y, float speed, Texture txOriginal, Texture txHerido, Nave4 nave1) {
+    public BossFinal(int x, int y, float speed, Nave4 nave1) {
         // Inicializa los atributos
         destruida = false;
+        herido = false;
         vida = 5000;
         maxVida = vida;
         vidaPorcentaje = 100f;
-        spr = new Sprite(txOriginal);
+       
         
-        spr.setPosition(x, y);
+        
         nave = nave1;
 
-        originalTx = txOriginal;
-        heridoTx = txHerido;
+        curioso =  new Texture(Gdx.files.internal("curioso.png"));
+        enojado = new Texture(Gdx.files.internal("enojado.png"));
+        triste = new Texture(Gdx.files.internal("triste.png"));
+        heridoTx = new Texture(Gdx.files.internal("txHeridoBoss.png"));
+        spr = new Sprite(curioso);
+        spr.setPosition(x, y);
         
         // Crea las instancias de las nuevas clases
         movement = new BossMove(spr, speed, nave, x , y);
@@ -51,8 +55,7 @@ public class BossFinal implements Enemigo {
 
     public void draw(SpriteBatch batch, PantallaJuego juego) {
         spr.draw(batch);
-       // moverse(spr);
-        //atacar(batch, juego, spr);
+        updateEmociones();
     }
 
     public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
@@ -90,20 +93,34 @@ public class BossFinal implements Enemigo {
     
     public void texturaHerida() {
 	    	//se reemplaza la tx
-	   	 spr.setTexture(heridoTx);
-	   	 float heridoDuration = 0.1f;//se crea el contador
+    	 auxTx = getTx();
+    	 herido = true;
+    	spr.setTexture(heridoTx);
+	   	
+	   	 float heridoDuration = 0.15f;//se crea el contador
+	   	 
 	   	 Timer.schedule(new Timer.Task() {
 	            @Override
 	            public void run() {
-	                spr.setTexture(originalTx);
+	                spr.setTexture(auxTx);
+	                herido = false;
 	            }
 	        }, heridoDuration);
+    }
+    private void updateEmociones() {
+    	if(!herido) {
+	    	if(vidaPorcentaje > 69) {setTx(curioso);}
+	    	else if(vidaPorcentaje > 49){setTx(triste);}
+	    	else if(vidaPorcentaje < 26) {setTx(enojado);}
+    	}
     }
 	public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public int getVida() {return vida;}
     public int getMaxVida() {return maxVida;}
     public Sprite getSprite() {return spr;}
+    public Texture getTx() {return spr.getTexture();}
+    public void setTx(Texture a) {spr.setTexture(a);}
     public boolean isDestruida() {return destruida;}
     public void setDestruida(boolean a) {destruida=a;}
 }

@@ -108,8 +108,6 @@ public class PantallaJuego implements Screen {
 	    boss = new BossFinal(ancho,
         		alto/2,
         		6,
-        		new Texture(Gdx.files.internal("MiniBossMarciano.png")),
-        		new Texture(Gdx.files.internal("MiniBossMarcianoHerido.png")),
         		nave
         		);
 	}
@@ -480,6 +478,7 @@ public class PantallaJuego implements Screen {
 
 	@Override
 	public void dispose() {
+		game.getFont().setColor(Color.WHITE);
 		this.earthMap.dispose();
 		this.explosionSound.dispose();
 		this.gameMusic.dispose();
