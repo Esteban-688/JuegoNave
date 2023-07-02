@@ -11,55 +11,54 @@ import com.mygdx.game.balas.BalaNormal;
 import com.mygdx.game.diccionaInterfaces.Atacar;
 
 public class ArtilleroAtacar implements Atacar {
-	private int daño;
-	private float time;
-	private Texture txBalaNormal;
 	private Sound soundBala;
-	
+	private Texture txBalaNormal;
+
+	private float time;
+
+	private int daño;
+
+	// Constructor del artillero
 	public ArtilleroAtacar() {
 		daño = 30;
 		time = 0.0f;
-		
+
 		txBalaNormal = new Texture(Gdx.files.internal("artilleroBala.png"));
 		soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
 	}
-	
-	@Override
+
+	// Método atacar propio del artillero
 	public void atacar(SpriteBatch batch, PantallaJuego juego, Sprite spr) {
 		time += Gdx.graphics.getDeltaTime();
-		
-     	if (time >= 2) {
-            time = 0.0f;
 
-            // Obtener la posición actual de la nave
-            float naveX = Config.naveGetX();
-            float naveY = Config.naveGetY();
+		if (time >= 2) {
+			time = 0.0f;
 
-            // Calcular la dirección de la bala hacia la nave
-            float bulletDirectionX = naveX - spr.getX();
-            float bulletDirectionY = naveY - spr.getY();
+			// Obtener la posición actual de la nave
+			float naveX = Config.naveGetX();
+			float naveY = Config.naveGetY();
 
-            // mantener o hacer que siga recta
-            float magnitude = (float) Math.sqrt(bulletDirectionX * bulletDirectionX + bulletDirectionY * bulletDirectionY);
-            bulletDirectionX /= magnitude;
-            bulletDirectionY /= magnitude;
+			// Calcular la dirección de la bala hacia la nave
+			float bulletDirectionX = naveX - spr.getX();
+			float bulletDirectionY = naveY - spr.getY();
 
-            // Establecer la velocidad de la bala
-            float bulletSpeed = 10; // Velocidad de la bala
-            float bulletSpeedX = (bulletDirectionX) * bulletSpeed;
-            float bulletSpeedY = bulletDirectionY * bulletSpeed;
+			// mantener o hacer que siga recta
+			float magnitude = (float) Math
+					.sqrt(bulletDirectionX * bulletDirectionX + bulletDirectionY * bulletDirectionY);
+			bulletDirectionX /= magnitude;
+			bulletDirectionY /= magnitude;
 
-            BalaNormal bala = new BalaNormal(daño, 
-            		spr.getX()+120,
-            		spr.getY(),
-            		bulletSpeedX,
-            		bulletSpeedY,
-            		txBalaNormal,
-            		false);
+			// Establecer la velocidad de la bala
+			float bulletSpeed = 10; // Velocidad de la bala
+			float bulletSpeedX = (bulletDirectionX) * bulletSpeed;
+			float bulletSpeedY = bulletDirectionY * bulletSpeed;
 
-            juego.agregarBala(bala);
-            soundBala.play();
-     	}
+			BalaNormal bala = new BalaNormal(daño, spr.getX() + 120, spr.getY(), bulletSpeedX, bulletSpeedY,
+					txBalaNormal, false);
+
+			juego.agregarBala(bala);
+			soundBala.play();
+		}
 	}
 
 }

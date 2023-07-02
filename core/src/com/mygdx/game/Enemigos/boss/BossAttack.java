@@ -1,13 +1,10 @@
 package com.mygdx.game.Enemigos.boss;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.PantallaJuego;
-import com.mygdx.game.balas.BalaNormal;
 import com.mygdx.game.navecita.Nave4;
 
 
@@ -20,9 +17,8 @@ public class BossAttack {
     private Nave4 nave;
    
     
-    public BossAttack(Sprite sprite, Nave4 nave1) {
-        this.sprite = sprite;
-  
+    public BossAttack(Sprite spr, Nave4 nave1) {
+        sprite = spr;
         nave = nave1;
         rotation = 90;
         
