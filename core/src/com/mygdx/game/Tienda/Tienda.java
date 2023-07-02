@@ -37,7 +37,7 @@ public class Tienda implements Screen {
 		perfil = miPerfil;
 		rellenarSkins();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1000, 600);
+		camera.setToOrtho(false, 1024, 576);
 
 		batch = new SpriteBatch();
 		backgroundTexture = new Texture("inicio1.png");
