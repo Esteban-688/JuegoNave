@@ -79,12 +79,12 @@ public class BossMove {
 
 	}
 
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
+	public void setSprite(Sprite spr) {
+		sprite = spr;
 	}
 
-	public void setSpeed(float speed) {
-		this.speed = speed;
+	public void setSpeed(float speed1) {
+		speed = speed1;
 	}
 
 	public Sprite getSprite() {

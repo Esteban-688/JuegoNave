@@ -44,13 +44,13 @@ public class BossAttack {
         return rotation;
     }
 
-    public void setRotation(float rotation) {
-        this.rotation = rotation;
+    public void setRotation(float rotacion) {
+        rotation = rotacion;
     }
     
     //patron Strategy
-    public void setAtaqueStrategy(BossEstrategy ataqueStrategy) {
-        this.ataqueEstrategy = ataqueStrategy;
+    public void setAtaqueStrategy(BossEstrategy ataqueStrategi) {
+        ataqueEstrategy = ataqueStrategi;
     }
 
 	

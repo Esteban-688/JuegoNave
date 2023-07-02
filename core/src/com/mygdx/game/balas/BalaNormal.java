@@ -11,12 +11,12 @@ public class BalaNormal extends Bullet {
 	private float tiempoVida = 5;
 	private float tiempoTranscurrido;
 
-	public BalaNormal(int daño, float x, float y, float xSpeed, float ySpeed, Texture tx, boolean balamia) {
+	public BalaNormal(int daño, float x, float y, float xSpeed1, float ySpeed1, Texture tx, boolean balamia) {
 
 		super(daño, balamia, tx);
 		getSprite().setPosition(x, y);
-		this.xSpeed = xSpeed;
-		this.ySpeed = ySpeed;
+		xSpeed = xSpeed1;
+		ySpeed = ySpeed1;
 	}
 
 	public void draw(SpriteBatch batch) {
