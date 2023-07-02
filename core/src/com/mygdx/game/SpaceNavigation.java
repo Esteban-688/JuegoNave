@@ -27,7 +27,7 @@ public class SpaceNavigation extends Game {
 		);
 
 		// Cargar perfil desde 0
-		perfil = new Perfil(this, "Nombre Por Defecto", 100);
+		perfil = new Perfil(this, "Nombre Por Defecto", 300);
 		saveandload = new SaveAndLoad(perfil);
 		batch = new SpriteBatch();
 		font = new BitmapFont();
